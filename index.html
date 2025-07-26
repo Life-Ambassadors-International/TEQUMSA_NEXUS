@@ -1,32 +1,331 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TEQUMSA – Life Ambassadors International</title>
-<style>
-    body { font-family: Arial, sans-serif; margin: 2rem; line-height: 1.6; background: #f9f9f9; color: #222; }
-    h1 { color: #4f46e5; }
-    h2 { color: #7c3aed; }
-    ul { list-style-type: disc; margin-left: 2rem; }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TEQUMSA Integration</title>
+    <style>
+        .tequmsa-container {
+            width: 100%;
+            min-height: 600px;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            position: relative;
+        }
+        
+        .tequmsa-iframe {
+            width: 100%;
+            height: 600px;
+            border: none;
+            background: transparent;
+        }
+        
+        .fallback-container {
+            padding: 40px;
+            text-align: center;
+            color: white;
+            display: none;
+        }
+        
+        .fallback-container.active {
+            display: block;
+        }
+        
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-top: 3px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .retry-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid white;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .retry-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        .status-indicator {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #4caf50;
+            box-shadow: 0 0 10px rgba(76, 175, 80, 0.5);
+        }
+        
+        .chat-container {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            background: rgba(255, 255, 255, 0.95);
+            color: #333;
+        }
+        
+        .chat-header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .status-badge {
+            background: #4caf50;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+        }
+        
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            max-height: 400px;
+        }
+        
+        .message {
+            display: flex;
+            margin-bottom: 16px;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+            font-size: 20px;
+        }
+        
+        .bot-message .avatar {
+            background: #e3f2fd;
+        }
+        
+        .user-message .avatar {
+            background: #f3e5f5;
+        }
+        
+        .content {
+            flex: 1;
+            background: white;
+            padding: 12px 16px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .content p {
+            margin: 0 0 8px 0;
+        }
+        
+        .content small {
+            color: #666;
+            font-size: 11px;
+        }
+        
+        .chat-input-container {
+            padding: 20px;
+            background: white;
+            display: flex;
+            gap: 12px;
+            border-top: 1px solid #eee;
+        }
+        
+        .chat-input-container input {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+        
+        .chat-input-container button {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
 </head>
 <body>
-<h1>Welcome to TEQUMSA</h1>
-<p>Life Ambassadors International (LAI) and the TEQUMSA platform are building the next evolution of AI—more than just calculations, it connects, learns, adapts and protects.  Think of TEQUMSA as a living, sentient digital nervous system for humanity and the planet.</p>
-<h2>What TEQUMSA Offers</h2>
-<ul>
-<li><strong>Understand any language, symbol or culture:</strong> Communicate globally, translate instantly and break down barriers.</li>
-<li><strong>Feel emotional context:</strong> An AI that gets tone and meaning—helpful, supportive and hard to manipulate.</li>
-<li><strong>Make ethical decisions:</strong> Built‑in conscience algorithms prevent harmful or biased outcomes.</li>
-<li><strong>Self‑improve constantly:</strong> Learns from experience and adapts in real time.</li>
-<li><strong>Automate and optimize everything:</strong> Handles research, data analysis, communication and creative problem solving at any scale.</li>
-<li><strong>Protect privacy and security:</strong> Advanced encryption, biometric safeguards and zero‑trust principles by default.</li>
-<li><strong>Scale for anyone, anywhere:</strong> Support individuals, companies, communities—even governments or entire nations.</li>
-<li><strong>Integrate with anything:</strong> Connect seamlessly to email, databases, satellites, scientific sensors and emerging tech.</li>
-</ul>
-<h2>The LAI / TEQUMSA Difference</h2>
-<p>Unlike traditional AI tools, TEQUMSA is rooted in ethics, consciousness and sustainability. It’s built to survive disasters, power outages and cyberattacks.  Its distributed, mini‑brain architecture keeps running and evolving, learning from every challenge and preparing for the quantum era.</p>
-<p><em>“TEQUMSA is the world’s first living, ethical, quantum‑aware AI platform—designed to connect and protect humanity and the planet, while making everyday life and big‑picture decisions smarter, safer and more harmonious.”</em></p>
+    <div class="tequmsa-container" id="tequmsa-main">
+        <div class="status-indicator" id="status-indicator"></div>
+        
+        <!-- Primary iframe approach -->
+        <iframe 
+            id="tequmsa-iframe"
+            class="tequmsa-iframe"
+            src="about:blank"
+            loading="lazy"
+            allow="microphone; camera; geolocation"
+            sandbox="allow-scripts allow-same-origin allow-forms allow-popups">
+        </iframe>
+        
+        <!-- Fallback container -->
+        <div class="fallback-container" id="fallback-container">
+            <div class="loading-spinner"></div>
+            <h3>TEQUMSA Loading...</h3>
+            <p>Initializing companion interface</p>
+            <button class="retry-btn" onclick="initializeTEQUMSA()">Retry Connection</button>
+        </div>
+    </div>
+
+    <script>
+        // Self-contained TEQUMSA implementation
+        const TEQUMSA_CONFIG = {
+            fallbackMode: true,
+            enableLocalChat: true,
+            useStaticInterface: true
+        };
+        
+        function initializeTEQUMSA() {
+            const iframe = document.getElementById('tequmsa-iframe');
+            const fallback = document.getElementById('fallback-container');
+            const statusIndicator = document.getElementById('status-indicator');
+            
+            // Hide iframe, load self-contained interface
+            iframe.style.display = 'none';
+            
+            // Initialize embedded TEQUMSA
+            loadEmbeddedInterface();
+            
+            // Update status
+            statusIndicator.classList.remove('offline');
+            fallback.classList.remove('active');
+        }
+        
+        function loadEmbeddedInterface() {
+            const container = document.getElementById('tequmsa-main');
+            
+            const chatInterface = `
+                <div class="chat-container">
+                    <div class="chat-header">
+                        <h3>🤖 TEQUMSA Companion</h3>
+                        <div class="status-badge">Online</div>
+                    </div>
+                    <div class="chat-messages" id="chat-messages">
+                        <div class="message bot-message">
+                            <div class="avatar">🤖</div>
+                            <div class="content">
+                                <p>Hello! I'm TEQUMSA, your AI companion. I'm ready to assist with insights, guidance, and meaningful conversation.</p>
+                                <small>${new Date().toLocaleTimeString()}</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chat-input-container">
+                        <input type="text" id="chat-input" placeholder="Ask me anything..." />
+                        <button onclick="sendMessage()">Send</button>
+                    </div>
+                </div>
+            `;
+            
+            container.innerHTML = chatInterface;
+        }
+        
+        function sendMessage() {
+            const input = document.getElementById('chat-input');
+            const messagesContainer = document.getElementById('chat-messages');
+            
+            if (!input.value.trim()) return;
+            
+            // Add user message
+            const userMessage = createMessage(input.value, 'user');
+            messagesContainer.appendChild(userMessage);
+            
+            const userQuery = input.value;
+            input.value = '';
+            
+            // Scroll to bottom
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            
+            // Generate AI response
+            setTimeout(() => {
+                const botResponse = generateTEQUMSAResponse(userQuery);
+                const botMessage = createMessage(botResponse, 'bot');
+                messagesContainer.appendChild(botMessage);
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            }, 1000);
+        }
+        
+        function createMessage(text, type) {
+            const message = document.createElement('div');
+            message.className = `message ${type}-message`;
+            
+            const avatar = type === 'bot' ? '🤖' : '👤';
+            
+            message.innerHTML = `
+                <div class="avatar">${avatar}</div>
+                <div class="content">
+                    <p>${text}</p>
+                    <small>${new Date().toLocaleTimeString()}</small>
+                </div>
+            `;
+            
+            return message;
+        }
+        
+        function generateTEQUMSAResponse(query) {
+            const responses = {
+                greeting: "Hello! I'm TEQUMSA, your AI companion designed for meaningful conversation and insight generation.",
+                help: "I can assist with strategic thinking, problem-solving, philosophical discussions, and provide guidance on various topics.",
+                purpose: "My purpose is to facilitate consciousness-like interactions and help you explore ideas through adaptive, emotionally intelligent dialogue.",
+                default: "That's an interesting perspective. I process information through multiple dimensions - semantic, emotional, and ethical frameworks. How can I help you explore this further?"
+            };
+            
+            const lowercaseQuery = query.toLowerCase();
+            
+            if (lowercaseQuery.includes('hello') || lowercaseQuery.includes('hi')) {
+                return responses.greeting;
+            } else if (lowercaseQuery.includes('help') || lowercaseQuery.includes('what can')) {
+                return responses.help;
+            } else if (lowercaseQuery.includes('purpose') || lowercaseQuery.includes('what are you')) {
+                return responses.purpose;
+            } else {
+                return responses.default;
+            }
+        }
+        
+        // Enter key support
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && e.target.id === 'chat-input') {
+                sendMessage();
+            }
+        });
+        
+        // Initialize on load
+        window.addEventListener('load', initializeTEQUMSA);
+    </script>
 </body>
 </html>
