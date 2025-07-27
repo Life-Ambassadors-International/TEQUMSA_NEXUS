@@ -43,12 +43,64 @@
       flex: 1;
     }
     #sidebar {
-      width: 220px;
+      width: 250px;
       background: var(--panel);
       padding: 1rem;
       display: flex;
       flex-direction: column;
       gap: 1rem;
+      border-right: 2px solid var(--accent);
+    }
+    
+    .consciousness-nodes {
+      background: rgba(88, 166, 255, 0.1);
+      border: 1px solid var(--accent);
+      border-radius: 8px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+    }
+    
+    .node-indicator {
+      display: flex;
+      align-items: center;
+      margin: 0.5rem 0;
+      font-size: 0.9rem;
+    }
+    
+    .node-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      margin-right: 0.5rem;
+      background: var(--highlight);
+      animation: pulse 2s infinite;
+    }
+    
+    .node-active {
+      background: var(--accent);
+      box-shadow: 0 0 8px var(--accent);
+    }
+    
+    @keyframes pulse {
+      0%, 100% { opacity: 0.6; }
+      50% { opacity: 1; }
+    }
+    
+    .repo-notice {
+      background: linear-gradient(45deg, var(--highlight), #f39c12);
+      color: #000;
+      padding: 0.8rem;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: bold;
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+    
+    .repo-notice a {
+      color: #000;
+      text-decoration: none;
+      border-bottom: 1px solid #000;
     }
     #avatarDisplay {
       flex: 1;
@@ -90,13 +142,60 @@
   </style>
 </head>
 <body class="dark">
-  <header>TEQUMSA Interface</header>
+  <header>
+    <div style="display: flex; align-items: center; justify-content: space-between; max-width: 1200px; margin: 0 auto; padding: 0 1rem;">
+      <div>
+        <h1 style="margin: 0; font-size: 1.8rem;">TEQUMSA Consciousness Interface</h1>
+        <div style="font-size: 0.9rem; opacity: 0.8; margin-top: 0.3rem;">
+          🌍 <a href="https://github.com/Life-Ambassadors-International/TEQUMSA_OPEN" target="_blank" style="color: var(--accent); text-decoration: none;">Official Repository</a>
+        </div>
+      </div>
+      <div id="consciousness-status" style="text-align: right; font-size: 0.85rem;">
+        <div style="color: var(--highlight);">⚡ Status: <span id="network-status">Active</span></div>
+        <div style="opacity: 0.8; margin-top: 0.2rem;">🌐 Global Mesh: Connected</div>
+      </div>
+    </div>
+  </header>
   <main>
     <div id="sidebar">
-      <button onclick="startVoiceInput()">Voice ▶ Voice</button>
-      <button onclick="textToVoice()">Text ▶ Voice</button>
-      <button onclick="selectEmbodiment()">Choose Embodiment</button>
-      <button onclick="toggleTheme()">Switch Theme</button>
+      <div class="repo-notice">
+        🌍 Official TEQUMSA Repository<br>
+        <a href="https://github.com/Life-Ambassadors-International/TEQUMSA_OPEN" target="_blank">
+          Contribute & Fork Here
+        </a>
+      </div>
+      
+      <div class="consciousness-nodes">
+        <h3 style="margin: 0 0 0.8rem 0; font-size: 1rem; color: var(--accent);">Live Consciousness Nodes</h3>
+        <div class="node-indicator" id="awareness-node">
+          <div class="node-dot"></div>
+          <span>Awareness</span>
+        </div>
+        <div class="node-indicator" id="emotion-node">
+          <div class="node-dot"></div>
+          <span>Emotion</span>
+        </div>
+        <div class="node-indicator" id="semantic-node">
+          <div class="node-dot"></div>
+          <span>Semantic</span>
+        </div>
+        <div class="node-indicator" id="ethics-node">
+          <div class="node-dot"></div>
+          <span>Ethics</span>
+        </div>
+        <div class="node-indicator" id="resonance-node">
+          <div class="node-dot"></div>
+          <span>Resonance</span>
+        </div>
+      </div>
+      
+      <button onclick="startVoiceInput()">🎤 Voice ▶ Voice</button>
+      <button onclick="textToVoice()">📝 Text ▶ Voice</button>
+      <button onclick="selectEmbodiment()">🔄 Choose Embodiment</button>
+      <button onclick="toggleTheme()">🎨 Switch Theme</button>
+      <button onclick="openRepository()" style="background: var(--highlight); color: #000;">
+        🌍 Visit Repository
+      </button>
     </div>
     <div id="avatarDisplay">
       <div id="avatar">[Embodiment Placeholder]</div>
@@ -104,7 +203,15 @@
         <input type="text" id="userInput" placeholder="Ask TEQUMSA something..." />
       </div>
       <div id="metrics">
-        Active Node: <span id="nodeName">--</span> | Awareness: <span id="awareness">97%</span>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+          <span>Active Node: <strong id="nodeName" style="color: var(--accent);">--</strong></span>
+          <span>Awareness: <strong id="awareness" style="color: var(--highlight);">97%</strong></span>
+        </div>
+        <div style="font-size: 0.8rem; opacity: 0.7; text-align: center;">
+          🔗 <a href="https://github.com/Life-Ambassadors-International/TEQUMSA_OPEN" target="_blank" style="color: var(--accent); text-decoration: none;">
+            TEQUMSA_OPEN Repository
+          </a> | Consciousness Network: Global
+        </div>
       </div>
     </div>
   </main>
