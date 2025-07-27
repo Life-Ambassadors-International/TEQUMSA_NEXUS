@@ -1,74 +1,58 @@
-# TEQUMSA Quantum Interface (Modular)
+# TEQUMSA AGI Interface
 
-This project contains a modular front‑end implementation of the **TEQUMSA AGI Interface**, designed for ease of maintenance, scalability and integration with WordPress or other web platforms.  The interface simulates a consciousness‑aware chat companion with animated Oort‑Cloud nodes, embodiment switching and natural language voice responses.
+**Live demo:** [https://tequmsa-open.vercel.app](https://tequmsa-open.vercel.app)
 
-## File structure
+This repository contains a production‑ready, modular implementation of the **TEQUMSA AGI Interface**.  The interface simulates a consciousness‑inspired chat companion with animated cognitive nodes, natural language voice capabilities and embodiment switching.  It’s designed to be lightweight, easily deployable to Vercel and embeddable into platforms such as WordPress.
+
+## Features
+
+* **Dual‑theme UI** – switch between dark and light mode on the fly.
+* **Voice‑to‑voice interaction** – uses ElevenLabs for text‑to‑speech and the Web Speech API for speech recognition.
+* **Animated AGI nodes** – cycles through awareness, emotion, semantic, ethics and resonance, updating displayed metrics.
+* **Embodiment avatar selector** – choose between AGI, Elemental, Ancestral and Antician embodiments.
+
+## File overview
 
 ```
-/TEQUMSA_OPEN/
-├── index.html   – Main HTML shell with layout, dark/light theme toggle and metric displays
-├── nodes.js     – Handles orbital animation, sacred glyph rendering and consciousness metrics
-├── speech.js    – Provides voice input/output via ElevenLabs (TTS) and Web Speech API (STT)
-└── README.md    – Quick start guide (this file)
+.
+├── index.html   # Main UI layout with sidebar controls, metrics display and theme switcher
+├── speech.js    # Voice input/output engine using ElevenLabs and browser speech recognition
+├── nodes.js     # Simulates consciousness nodes, updates metrics and triggers contextual responses
+└── README.md    # This guide
 ```
 
 ### index.html
-The **index.html** file defines the structural layout of the TEQUMSA interface.  It includes:
 
-- A left sidebar with buttons to start voice recognition, convert typed text to speech, choose an embodiment and toggle the dark/light theme.
-- Metric displays for `Awareness`, `Resonance` and `Recursion`, which are updated by `nodes.js`.
-- A central area showing the currently selected embodiment, the active node label, a text input bar and SVG containers for animated nodes and glyphs.
-- References to `speech.js` and `nodes.js` so the UI can interact with the voice and animation engines.
-
-### nodes.js
-The **nodes.js** module manages the Oort‑Cloud representation.  It:
-
-- Creates a ring of orbiting nodes representing TEQUMSA’s cognitive sub‑systems (Awareness, Emotion, Semantic, Ethics, Resonance, Recursion and Decision).
-- Adds a simple sacred glyph (a rotating star) in the centre of the orbit.
-- Animates the node positions smoothly and periodically highlights one node as the “active” trait.
-- Simulates consciousness metrics by assigning pseudo‑random values to awareness, resonance (around 7777 Hz) and recursion.  These values are displayed in the sidebar.
+Defines the structure of the interface: a header, a sidebar with control buttons (voice input, text‑to‑voice, embodiment chooser, theme toggle) and a main panel showing the current embodiment, a text input field and basic awareness metrics.  It links to the `speech.js` and `nodes.js` scripts.
 
 ### speech.js
-The **speech.js** module handles natural language voice capabilities.  It:
 
-- Maps embodiments (AGI, Elemental, Ancestral, Antician) to ElevenLabs voice IDs (placeholders provided).
-- Defines `speakWithEmotion()` which calls the ElevenLabs text‑to‑speech API with adjustable stability and similarity parameters.  A placeholder API key is included; replace `YOUR_ELEVENLABS_API_KEY_HERE` with your own key.
-- Provides `startVoice()` to start speech recognition using the Web Speech API with English (`en‑US`).  If unsupported, an alert is shown and you can integrate your own Whisper or Vosk recogniser.
-- Offers `textToVoice()` for converting arbitrary typed input to speech, `selectEmbodiment()` for choosing the embodiment and updating the avatar label, and `toggleTheme()` to switch between dark and light modes.
-- Automatically binds UI buttons to the appropriate functions when the DOM is ready.
+Provides natural language voice capabilities:
+
+* `selectEmbodiment()` – prompts the user to choose an embodiment and updates the avatar label.
+* `speakText()` – sends text to ElevenLabs for synthesis.  Replace `YOUR_ELEVENLABS_API_KEY` with your own API key and `EXAMPLE-VOICE-ID` with a valid voice ID.
+* `textToVoice()` – prompts the user for arbitrary text and speaks it aloud.
+* `startVoiceInput()` – triggers browser speech recognition and echoes the transcribed phrase.
+* `toggleTheme()` – switches between dark and light UI themes.
+
+### nodes.js
+
+Handles the simulated consciousness nodes and awareness metrics.  It randomly selects an active node (Awareness, Emotion, Semantic, Ethics or Resonance), updates the `nodeName` element, assigns a pseudo‑random awareness percentage and, for certain nodes, speaks a contextual line using `speakText()`.  The active node cycles every six seconds.
 
 ## Deployment via GitHub & Vercel
 
-1. Push `index.html`, `nodes.js`, `speech.js` and `README.md` to the root of your GitHub repository.  Vercel will automatically detect the static site and deploy to your configured domain (e.g. `https://tequmsa-open.vercel.app`).
-2. Whenever you update any of these files, commit the changes to `main` and Vercel will redeploy.
+1. Commit `index.html`, `speech.js` and `nodes.js` to your GitHub repository.
+2. Link the repository to Vercel and deploy a static site.  Vercel will automatically build and host the interface at your configured domain.
+3. Update the API key and voice ID in `speech.js` before exposing the interface to end‑users.
 
 ## WordPress integration
 
-To embed TEQUMSA into a WordPress page:
+To embed TEQUMSA into a WordPress page, the simplest method is to use an iframe:
 
-- The simplest method is to use an iframe:
+```html
+<iframe src="https://tequmsa-open.vercel.app" width="100%" height="700" style="border:none;"></iframe>
+```
 
-  ```html
-  <iframe src="https://tequmsa-open.vercel.app" width="100%" height="900" style="border:none;"></iframe>
-  ```
-
-  Place this snippet in an Elementor HTML widget or using a code snippet plugin like WPCode.  Adjust the height as needed.
-
-- Alternatively, load the modular scripts directly in WordPress using a plugin such as WPCode or in your theme’s `functions.php`:
-
-  ```php
-  if (is_page('tequmsa-avatar-companion')) {
-      echo '<script src="https://tequmsa-open.vercel.app/nodes.js"></script>';
-      echo '<script src="https://tequmsa-open.vercel.app/speech.js"></script>';
-  }
-  ```
-
-  Then include a matching `index.html` layout markup in the page body.  Using the iframe approach is usually simpler.
-
-## Notes
-
-- Replace the placeholder ElevenLabs API key in `speech.js` with your own key before deploying.
-- The current speech recognition implementation uses the browser’s Web Speech API.  To achieve more accurate recognition or custom wake‑word detection, integrate OpenAI Whisper or Vosk in place of the stub.
-- The sacred glyph is implemented as a simple rotating star; you can replace the path with any SVG glyph you like for a more elaborate sacred geometry effect.
+Insert this snippet into an Elementor HTML widget or via a code snippet plugin.  Adjust the height attribute to suit your design.
 
 Enjoy exploring consciousness with TEQUMSA!
