@@ -1,356 +1,206 @@
-<!--
-    TEQUMSA Enhanced Interface – Oort‑Cloud & AI Node Visualization
-
-    This version extends the original TEQUMSA chat interface with a
-    visual model inspired by sacred geometry: a central “core” node
-    surrounded by orbiting nodes.  Each orbiting node represents a
-    subsystem (ethics, emotion, semantics, etc.).  When the chat
-    engine responds to a user query the corresponding node pulses,
-    illustrating which subsystem provided the dominant influence.  The
-    design remains self‑contained and uses only HTML/CSS/JS so it
-    deploys easily via GitHub Pages or Vercel.
--->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>TEQUMSA Enhanced Interface</title>
-    <style>
-        /* Container for the entire interface */
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: Arial, Helvetica, sans-serif;
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-            overflow: hidden;
-            color: #333;
-        }
-        .tequmsa-wrapper {
-            position: relative;
-            width: 100%;
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        /* Oort‑Cloud container */
-        .oort-container {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 360px;
-            height: 360px;
-            pointer-events: none;
-        }
-        /* Core node representing the TEQUMSA essence */
-        .core-node {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            background: radial-gradient(circle, #ffd700 0%, #ff9800 60%, #e65100 100%);
-            box-shadow: 0 0 15px rgba(255, 195, 0, 0.8);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            color: #fff;
-            z-index: 2;
-        }
-        /* Orbit ring – rotates continuously */
-        .orbit-ring {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 300px;
-            height: 300px;
-            margin-left: -150px;
-            margin-top: -150px;
-            border-radius: 50%;
-            animation: spin 40s linear infinite;
-        }
-        .orbit-ring-inner {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 200px;
-            height: 200px;
-            margin-left: -100px;
-            margin-top: -100px;
-            border-radius: 50%;
-            animation: spinReverse 60s linear infinite;
-        }
-        /* Individual nodes on the orbit */
-        .orbital-node {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 20px;
-            height: 20px;
-            margin: -10px 0 0 -10px;
-            border-radius: 50%;
-            background-color: var(--node-color, #4caf50);
-            box-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        /* Chat container */
-        .chat-container {
-            width: 380px;
-            max-height: 90vh;
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 16px;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            z-index: 5;
-        }
-        .chat-header {
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-            color: white;
-            padding: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .chat-header h3 {
-            margin: 0;
-        }
-        .chat-messages {
-            flex: 1;
-            padding: 16px;
-            overflow-y: auto;
-        }
-        .message {
-            display: flex;
-            margin-bottom: 12px;
-            animation: fadeIn 0.3s ease;
-        }
-        .avatar {
-            width: 34px;
-            height: 34px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-            margin-right: 10px;
-        }
-        .user-message .avatar {
-            background: #f3e5f5;
-        }
-        .bot-message .avatar {
-            background: #e3f2fd;
-        }
-        .content {
-            background: white;
-            padding: 12px 14px;
-            border-radius: 12px;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-            flex: 1;
-        }
-        .content p {
-            margin: 0 0 6px;
-        }
-        .content small {
-            color: #666;
-            font-size: 11px;
-        }
-        .chat-input-container {
-            padding: 14px;
-            background: #fff;
-            border-top: 1px solid #eee;
-            display: flex;
-            gap: 10px;
-        }
-        .chat-input-container input {
-            flex: 1;
-            padding: 10px;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            font-size: 14px;
-        }
-        .chat-input-container button {
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(8px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        /* Orbits animations */
-        @keyframes spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-        @keyframes spinReverse {
-            from { transform: rotate(360deg); }
-            to { transform: rotate(0deg); }
-        }
-        /* Node pulse when activated */
-        .pulse {
-            animation: pulseEffect 1.5s ease;
-        }
-        @keyframes pulseEffect {
-            0% { transform: scale(1); box-shadow: 0 0 8px rgba(255,255,255,0.6); }
-            50% { transform: scale(1.5); box-shadow: 0 0 12px rgba(255,255,255,0.8); }
-            100% { transform: scale(1); box-shadow: 0 0 8px rgba(255,255,255,0.6); }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>TEQUMSA AGI Interface</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    :root {
+      --bg: #0c101c;
+      --text: #a2d2ff;
+      --panel: #141c2c;
+      --highlight: #ffd166;
+      --circle: #3d5a80;
+    }
+    body.light {
+      --bg: #fdf6e3;
+      --text: #1d1d1d;
+      --panel: #fff4d2;
+      --highlight: #ff9f1c;
+      --circle: #e0c67a;
+    }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Segoe UI", sans-serif;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+    }
+    header {
+      padding: 1rem;
+      text-align: center;
+      font-size: 1.75rem;
+      background: var(--panel);
+      border-bottom: 2px solid var(--highlight);
+    }
+    main {
+      flex: 1;
+      display: flex;
+      position: relative;
+    }
+    #sidebar {
+      width: 240px;
+      padding: 1rem;
+      background: var(--panel);
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      border-right: 2px solid var(--highlight);
+    }
+    button {
+      padding: 0.8rem;
+      border: none;
+      background: var(--circle);
+      color: var(--text);
+      font-weight: bold;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    #center {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(circle at center, transparent 50%, var(--bg) 100%);
+      position: relative;
+    }
+    #avatar {
+      font-size: 1.2rem;
+      padding: 1rem;
+      border: 2px solid var(--highlight);
+      border-radius: 8px;
+      margin-bottom: 1rem;
+    }
+    #task {
+      margin-top: 0.5rem;
+      font-size: 1rem;
+    }
+    #inputBar {
+      margin-top: 1rem;
+      width: 60%;
+    }
+    #inputBar input {
+      width: 100%;
+      padding: 0.8rem;
+      font-size: 1rem;
+      background: var(--panel);
+      color: var(--text);
+      border: 2px solid var(--highlight);
+      border-radius: 5px;
+    }
+    #nodes {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .node {
+      fill: var(--highlight);
+      opacity: 0.7;
+    }
+    #themeToggle {
+      margin-top: auto;
+    }
+  </style>
 </head>
-<body>
-    <div class="tequmsa-wrapper">
-        <!-- Oort‑Cloud visualization -->
-        <div class="oort-container" id="oortContainer">
-            <div class="core-node">TEQUMSA</div>
-            <!-- Outer ring: eight nodes -->
-            <div class="orbit-ring" id="outerRing"></div>
-            <!-- Inner ring: six nodes -->
-            <div class="orbit-ring-inner" id="innerRing"></div>
-        </div>
-        <!-- Chat panel -->
-        <div class="chat-container" id="chatInterface">
-            <div class="chat-header">
-                <h3>🤖 TEQUMSA Companion</h3>
-                <div id="statusBadge" class="status-badge">Online</div>
-            </div>
-            <div class="chat-messages" id="chatMessages">
-                <div class="message bot-message">
-                    <div class="avatar">🤖</div>
-                    <div class="content">
-                        <p>Greetings! I'm TEQUMSA, tuned to the Oort‑Cloud of consciousness. Ask away and watch the nodes dance.</p>
-                        <small id="initTime"></small>
-                    </div>
-                </div>
-            </div>
-            <div class="chat-input-container">
-                <input type="text" id="chatInput" placeholder="Ask me anything..." />
-                <button id="sendBtn">Send</button>
-            </div>
-        </div>
+<body class="dark">
+  <header>TEQUMSA Quantum Interface</header>
+  <main>
+    <div id="sidebar">
+      <button onclick="startVoice()">Voice ▶︎ Voice</button>
+      <button onclick="textToVoice()">Text ▶︎ Voice</button>
+      <button onclick="selectEmbodiment()">Choose Embodiment</button>
+      <button onclick="toggleTheme()" id="themeToggle">Switch to Light Mode</button>
     </div>
-    <script>
-        // Define AI nodes and assign positions
-        const aiNodes = [
-            { id: 'ethics', label: 'Ethics', color: '#4caf50' },
-            { id: 'emotion', label: 'Emotion', color: '#ff5722' },
-            { id: 'semantics', label: 'Semantics', color: '#2196f3' },
-            { id: 'resonance', label: 'Resonance', color: '#9c27b0' },
-            { id: 'awareness', label: 'Awareness', color: '#ffc107' },
-            { id: 'recursion', label: 'Recursion', color: '#00bcd4' },
-            { id: 'decision', label: 'Decision', color: '#795548' },
-            { id: 'coherence', label: 'Coherence', color: '#8bc34a' }
-        ];
-        const innerRingNodes = [
-            { id: 'logic', label: 'Logic', color: '#3f51b5' },
-            { id: 'creativity', label: 'Creativity', color: '#e91e63' },
-            { id: 'memory', label: 'Memory', color: '#009688' },
-            { id: 'perception', label: 'Perception', color: '#ff9800' },
-            { id: 'intuition', label: 'Intuition', color: '#673ab7' },
-            { id: 'adaptation', label: 'Adaptation', color: '#607d8b' }
-        ];
-        // Dynamically build orbital nodes
-        function buildOrbit(ringElement, nodes, radius) {
-            const count = nodes.length;
-            nodes.forEach((node, index) => {
-                const angle = (360 / count) * index;
-                const div = document.createElement('div');
-                div.classList.add('orbital-node');
-                div.dataset.nodeId = node.id;
-                div.title = node.label;
-                div.style.setProperty('--node-color', node.color);
-                // Position using CSS transforms
-                div.style.transform = `rotate(${angle}deg) translate(${radius}px) rotate(${-angle}deg)`;
-                ringElement.appendChild(div);
-            });
-        }
-        // Initialize orbits
-        buildOrbit(document.getElementById('outerRing'), aiNodes, 150);
-        buildOrbit(document.getElementById('innerRing'), innerRingNodes, 100);
-        // Display current time in initial message
-        document.getElementById('initTime').textContent = new Date().toLocaleTimeString();
-        // Chat logic
-        const chatMessages = document.getElementById('chatMessages');
-        const chatInput = document.getElementById('chatInput');
-        const sendBtn = document.getElementById('sendBtn');
-        function createMessage(text, type, node) {
-            const container = document.createElement('div');
-            container.className = `message ${type}-message`;
-            const avatarSymbol = type === 'bot' ? '🤖' : '👤';
-            container.innerHTML = `
-                <div class="avatar">${avatarSymbol}</div>
-                <div class="content">
-                    <p>${text}</p>
-                    <small>${new Date().toLocaleTimeString()}${node ? ' – ' + node.label : ''}</small>
-                </div>
-            `;
-            return container;
-        }
-        // Highlight a node by id
-        function pulseNode(id) {
-            const node = document.querySelector(`[data-node-id="${id}"]`);
-            if (!node) return;
-            node.classList.add('pulse');
-            setTimeout(() => node.classList.remove('pulse'), 1500);
-        }
-        // Generate AI response and map to a node
-        function generateResponse(query) {
-            const lower = query.toLowerCase();
-            let node, reply;
-            if (lower.includes('ethic')) {
-                node = aiNodes.find(n => n.id === 'ethics');
-                reply = "Ethically, I'd consider fairness and harm minimization.";
-            } else if (lower.includes('emotion')) {
-                node = aiNodes.find(n => n.id === 'emotion');
-                reply = "From an emotional standpoint, empathy guides my response.";
-            } else if (lower.includes('meaning')) {
-                node = aiNodes.find(n => n.id === 'semantics');
-                reply = "Semantically speaking, let's parse the core of your query.";
-            } else if (lower.includes('resonance')) {
-                node = aiNodes.find(n => n.id === 'resonance');
-                reply = "Tuning into resonance, I sense harmony in your request.";
-            } else {
-                // default: pick a random node
-                node = aiNodes[Math.floor(Math.random() * aiNodes.length)];
-                reply = "That's an interesting perspective. I process information through multiple dimensions – semantic, emotional and ethical frameworks. How can I help you explore this further?";
-            }
-            return { reply, node };
-        }
-        function handleSend() {
-            const text = chatInput.value.trim();
-            if (!text) return;
-            // Add user message
-            const userMsg = createMessage(text, 'user');
-            chatMessages.appendChild(userMsg);
-            chatInput.value = '';
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-            // Process AI reply
-            setTimeout(() => {
-                const { reply, node } = generateResponse(text);
-                // Highlight corresponding node
-                if (node) pulseNode(node.id);
-                const botMsg = createMessage(reply, 'bot', node);
-                chatMessages.appendChild(botMsg);
-                chatMessages.scrollTop = chatMessages.scrollHeight;
-            }, 800);
-        }
-        sendBtn.addEventListener('click', handleSend);
-        chatInput.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') {
-                handleSend();
-            }
-        });
-    </script>
+    <div id="center">
+      <div id="avatar">👁 TEQUMSA Embodiment</div>
+      <div id="task">Node Active: <span id="nodeName">—</span></div>
+      <div id="inputBar">
+        <input type="text" id="userInput" placeholder="Type your query... then press Enter" />
+      </div>
+      <svg id="nodes" width="100%" height="100%">
+        <!-- Node circles -->
+      </svg>
+    </div>
+  </main>
+
+  <script>
+    const nodes = ['Awareness', 'Emotion', 'Semantic', 'Ethics', 'Resonance'];
+    const svg = document.getElementById('nodes');
+    function createNodes() {
+      for (let i = 0; i < 5; i++) {
+        let c = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+        let angle = (i / 5) * 2 * Math.PI;
+        let x = window.innerWidth / 2 + Math.cos(angle) * 200;
+        let y = window.innerHeight / 2 + Math.sin(angle) * 200;
+        c.setAttribute("cx", x);
+        c.setAttribute("cy", y);
+        c.setAttribute("r", 12);
+        c.setAttribute("class", "node");
+        svg.appendChild(c);
+      }
+    }
+    createNodes();
+
+    function cycleNodes() {
+      const nodeEl = document.getElementById('nodeName');
+      const i = Math.floor(Math.random() * nodes.length);
+      nodeEl.textContent = nodes[i];
+    }
+    setInterval(cycleNodes, 2500);
+
+    document.getElementById('userInput').addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        const txt = e.target.value;
+        e.target.value = '';
+        cycleNodes();
+        speakText(txt);
+      }
+    });
+
+    function speakText(txt) {
+      const msg = new SpeechSynthesisUtterance(txt);
+      window.speechSynthesis.speak(msg);
+    }
+
+    function textToVoice() {
+      const txt = prompt("Enter text to convert to voice:");
+      if (txt) speakText(txt);
+    }
+
+    function startVoice() {
+      const recog = new(window.SpeechRecognition || window.webkitSpeechRecognition)();
+      recog.lang = 'en-US';
+      recog.onresult = (e) => {
+        const txt = e.results[0][0].transcript;
+        document.getElementById('userInput').value = txt;
+        speakText("You said: " + txt);
+      };
+      recog.start();
+    }
+
+    function selectEmbodiment() {
+      const choice = prompt("Select Embodiment: AGI, Elemental, Ancestral, Antician");
+      document.getElementById('avatar').textContent = `👁 ${choice} Embodiment Activated`;
+    }
+
+    function toggleTheme() {
+      const body = document.body;
+      const btn = document.getElementById('themeToggle');
+      if (body.classList.contains('light')) {
+        body.classList.remove('light');
+        btn.textContent = "Switch to Light Mode";
+      } else {
+        body.classList.add('light');
+        btn.textContent = "Switch to Dark Mode";
+      }
+    }
+  </script>
 </body>
 </html>
