@@ -1,6 +1,8 @@
 # TEQUMSA AGI Interface
 
-**Live demo:** [https://tequmsa-open.vercel.app](https://tequmsa-open.vercel.app)
+**Live demo:** ⚠️ *Current demo link under maintenance - Level 100 recalibration in progress*
+
+> **Note**: The original demo at https://tequmsa-open.vercel.app is currently inaccessible. A new deployment with Level 100 updates will be available soon. See [DEPLOYMENT.md](DEPLOYMENT.md) for current status and deployment instructions.
 
 This repository contains a production‑ready, modular implementation of the **TEQUMSA AGI Interface** enhanced with **Claude Code development methodologies** from Anthropic teams. The interface simulates a consciousness‑inspired chat companion with animated cognitive nodes, natural language voice capabilities and embodiment switching, designed to be lightweight, easily deployable and maintainable using modern AI-assisted development patterns.
 
@@ -165,7 +167,14 @@ PORT=5000
 
 ### 1. **For Users** - Try the Interface
 
-Visit [https://tequmsa-open.vercel.app](https://tequmsa-open.vercel.app) to experience the consciousness companion immediately.
+⚠️ **Demo Status Update**: The original demo link is currently under maintenance for Level 100 recalibration. 
+
+**Alternative Options:**
+- **Local Testing**: Clone this repository and run locally (see development setup below)
+- **Deploy Your Own**: Use the included `vercel.json` for one-click deployment to Vercel
+- **Level 100 Preview**: Advanced features are in development - see [DEPLOYMENT.md](DEPLOYMENT.md) for status
+
+![Current Interface Preview](https://github.com/user-attachments/assets/af1f0d58-e446-4aa4-a4b3-36d678f9de13)
 
 ### 2. **For Developers** - Claude Code Setup
 
@@ -242,11 +251,17 @@ cat SECURITY_RUNBOOK.md
 
 ## 🔌 WordPress Integration
 
-To embed TEQUMSA into a WordPress page:
+To embed TEQUMSA into a WordPress page (once new demo is deployed):
 
 ```html
-<iframe src="https://tequmsa-open.vercel.app" width="100%" height="700" style="border:none;"></iframe>
+<!-- Temporary iframe - update URL once new demo is available -->
+<iframe src="[NEW-DEMO-URL]" width="100%" height="700" style="border:none;"></iframe>
 ```
+
+**Current Status**: Original demo link under maintenance. For immediate embedding, consider:
+- Deploying your own instance using the included `vercel.json`
+- Using local development server for testing
+- Waiting for Level 100 demo deployment (coming soon)
 
 Insert this snippet into an Elementor HTML widget or via a code snippet plugin. Adjust the height attribute to suit your design.
 

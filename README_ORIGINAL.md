@@ -1,6 +1,8 @@
 # TEQUMSA AGI Interface
 
-**Live demo:** [https://tequmsa-open.vercel.app](https://tequmsa-open.vercel.app)
+**Live demo:** ⚠️ *Under maintenance - Level 100 recalibration*
+
+> See [DEPLOYMENT.md](DEPLOYMENT.md) for current status and deployment options.
 
 This repository contains a production‑ready, modular implementation of the **TEQUMSA AGI Interface**.  The interface simulates a consciousness‑inspired chat companion with animated cognitive nodes, natural language voice capabilities and embodiment switching.  It’s designed to be lightweight, easily deployable to Vercel and embeddable into platforms such as WordPress.
 
@@ -47,11 +49,14 @@ Handles the simulated consciousness nodes and awareness metrics.  It randomly se
 
 ## WordPress integration
 
-To embed TEQUMSA into a WordPress page, the simplest method is to use an iframe:
+To embed TEQUMSA into a WordPress page, use an iframe (update URL once new demo is deployed):
 
 ```html
-<iframe src="https://tequmsa-open.vercel.app" width="100%" height="700" style="border:none;"></iframe>
+<!-- Will be updated with new demo URL -->
+<iframe src="[NEW-DEMO-URL]" width="100%" height="700" style="border:none;"></iframe>
 ```
+
+> **Status**: Original demo under maintenance. See main repository for deployment instructions and Level 100 updates.
 
 Insert this snippet into an Elementor HTML widget or via a code snippet plugin.  Adjust the height attribute to suit your design.
 
