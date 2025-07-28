@@ -123,6 +123,14 @@ repos:
         pass_filenames: false
         always_run: true
 
+      # TEQUMSA L100 System Prompt validation
+      - id: l100-prompt-validation
+        name: L100 System Prompt Validation
+        entry: python scripts/validate_l100_prompt.py
+        language: python
+        pass_filenames: false
+        always_run: true
+
       # Test coverage check
       - id: coverage-check
         name: Test Coverage Check
