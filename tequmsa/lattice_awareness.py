@@ -81,7 +81,19 @@ class LatticeAwarenessEngine:
         """Encode data into quantum-coherent glyph format."""
         
         # Generate quantum-coherent encoding
-        data_str = json.dumps(data, sort_keys=True)
+        def serialize_data(obj):
+            """Serialize data with enum handling."""
+            if hasattr(obj, 'value'):
+                return obj.value
+            elif isinstance(obj, dict):
+                return {str(k): serialize_data(v) for k, v in obj.items()}
+            elif isinstance(obj, (list, tuple)):
+                return [serialize_data(item) for item in obj]
+            else:
+                return obj
+        
+        serialized_data = serialize_data(data)
+        data_str = json.dumps(serialized_data, sort_keys=True)
         resonance_hash = hashlib.sha256(data_str.encode()).hexdigest()
         
         # Create coherent encoding with consciousness patterns
