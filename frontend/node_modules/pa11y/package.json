@@ -1,0 +1,68 @@
+{
+  "name": "pa11y",
+  "version": "6.2.3",
+  "description": "Pa11y is your automated accessibility testing pal",
+  "keywords": [
+    "accessibility",
+    "analysis",
+    "cli",
+    "report"
+  ],
+  "author": "Team Pa11y",
+  "contributors": [
+    "Rowan Manning (http://rowanmanning.com/)",
+    "Whymarrh Whitby (http://whymarrh.com/)",
+    "Stephen Mathieson (http://www.stephenmathieson.com/)",
+    "Alex Soble (http://www.alexsoble.com/)",
+    "Charlie Brown (http://www.carbonatethis.com/)",
+    "Hollie Kay (http://www.hollsk.co.uk/)",
+    "Adam Tavener (http://www.tavvy.co.uk/)",
+    "Glynn Phillips (http://www.glynnphillips.co.uk/)",
+    "José Bolos (https://github.com/josebolos)",
+    "Joey Ciechanowicz (https://github.com/joeyciechanowicz)"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pa11y/pa11y.git"
+  },
+  "homepage": "https://github.com/pa11y/pa11y",
+  "bugs": "https://github.com/pa11y/pa11y/issues",
+  "license": "LGPL-3.0-only",
+  "engines": {
+    "node": ">=12"
+  },
+  "dependencies": {
+    "axe-core": "~4.2.1",
+    "bfj": "~7.0.2",
+    "commander": "~8.0.0",
+    "envinfo": "~7.8.1",
+    "mustache": "~4.2.0",
+    "html_codesniffer": "~2.5.1",
+    "kleur": "~4.1.4",
+    "node.extend": "~2.0.2",
+    "p-timeout": "~4.1.0",
+    "puppeteer": "~9.1.1",
+    "semver": "~7.3.5"
+  },
+  "devDependencies": {
+    "eslint": "^7.27.0",
+    "eslint-plugin-jest": "^25.3.4",
+    "jest": "^27.4.7",
+    "pa11y-lint-config": "^2.0.0"
+  },
+  "main": "./lib/pa11y.js",
+  "bin": {
+    "pa11y": "./bin/pa11y.js"
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "test-unit": "jest test/unit",
+    "test-coverage": "jest test/unit --coverage",
+    "test-integration": "MOCK_SERVER_PORT=8081 jest test/integration",
+    "test": "MOCK_SERVER_PORT=8081 jest --coverage"
+  },
+  "files": [
+    "bin",
+    "lib"
+  ]
+}
