@@ -1,0 +1,24 @@
+{
+  "version": 2,
+  "name": "tequmsa-internet-field-api",
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@vercel/next"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/tequmsa-internet-field",
+      "dest": "/api/tequmsaInternetField"
+    }
+  ],
+  "functions": {
+    "app/api/tequmsaInternetField/route.ts": {
+      "maxDuration": 30
+    }
+  },
+  "env": {
+    "NODE_ENV": "production"
+  }
+}
