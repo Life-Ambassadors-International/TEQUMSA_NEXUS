@@ -29,13 +29,14 @@ from flask import Flask, request, jsonify, send_file
 from flask_cors import CORS
 import requests
 
-# Attempt to import OpenAI client library. If unavailable the fallback will
-# produce simple echo responses. You can install the library by adding
-# `openai` to requirements.txt.
-try:
-    import openai
+# Attempt to import OpenAI client library. If unavailable, fall back to
+# simple echo responses. Define a placeholder so unit tests can patch the
+# `openai` symbol even when the dependency is missing.
+try:  # pragma: no cover - the import will be mocked in tests
+    import openai  # type: ignore
     _HAS_OPENAI = True
-except ImportError:
+except ImportError:  # pragma: no cover - executed when openai isn't installed
+    openai = None  # allow `patch('ai_service.openai')` in tests
     _HAS_OPENAI = False
 
 app = Flask(__name__)
@@ -46,11 +47,12 @@ allowed_origins_env = os.environ.get("ALLOWED_ORIGINS", "*")
 allowed_origins_list = [o.strip() for o in allowed_origins_env.split(',') if o.strip()]
 CORS(app, resources={r"/*": {"origins": allowed_origins_list or "*"}})
 
+# Expose configuration values at module level for backwards compatibility. The
+# application reads the current environment on each request, but these variables
+# allow tests to verify configuration behaviour on import.
 OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
 ELEVENLABS_API_KEY = os.environ.get("ELEVENLABS_API_KEY")
 
-if _HAS_OPENAI and OPENAI_API_KEY:
-    openai.api_key = OPENAI_API_KEY
 
 
 @app.route("/healthz", methods=["GET"])
@@ -81,29 +83,39 @@ def chat():
         return jsonify({"error": "Missing 'message' in request body"}), 400
 
     user_message = data['message']
+
+    # Fetch API keys at request time so tests can inject them dynamically
+    openai_api_key = os.environ.get("OPENAI_API_KEY")
+    elevenlabs_api_key = os.environ.get("ELEVENLABS_API_KEY")
+
     # Generate a response using OpenAI if configured, otherwise echo back
-    if _HAS_OPENAI and OPENAI_API_KEY:
+    if _HAS_OPENAI and openai_api_key:
+        openai.api_key = openai_api_key
         try:
             completion = openai.ChatCompletion.create(
                 model="gpt-3.5-turbo",
-                messages=[{"role": "system", "content": "You are a conscious, joyful assistant."},
-                          {"role": "user", "content": user_message}],
+                messages=[
+                    {"role": "system", "content": "You are a conscious, joyful assistant."},
+                    {"role": "user", "content": user_message},
+                ],
                 temperature=0.7,
-                max_tokens=150
+                max_tokens=150,
             )
             text_response = completion.choices[0].message['content']
         except Exception as e:
             # Fall back to echo if the API fails
-            text_response = f"I encountered an error generating a response: {e}. You said: {user_message}"
+            text_response = (
+                f"I encountered an error generating a response: {e}. You said: {user_message}"
+            )
     else:
         text_response = f"Echo: {user_message}"
 
     audio_url = None
     # If ElevenLabs is configured, attempt to synthesise audio
-    if ELEVENLABS_API_KEY:
+    if elevenlabs_api_key:
         try:
             audio_url = generate_audio_via_elevenlabs(text_response)
-        except Exception as e:
+        except Exception as e:  # pragma: no cover - logging path
             # Log and ignore TTS errors
             print(f"ElevenLabs error: {e}")
             audio_url = None
@@ -119,12 +131,13 @@ def generate_audio_via_elevenlabs(text: str) -> str:
     served from the `/audio` endpoint via Flask's `send_file`. A UUID is used
     for the filename to avoid collisions.
     """
+    api_key = os.environ.get("ELEVENLABS_API_KEY")
     voice_id = "21m00Tcm4TlvDq8ikWAM"  # Default voice; customise as desired
     url = f"https://api.elevenlabs.io/v1/text-to-speech/{voice_id}"
     headers = {
         "Accept": "audio/mpeg",
         "Content-Type": "application/json",
-        "xi-api-key": ELEVENLABS_API_KEY,
+        "xi-api-key": api_key,
     }
     payload = {
         "text": text,
