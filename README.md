@@ -250,6 +250,16 @@ To embed TEQUMSA into a WordPress page:
 
 Insert this snippet into an Elementor HTML widget or via a code snippet plugin. Adjust the height attribute to suit your design.
 
+## 🕹️ Genie 3-Style World Generation Demo
+
+This repository includes a lightweight world generation demo inspired by Google DeepMind's Genie 3 research model. It renders a 720p scene at approximately 24 frames per second and maintains visual coherence until a new prompt is provided.
+
+- **Real-time 3D**: render dynamic scenes using Three.js.
+- **Extended coherence**: worlds persist for minutes.
+- **Diverse environments**: try prompts mentioning volcanoes, robots, cars, or lava.
+- **Research preview**: Genie 3 itself remains a limited academic preview; this demo is an open-source approximation.
+
+
 ## 🤝 Contributing
 
 We follow Claude Code development methodologies for all contributions:

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Genie 3 Style World Generator</title>
+  <style>
+    body { margin: 0; overflow: hidden; }
+    #ui {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      z-index: 10;
+      background: rgba(0,0,0,0.5);
+      padding: 8px;
+      border-radius: 4px;
+    }
+    #ui input { width: 300px; }
+  </style>
+</head>
+<body>
+  <div id="ui">
+    <input id="prompt" type="text" placeholder="Describe a world...">
+    <button id="generate" type="button">Generate</button>
+  </div>
+  <div id="canvas-container"></div>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.min.js"></script>
+  <script src="js/worldgen.js"></script>
+</body>
+</html>
