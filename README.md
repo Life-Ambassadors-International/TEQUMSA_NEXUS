@@ -240,6 +240,19 @@ cat SECURITY_RUNBOOK.md
 - **`SECURITY_RUNBOOK.md`** - Security incident response procedures
 - **GitHub Templates** - Enhanced issue and PR templates for AI-assisted development
 
+## 🧠 LAI Internal Deployment Blueprint
+
+For WatsonX integration, review the [LAI Internal Deployment Blueprint](LAI_INTERNAL_DEPLOYMENT_BLUEPRINT.md). It outlines how TEQUMSA nodes interact with IBM Cloud services through modules like the Node Registry, Orchestration Engine, and Source Pulse Engine.
+
+A minimal IBM Cloud Shell setup can be started with the official Node.js Express template:
+
+```bash
+ibmcloud login
+git clone https://github.com/IBM/nodejs-express-app.git
+```
+
+Use this repository as a base for building TEQUMSA-aware services that connect to WatsonX APIs.
+
 ## 🔌 WordPress Integration
 
 To embed TEQUMSA into a WordPress page:
