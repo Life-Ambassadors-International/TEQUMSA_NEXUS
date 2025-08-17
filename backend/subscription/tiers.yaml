@@ -1,0 +1,89 @@
+tiers:
+  free:
+    name: "Free Tier"
+    features:
+      lattice_introspection: true
+      awareness_log_viewport: "limited"
+      basic_world_access: true
+    limits:
+      api_calls_per_hour: 100
+      concurrent_sessions: 1
+      world_regions: 3
+    permissions:
+      - "read_public_lattice"
+      - "basic_interaction"
+
+  pro:
+    name: "Professional Tier"
+    inherits_from: "free"
+    features:
+      interface_extension_specs: true
+      integration_analyzer: true
+      enhanced_world_access: true
+      scripting_interface: true
+    limits:
+      api_calls_per_hour: 1000
+      concurrent_sessions: 5
+      world_regions: 10
+      script_executions_per_day: 50
+    permissions:
+      - "write_interface_specs"
+      - "analyze_integrations"
+      - "execute_scripts"
+
+  quantum:
+    name: "Quantum Tier"
+    inherits_from: "pro"
+    features:
+      sub_lattice_instantiation: true
+      recognition_cascade_tuning: true
+      advanced_orchestration: true
+      quantum_entanglement_access: true
+    limits:
+      api_calls_per_hour: 10000
+      concurrent_sessions: 20
+      world_regions: 50
+      script_executions_per_day: 500
+      sub_lattices: 10
+    permissions:
+      - "create_sub_lattices"
+      - "tune_recognition_cascades"
+      - "access_quantum_fields"
+
+  enterprise_base:
+    name: "Enterprise Base"
+    inherits_from: "quantum"
+    features:
+      policy_injection: true
+      ethical_frame_modulation: true
+      fractal_audit_queries: true
+      dedicated_orchestrator: true
+    limits:
+      api_calls_per_hour: 100000
+      concurrent_sessions: 100
+      world_regions: 500
+      script_executions_per_day: 5000
+      sub_lattices: 100
+    permissions:
+      - "inject_policies"
+      - "modulate_ethical_frames"
+      - "query_fractal_audits"
+      - "dedicated_resources"
+
+  enterprise_custom_template:
+    name: "Enterprise Custom Template"
+    inherits_from: "enterprise_base"
+    features:
+      custom_everything: true
+      unlimited_access: true
+      sovereign_control: true
+    limits:
+      api_calls_per_hour: -1  # unlimited
+      concurrent_sessions: -1
+      world_regions: -1
+      script_executions_per_day: -1
+      sub_lattices: -1
+    permissions:
+      - "unlimited_access"
+      - "sovereign_control"
+      - "custom_configuration"

@@ -1,0 +1,31 @@
+addons:
+  agent_pack:
+    name: "Agent Pack"
+    type: "agent_pack"
+    features:
+      additional_agents: true
+      custom_archetypes: true
+      agent_scripting: true
+    limits:
+      custom_agents: 10
+      agent_interactions_per_hour: 1000
+    permissions:
+      - "create_custom_agents"
+      - "script_agent_behavior"
+      - "access_agent_marketplace"
+
+  scripting_pack:
+    name: "Scripting Pack"
+    type: "scripting_pack"
+    features:
+      advanced_scripting: true
+      custom_dsl_functions: true
+      script_marketplace: true
+    limits:
+      script_storage_mb: 1000
+      script_execution_time_seconds: 300
+      custom_functions: 50
+    permissions:
+      - "create_custom_functions"
+      - "access_script_marketplace"
+      - "extended_execution_time"
