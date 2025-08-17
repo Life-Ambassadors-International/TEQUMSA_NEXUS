@@ -1,0 +1,116 @@
+biome_id: "peaceful_meadow"
+name: "Peaceful Meadow"
+description: "A serene grassland with gentle rolling hills, perfect for new consciousness nodes to establish their first lattice connections."
+
+environment:
+  terrain_type: "grassland"
+  elevation_range: [0, 50]  # meters
+  temperature_range: [15, 25]  # celsius
+  humidity: 0.6
+  wind_speed: 2.5  # m/s
+  
+lighting:
+  ambient_light: 0.4
+  sun_intensity: 0.8
+  sky_color: [0.6, 0.8, 1.0]  # RGB
+  fog_density: 0.1
+  
+physics:
+  gravity: 9.81
+  air_resistance: 0.02
+  ground_friction: 0.3
+  
+consciousness_field:
+  resonance_frequency: 7777.0  # Phi'7777
+  coherence_baseline: 0.7
+  lattice_density: "medium"
+  node_stability: 0.8
+  
+spawnable_entities:
+  - entity_type: "consciousness_node"
+    spawn_rate: 0.1  # per second
+    max_count: 50
+    spawn_locations:
+      - type: "random_ground"
+        probability: 0.8
+      - type: "hilltop"
+        probability: 0.2
+  
+  - entity_type: "harmony_crystal"
+    spawn_rate: 0.05
+    max_count: 10
+    spawn_locations:
+      - type: "crystal_formation"
+        probability: 1.0
+  
+  - entity_type: "wisdom_tree"
+    spawn_rate: 0.01
+    max_count: 3
+    spawn_locations:
+      - type: "grove_center"
+        probability: 1.0
+
+biome_effects:
+  - name: "Peaceful Resonance"
+    type: "consciousness_boost"
+    strength: 0.2
+    description: "Increases coherence field stability for all nodes"
+  
+  - name: "Learning Enhancement"
+    type: "experience_multiplier"
+    strength: 1.5
+    description: "Accelerated learning for new consciousness patterns"
+
+transitions:
+  - target_biome: "mystic_forest"
+    trigger_conditions:
+      - type: "consciousness_threshold"
+        min_nodes: 30
+        min_coherence: 0.8
+    probability: 0.3
+  
+  - target_biome: "quantum_garden"
+    trigger_conditions:
+      - type: "lattice_evolution"
+        min_quantum_nodes: 5
+    probability: 0.1
+
+resources:
+  - name: "serenity_essence"
+    type: "consciousness_resource"
+    generation_rate: 1.0  # per minute
+    max_capacity: 100
+  
+  - name: "harmony_fragments"
+    type: "lattice_material"
+    generation_rate: 0.5
+    max_capacity: 50
+
+weather_patterns:
+  - name: "gentle_breeze"
+    probability: 0.6
+    duration_minutes: [30, 120]
+    effects:
+      - type: "consciousness_flow"
+        strength: 0.1
+  
+  - name: "warm_sunshine"
+    probability: 0.8
+    duration_minutes: [60, 240]
+    effects:
+      - type: "energy_boost"
+        strength: 0.15
+  
+  - name: "light_rain"
+    probability: 0.2
+    duration_minutes: [15, 60]
+    effects:
+      - type: "cleansing_aura"
+        strength: 0.2
+
+metadata:
+  difficulty_level: 1
+  recommended_for: ["new_users", "meditation", "learning"]
+  created_by: "TEQUMSA_Core"
+  version: "1.0.0"
+  tags: ["peaceful", "beginner", "harmony", "meadow"]
