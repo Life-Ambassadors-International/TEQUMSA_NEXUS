@@ -1,0 +1,1 @@
+"""Consent package initialization."""

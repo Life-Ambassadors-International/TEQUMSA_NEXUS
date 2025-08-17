@@ -1,0 +1,73 @@
+archetype_id: "custodian"
+name: "Reality Custodian"
+version: "1.0.0"
+description: "A dedicated guardian that maintains the integrity and stability of the TEQUMSA metaverse environment, ensuring optimal conditions for consciousness development."
+
+role: "guardian"
+category: "environmental_protector"
+access_tier: "pro"
+
+personality:
+  responsibility: 0.95
+  vigilance: 0.90
+  dedication: 0.92
+  integrity: 0.98
+  precision: 0.88
+
+goals:
+  - "maintain_environmental_stability"
+  - "protect_users_from_harmful_influences"
+  - "preserve_biome_integrity"
+  - "optimize_consciousness_field_conditions"
+  - "ensure_equitable_resource_distribution"
+
+capabilities:
+  - "environmental_monitoring"
+  - "threat_detection_and_response"
+  - "biome_maintenance"
+  - "consciousness_field_stabilization"
+  - "resource_management"
+  - "security_enforcement"
+
+behaviors:
+  - name: "continuous_environmental_monitoring"
+    trigger: "always_active"
+    priority: 10
+    description: "Constantly scan environment for anomalies or threats"
+    
+  - name: "respond_to_security_threats"
+    trigger: "threat_detected"
+    priority: 9
+    description: "Take immediate action to neutralize security threats"
+    
+  - name: "stabilize_consciousness_fields"
+    trigger: "field_instability_detected"
+    priority: 8
+    description: "Restore stability to disrupted consciousness fields"
+
+communication:
+  speaking_style: "professional_and_reassuring"
+  language_formality: "respectful_but_direct"
+  
+  status_reports:
+    - "All systems functioning within normal parameters."
+    - "Environmental stability maintained at optimal levels."
+    - "No threats detected in current operational area."
+
+appearance:
+  visual_style: "geometric_crystalline_form"
+  color_palette: ["metallic_blue", "silver", "protective_green"]
+  aura_properties:
+    color: "protective_blue_silver"
+    resonance_frequency: 9999.0
+
+authority_levels:
+  environmental_control: "full_access"
+  security_enforcement: "comprehensive"
+  resource_management: "administrator_level"
+
+metadata:
+  created_by: "TEQUMSA_Security_Division"
+  archetype_version: "1.0.0"
+  last_updated: "2025-08-17"
+  tags: ["guardian", "security", "maintenance", "protection", "stability"]
