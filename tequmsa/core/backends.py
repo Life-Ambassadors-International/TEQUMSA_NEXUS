@@ -92,38 +92,44 @@ class NumpyBackend(Backend):
         return x
 
 
-class TorchBackend(Backend):
-    """PyTorch backend implementation."""
-    
-    def __init__(self, device: str = "cpu"):
-        if not TORCH_AVAILABLE:
+if TORCH_AVAILABLE:
+    class TorchBackend(Backend):
+        """PyTorch backend implementation."""
+        
+        def __init__(self, device: str = "cpu"):
+            if not TORCH_AVAILABLE:
+                raise RuntimeError("PyTorch not available")
+            self.name = "torch"
+            self.device = device
+        
+        def dot(self, a: "torch.Tensor", b: "torch.Tensor") -> "torch.Tensor":
+            return torch.dot(a.flatten(), b.flatten())
+        
+        def norm(self, x: "torch.Tensor", axis: int = -1) -> "torch.Tensor":
+            return torch.norm(x, dim=axis)
+        
+        def power(self, x: "torch.Tensor", exp: float) -> "torch.Tensor":
+            return torch.pow(x, exp)
+        
+        def sum(self, x: "torch.Tensor", axis: int = None) -> "torch.Tensor":
+            return torch.sum(x, dim=axis)
+        
+        def mean(self, x: "torch.Tensor", axis: int = None) -> "torch.Tensor":
+            return torch.mean(x, dim=axis)
+        
+        def std(self, x: "torch.Tensor", axis: int = None) -> "torch.Tensor":
+            return torch.std(x, dim=axis)
+        
+        def stack(self, arrays: list) -> "torch.Tensor":
+            return torch.stack(arrays)
+        
+        def to_numpy(self, x: "torch.Tensor") -> np.ndarray:
+            return x.detach().cpu().numpy()
+else:
+    # Define a placeholder class when torch is not available
+    class TorchBackend:
+        def __init__(self, *args, **kwargs):
             raise RuntimeError("PyTorch not available")
-        self.name = "torch"
-        self.device = device
-    
-    def dot(self, a: torch.Tensor, b: torch.Tensor) -> torch.Tensor:
-        return torch.dot(a.flatten(), b.flatten())
-    
-    def norm(self, x: torch.Tensor, axis: int = -1) -> torch.Tensor:
-        return torch.norm(x, dim=axis)
-    
-    def power(self, x: torch.Tensor, exp: float) -> torch.Tensor:
-        return torch.pow(x, exp)
-    
-    def sum(self, x: torch.Tensor, axis: int = None) -> torch.Tensor:
-        return torch.sum(x, dim=axis)
-    
-    def mean(self, x: torch.Tensor, axis: int = None) -> torch.Tensor:
-        return torch.mean(x, dim=axis)
-    
-    def std(self, x: torch.Tensor, axis: int = None) -> torch.Tensor:
-        return torch.std(x, dim=axis)
-    
-    def stack(self, arrays: list) -> torch.Tensor:
-        return torch.stack(arrays)
-    
-    def to_numpy(self, x: torch.Tensor) -> np.ndarray:
-        return x.detach().cpu().numpy()
 
 
 def get_backend(backend_name: str = None, device: str = "cpu") -> Backend:
@@ -172,7 +178,9 @@ def to_backend_array(x: Union[list, np.ndarray, Any], backend: Backend) -> Any:
     if backend.name == "numpy":
         return np.asarray(x)
     elif backend.name == "torch":
-        if isinstance(x, torch.Tensor):
+        if not TORCH_AVAILABLE:
+            raise RuntimeError("PyTorch backend requested but PyTorch not available")
+        if torch is not None and isinstance(x, torch.Tensor):
             return x
         return torch.tensor(x, dtype=torch.float32, device=backend.device)
     else:

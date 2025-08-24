@@ -1,0 +1,81 @@
+# TEQUMSA Weights and Configuration Defaults
+# Backend settings and normalization parameters
+
+backend:
+  # Default backend preference: 'auto', 'numpy', 'torch'
+  default: auto
+  
+  # Device preference for PyTorch backend
+  device: cpu
+  
+  # Whether to prefer GPU if available
+  prefer_gpu: false
+
+normalization:
+  # Vector normalization method: 'l2', 'l1', 'max', 'none'
+  method: l2
+  
+  # Epsilon for numerical stability
+  epsilon: 1e-8
+  
+  # Whether to normalize GAIA signature components
+  normalize_gaia: true
+  
+  # Whether to normalize agent vectors
+  normalize_agents: true
+
+gaia_signature:
+  # Default GAIA signature components (example values)
+  bio:
+    - 0.8
+    - 0.6
+    - 0.9
+    - 0.7
+    - 0.5
+  
+  digital:
+    - 0.7
+    - 0.8
+    - 0.6
+    - 0.9
+    - 0.4
+  
+  cosmic:
+    - 0.9
+    - 0.5
+    - 0.8
+    - 0.6
+    - 0.7
+
+logging:
+  # Default consciousness log settings
+  default_path: logs/consciousness_log.jsonl
+  max_bytes: 10485760  # 10MB
+  backup_count: 5
+  
+  # Log levels for different components
+  system_level: INFO
+  consciousness_level: DEBUG
+
+adaptive_alpha:
+  # Global adaptive alpha defaults
+  default_enabled: true
+  min_window_size: 5
+  max_window_size: 100
+  
+  # Volatility calculation parameters
+  volatility_smoothing: 0.1
+  drift_smoothing: 0.05
+  
+  # Safety bounds
+  absolute_alpha_min: 0.1
+  absolute_alpha_max: 10.0
+
+batch_processing:
+  # Default batch processing settings
+  default_max_batch: 100
+  chunk_size: 32
+  
+  # Memory management
+  max_memory_mb: 1024
+  gc_threshold: 0.8
