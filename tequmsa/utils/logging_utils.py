@@ -12,6 +12,7 @@ import logging
 from datetime import datetime, timezone
 from typing import Dict, Any, Optional
 from pathlib import Path
+import numpy as np
 
 
 class ConsciousnessLogger:
@@ -149,22 +150,33 @@ class ConsciousnessLogger:
             
             # Add optional fields
             if rolling_mean_R is not None:
-                event["rolling_mean_R"] = rolling_mean_R
+                event["rolling_mean_R"] = float(rolling_mean_R)
             
             if rolling_vol_R is not None:
-                event["rolling_vol_R"] = rolling_vol_R
+                event["rolling_vol_R"] = float(rolling_vol_R)
             
             if alpha_adjustment is not None:
-                event["alpha_adjustment"] = alpha_adjustment
+                event["alpha_adjustment"] = float(alpha_adjustment)
             
             if adjust_reason is not None:
-                event["adjust_reason"] = adjust_reason
+                event["adjust_reason"] = list(adjust_reason)
             
             if hysteresis_state is not None:
-                event["hysteresis_state"] = hysteresis_state
+                # Ensure hysteresis_state is JSON serializable
+                event["hysteresis_state"] = {
+                    k: (bool(v) if isinstance(v, (bool, np.bool_)) else float(v) if isinstance(v, (int, float, np.number)) else v)
+                    for k, v in hysteresis_state.items()
+                }
             
             # Add any additional kwargs
-            event.update(kwargs)
+            for key, value in kwargs.items():
+                # Ensure values are JSON serializable
+                try:
+                    json.dumps(value)
+                    event[key] = value
+                except (TypeError, ValueError):
+                    # Convert non-serializable objects to string representation
+                    event[key] = str(value)
             
             # Write to log file
             with open(self.log_path, 'a', encoding='utf-8') as f:

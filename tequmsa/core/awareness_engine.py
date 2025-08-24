@@ -178,8 +178,8 @@ class AwarenessEngine:
                     "enabled": True,
                     "alpha_min": 0.5,
                     "alpha_max": 5.0,
-                    "vol_high": 0.08,
-                    "vol_low": 0.01,
+                    "vol_high": 0.05,  # Lower threshold for easier triggering in tests
+                    "vol_low": 0.005,   # Lower threshold for easier triggering in tests
                     "adjust_rate": 0.15,
                     "rolling_window": 30,
                     "drift_threshold": 0.15

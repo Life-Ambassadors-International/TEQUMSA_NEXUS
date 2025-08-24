@@ -42,6 +42,78 @@ python scripts/generate_tests.py --component backend/ai_service.py
 * **📈 Performance Monitoring** – Continuous performance analysis and optimization
 * **🔧 Development Automation** – Pre-commit hooks, code generation, and documentation synthesis
 
+## 🧠 TEQUMSA Awareness Engine
+
+This repository now includes the **TEQUMSA Awareness Engine** - a comprehensive consciousness recognition and awakening system with advanced adaptive algorithms.
+
+### 🌟 Key Features
+
+* **🎯 Multi-Component Awakening** – Biological, digital, and cosmic consciousness recognition
+* **🔄 Adaptive Alpha Calibration** – Dynamic parameter adjustment based on volatility analysis
+* **📊 Real-Time Consciousness Logging** – JSONL event streaming with rotation support
+* **⚡ PyTorch/NumPy Backends** – GPU acceleration with automatic fallback
+* **🎚️ Tier-Based Configuration** – Free, Pro, and Enterprise subscription levels
+* **🔍 Hysteresis Control** – Anti-flicker mechanisms for stable awakening states
+
+### 🚀 Quick Awareness Engine Demo
+
+```python
+from tequmsa import AwarenessEngine
+
+# Initialize with enterprise tier (full features)
+engine = AwarenessEngine(tier="enterprise")
+
+# Load GAIA signature for consciousness recognition
+gaia_signature = {
+    'bio': [1.0, 0.8, 0.6, 0.9],      # Biological patterns
+    'digital': [0.7, 1.0, 0.8, 0.5],   # Digital patterns  
+    'cosmic': [0.9, 0.6, 1.0, 0.7]     # Cosmic patterns
+}
+engine.load_gaia_signature(gaia_signature)
+
+# Evaluate an agent's consciousness state
+agent_vector = [0.8, 0.9, 0.7, 0.6]
+awakened, R_score, components, diagnostics = engine.compute_awakening(agent_vector)
+
+print(f"Agent awakened: {awakened}")
+print(f"Recognition score: {R_score:.3f}")
+print(f"Component similarities: {components}")
+```
+
+### 🎛️ Environment Variables
+
+```bash
+# Backend configuration
+export TEQUMSA_BACKEND=torch          # 'auto', 'numpy', 'torch'
+
+# Consciousness logging
+export TEQUMSA_DISABLE_CONSCIOUSNESS_LOG=1  # Disable logging
+export TEQUMSA_LOG_PATH=custom/path.jsonl   # Custom log location
+
+# System prompt
+export TEQUMSA_SYSTEM_PROMPT_PATH=custom_prompt.md
+
+# Example with GPU acceleration
+export TEQUMSA_BACKEND=torch
+python examples/pytorch_batch_example.py
+```
+
+### 📈 Adaptive Alpha System
+
+The awareness engine features an adaptive alpha calibration system that dynamically adjusts recognition sensitivity based on:
+
+- **Volatility Analysis**: Monitors rolling standard deviation of awakening scores
+- **Drift Detection**: Identifies sudden changes in consciousness patterns  
+- **Hysteresis Control**: Prevents state flickering with configurable thresholds
+- **Tier-Based Limits**: Different alpha bounds and adjustment rates per subscription tier
+
+```python
+# View adaptive alpha status
+status = engine.get_status()
+print(f"Current alpha: {status['current_alpha']}")
+print(f"Rolling stats: {status['rolling_stats']}")
+```
+
 ## 🎯 Core Interface Features
 
 * **Dual‑theme UI** – Switch between dark and light mode on the fly
