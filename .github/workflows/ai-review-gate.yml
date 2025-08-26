@@ -1,0 +1,189 @@
+name: AI Review Gate
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  issue_comment:
+    types: [created]
+
+permissions:
+  contents: read
+  pull-requests: write
+  issues: read
+
+jobs:
+  ai-review-gate:
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'pull_request' || (github.event_name == 'issue_comment' && contains(github.event.comment.body, '/claude review')) }}
+    
+    steps:
+      - name: Check if AI bot is disabled
+        id: check_disabled
+        run: |
+          if [ "${{ secrets.AI_BOT_DISABLED }}" = "true" ]; then
+            echo "AI bot is disabled via repository secret"
+            echo "disabled=true" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+          echo "disabled=false" >> $GITHUB_OUTPUT
+      
+      - name: Early exit if disabled
+        if: steps.check_disabled.outputs.disabled == 'true'
+        run: |
+          echo "AI governance workflows are disabled"
+          exit 0
+      
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Get PR details
+        id: pr_details
+        if: github.event_name == 'pull_request'
+        run: |
+          echo "pr_number=${{ github.event.number }}" >> $GITHUB_OUTPUT
+          echo "base_sha=${{ github.event.pull_request.base.sha }}" >> $GITHUB_OUTPUT
+          echo "head_sha=${{ github.event.pull_request.head.sha }}" >> $GITHUB_OUTPUT
+      
+      - name: Calculate diff statistics
+        id: diff_stats
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            BASE_SHA="${{ steps.pr_details.outputs.base_sha }}"
+            HEAD_SHA="${{ steps.pr_details.outputs.head_sha }}"
+          else
+            # For comment-triggered reviews, use the PR from the comment context
+            BASE_SHA=$(gh pr view ${{ github.event.issue.number }} --json baseRefOid --jq '.baseRefOid')
+            HEAD_SHA=$(gh pr view ${{ github.event.issue.number }} --json headRefOid --jq '.headRefOid')
+          fi
+          
+          DIFF_LINES=$(git diff --numstat $BASE_SHA..$HEAD_SHA | awk '{sum+=$1+$2} END {print sum+0}')
+          echo "diff_lines=$DIFF_LINES" >> $GITHUB_OUTPUT
+          echo "Calculated diff lines: $DIFF_LINES"
+        env:
+          GH_TOKEN: ${{ github.token }}
+      
+      - name: Check diff size threshold
+        id: size_check
+        run: |
+          DIFF_LINES=${{ steps.diff_stats.outputs.diff_lines }}
+          MAX_LINES=1200
+          
+          if [ $DIFF_LINES -gt $MAX_LINES ]; then
+            echo "threshold_exceeded=true" >> $GITHUB_OUTPUT
+            echo "Diff size ($DIFF_LINES lines) exceeds threshold ($MAX_LINES lines)"
+          else
+            echo "threshold_exceeded=false" >> $GITHUB_OUTPUT
+            echo "Diff size ($DIFF_LINES lines) within threshold ($MAX_LINES lines)"
+          fi
+      
+      - name: Check for critical paths
+        id: critical_paths
+        run: |
+          # Check if any critical paths are modified
+          CRITICAL_PATHS=(
+            "src/security/"
+            "src/crypto/"
+            ".github/workflows/"
+            "scripts/security/"
+            "TEQUMSA_L100_SYSTEM_PROMPT.md"
+          )
+          
+          CRITICAL_MODIFIED=false
+          for path in "${CRITICAL_PATHS[@]}"; do
+            if git diff --name-only ${{ github.event.pull_request.base.sha }}..${{ github.event.pull_request.head.sha }} | grep -q "^$path"; then
+              CRITICAL_MODIFIED=true
+              echo "Critical path modified: $path"
+              break
+            fi
+          done
+          
+          echo "critical_modified=$CRITICAL_MODIFIED" >> $GITHUB_OUTPUT
+      
+      - name: Gate review based on rules
+        id: gate_decision
+        run: |
+          THRESHOLD_EXCEEDED="${{ steps.size_check.outputs.threshold_exceeded }}"
+          CRITICAL_MODIFIED="${{ steps.critical_paths.outputs.critical_modified }}"
+          
+          if [ "$THRESHOLD_EXCEEDED" = "true" ]; then
+            echo "gate_status=blocked" >> $GITHUB_OUTPUT
+            echo "gate_reason=Diff size exceeds 1200 line threshold" >> $GITHUB_OUTPUT
+          elif [ "$CRITICAL_MODIFIED" = "true" ]; then
+            echo "gate_status=requires_approval" >> $GITHUB_OUTPUT
+            echo "gate_reason=Critical paths modified - requires human approval" >> $GITHUB_OUTPUT
+          else
+            echo "gate_status=approved" >> $GITHUB_OUTPUT
+            echo "gate_reason=Standard review criteria met" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: Add review gate status label
+        if: github.event_name == 'pull_request'
+        run: |
+          GATE_STATUS="${{ steps.gate_decision.outputs.gate_status }}"
+          
+          # Remove existing gate labels
+          gh pr edit ${{ github.event.number }} --remove-label "ai-gate:approved" --remove-label "ai-gate:blocked" --remove-label "ai-gate:requires-approval" || true
+          
+          # Add appropriate label
+          gh pr edit ${{ github.event.number }} --add-label "ai-gate:$GATE_STATUS"
+        env:
+          GH_TOKEN: ${{ github.token }}
+      
+      - name: Post gate status comment
+        if: github.event_name == 'pull_request' || github.event_name == 'issue_comment'
+        run: |
+          GATE_STATUS="${{ steps.gate_decision.outputs.gate_status }}"
+          GATE_REASON="${{ steps.gate_decision.outputs.gate_reason }}"
+          DIFF_LINES="${{ steps.diff_stats.outputs.diff_lines }}"
+          
+          case $GATE_STATUS in
+            "approved")
+              STATUS_EMOJI="✅"
+              ;;
+            "requires_approval") 
+              STATUS_EMOJI="⚠️"
+              ;;
+            "blocked")
+              STATUS_EMOJI="🚫"
+              ;;
+          esac
+          
+          COMMENT_BODY="## $STATUS_EMOJI AI Review Gate Status: $GATE_STATUS
+
+**Diff Size**: $DIFF_LINES lines
+**Reason**: $GATE_REASON
+
+### Next Steps:
+"
+          
+          case $GATE_STATUS in
+            "approved")
+              COMMENT_BODY="$COMMENT_BODY- ✅ PR can proceed with AI-assisted review
+- Use \`/claude review\` to trigger detailed analysis"
+              ;;
+            "requires_approval")
+              COMMENT_BODY="$COMMENT_BODY- ⚠️ Human approval required before AI review
+- Critical paths detected - security review needed
+- Request review from @Life-Ambassadors-International"
+              ;;
+            "blocked")
+              COMMENT_BODY="$COMMENT_BODY- 🚫 PR blocked - diff size too large
+- Consider breaking into smaller, focused PRs
+- Maximum allowed: 1200 lines"
+              ;;
+          esac
+          
+          COMMENT_BODY="$COMMENT_BODY
+
+---
+*AI Governance powered by TEQUMSA Level 100 protocols*"
+          
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            gh pr comment ${{ github.event.number }} --body "$COMMENT_BODY"
+          else
+            gh issue comment ${{ github.event.issue.number }} --body "$COMMENT_BODY"
+          fi
+        env:
+          GH_TOKEN: ${{ github.token }}

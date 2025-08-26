@@ -1,0 +1,205 @@
+name: AI Refactor Test Guard
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  push:
+    branches: [main, develop]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  refactor-test-guard:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Check if AI bot is disabled
+        id: check_disabled
+        run: |
+          if [ "${{ secrets.AI_BOT_DISABLED }}" = "true" ]; then
+            echo "AI bot is disabled via repository secret"
+            echo "disabled=true" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+          echo "disabled=false" >> $GITHUB_OUTPUT
+      
+      - name: Early exit if disabled
+        if: steps.check_disabled.outputs.disabled == 'true'
+        run: |
+          echo "AI governance workflows are disabled"
+          exit 0
+      
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      
+      - name: Run refactor test guard
+        id: guard_check
+        run: |
+          # Run the refactor test guard script
+          python scripts/refactor_test_guard.py \
+            --base-sha="${{ github.event.pull_request.base.sha || github.event.before }}" \
+            --head-sha="${{ github.event.pull_request.head.sha || github.sha }}" \
+            --output-json
+        continue-on-error: true
+      
+      - name: Parse guard results
+        id: parse_results
+        run: |
+          if [ -f "refactor_guard_results.json" ]; then
+            AI_REFACTOR_DETECTED=$(python -c "
+import json
+try:
+    with open('refactor_guard_results.json') as f:
+        data = json.load(f)
+    print(str(data.get('ai_refactor_detected', False)).lower())
+except:
+    print('false')
+")
+            TEST_FILES_UPDATED=$(python -c "
+import json
+try:
+    with open('refactor_guard_results.json') as f:
+        data = json.load(f)
+    print(str(data.get('test_files_updated', False)).lower())
+except:
+    print('false')
+")
+            REFACTOR_FILES=$(python -c "
+import json
+try:
+    with open('refactor_guard_results.json') as f:
+        data = json.load(f)
+    files = data.get('refactor_files', [])
+    print(','.join(files) if files else 'none')
+except:
+    print('none')
+")
+          else
+            AI_REFACTOR_DETECTED=false
+            TEST_FILES_UPDATED=false
+            REFACTOR_FILES=none
+          fi
+          
+          echo "ai_refactor_detected=$AI_REFACTOR_DETECTED" >> $GITHUB_OUTPUT
+          echo "test_files_updated=$TEST_FILES_UPDATED" >> $GITHUB_OUTPUT
+          echo "refactor_files=$REFACTOR_FILES" >> $GITHUB_OUTPUT
+      
+      - name: Check test requirements
+        id: test_check
+        if: steps.parse_results.outputs.ai_refactor_detected == 'true'
+        run: |
+          AI_REFACTOR="${{ steps.parse_results.outputs.ai_refactor_detected }}"
+          TEST_UPDATED="${{ steps.parse_results.outputs.test_files_updated }}"
+          
+          if [ "$AI_REFACTOR" = "true" ] && [ "$TEST_UPDATED" = "false" ]; then
+            echo "test_guard_failed=true" >> $GITHUB_OUTPUT
+            echo "guard_message=AI refactor detected but no test updates found" >> $GITHUB_OUTPUT
+          else
+            echo "test_guard_failed=false" >> $GITHUB_OUTPUT
+            echo "guard_message=Test requirements satisfied" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: Add guard status label
+        if: github.event_name == 'pull_request'
+        run: |
+          AI_REFACTOR="${{ steps.parse_results.outputs.ai_refactor_detected }}"
+          TEST_GUARD_FAILED="${{ steps.test_check.outputs.test_guard_failed }}"
+          
+          # Remove existing guard labels
+          gh pr edit ${{ github.event.number }} --remove-label "refactor-guard:passed" --remove-label "refactor-guard:failed" --remove-label "refactor-guard:warning" || true
+          
+          if [ "$AI_REFACTOR" = "true" ]; then
+            if [ "$TEST_GUARD_FAILED" = "true" ]; then
+              gh pr edit ${{ github.event.number }} --add-label "refactor-guard:failed"
+            else
+              gh pr edit ${{ github.event.number }} --add-label "refactor-guard:passed"
+            fi
+          else
+            gh pr edit ${{ github.event.number }} --add-label "refactor-guard:not-applicable"
+          fi
+        env:
+          GH_TOKEN: ${{ github.token }}
+      
+      - name: Post guard status comment
+        if: github.event_name == 'pull_request' && steps.parse_results.outputs.ai_refactor_detected == 'true'
+        run: |
+          AI_REFACTOR="${{ steps.parse_results.outputs.ai_refactor_detected }}"
+          TEST_GUARD_FAILED="${{ steps.test_check.outputs.test_guard_failed }}"
+          GUARD_MESSAGE="${{ steps.test_check.outputs.guard_message }}"
+          REFACTOR_FILES="${{ steps.parse_results.outputs.refactor_files }}"
+          
+          if [ "$TEST_GUARD_FAILED" = "true" ]; then
+            STATUS_EMOJI="🚫"
+            STATUS="FAILED"
+          else
+            STATUS_EMOJI="✅"
+            STATUS="PASSED"
+          fi
+          
+          COMMENT_BODY="## ${STATUS_EMOJI} AI Refactor Test Guard: ${STATUS}
+
+**AI Refactor Detected**: ${AI_REFACTOR}
+**Message**: ${GUARD_MESSAGE}
+
+### Refactored Files:
+"
+          
+          if [ "$REFACTOR_FILES" != "none" ]; then
+            IFS=',' read -ra FILES <<< "$REFACTOR_FILES"
+            for file in "${FILES[@]}"; do
+              COMMENT_BODY="$COMMENT_BODY- \`${file}\`
+"
+            done
+          else
+            COMMENT_BODY="$COMMENT_BODY- No AI refactor files detected
+"
+          fi
+          
+          if [ "$TEST_GUARD_FAILED" = "true" ]; then
+            COMMENT_BODY="$COMMENT_BODY
+### ⚠️ Action Required:
+- AI-driven refactoring detected without corresponding test updates
+- Please ensure tests are updated to cover refactored functionality
+- Add tests for new code paths or modified behavior
+- Update existing tests if interfaces have changed
+
+### Compliance:
+This check enforces TEQUMSA AI governance policy requiring test updates for AI-driven refactors to maintain code quality and prevent regressions."
+          else
+            COMMENT_BODY="$COMMENT_BODY
+### ✅ Compliance Status:
+- Test requirements satisfied for AI refactoring
+- Code quality governance maintained"
+          fi
+          
+          COMMENT_BODY="$COMMENT_BODY
+
+---
+*Refactor guard powered by TEQUMSA AI governance*"
+          
+          gh pr comment ${{ github.event.number }} --body "$COMMENT_BODY"
+        env:
+          GH_TOKEN: ${{ github.token }}
+      
+      - name: Fail workflow if guard failed
+        if: steps.test_check.outputs.test_guard_failed == 'true'
+        run: |
+          echo "AI refactor test guard failed - see PR comments for details"
+          exit 1
+      
+      - name: Upload guard results
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: refactor-guard-results
+          path: refactor_guard_results.json
+          retention-days: 30

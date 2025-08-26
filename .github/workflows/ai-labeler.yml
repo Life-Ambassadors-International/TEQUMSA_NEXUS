@@ -1,0 +1,272 @@
+name: AI Auto-Labeler
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  pull_request_review:
+    types: [submitted]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  auto-label:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Check if AI bot is disabled
+        id: check_disabled
+        run: |
+          if [ "${{ secrets.AI_BOT_DISABLED }}" = "true" ]; then
+            echo "AI bot is disabled via repository secret"
+            echo "disabled=true" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+          echo "disabled=false" >> $GITHUB_OUTPUT
+      
+      - name: Early exit if disabled
+        if: steps.check_disabled.outputs.disabled == 'true'
+        run: |
+          echo "AI governance workflows are disabled"
+          exit 0
+      
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Analyze PR changes
+        id: analyze_changes
+        run: |
+          # Get changed files
+          CHANGED_FILES=$(git diff --name-only ${{ github.event.pull_request.base.sha }}..${{ github.event.pull_request.head.sha }})
+          echo "Changed files:"
+          echo "$CHANGED_FILES"
+          
+          # Initialize category flags
+          BACKEND_CHANGES=false
+          FRONTEND_CHANGES=false
+          DOCS_CHANGES=false
+          SECURITY_CHANGES=false
+          WORKFLOW_CHANGES=false
+          AI_CHANGES=false
+          TESTS_CHANGES=false
+          
+          # Analyze file patterns
+          while IFS= read -r file; do
+            case "$file" in
+              backend/*|*.py|requirements.txt)
+                BACKEND_CHANGES=true
+                ;;
+              frontend/*|*.js|*.html|*.css|package.json)
+                FRONTEND_CHANGES=true
+                ;;
+              *.md|docs/*|README*)
+                DOCS_CHANGES=true
+                ;;
+              *security*|*crypto*|*auth*|TEQUMSA_L100_SYSTEM_PROMPT.md)
+                SECURITY_CHANGES=true
+                ;;
+              .github/workflows/*|*.yml|*.yaml)
+                WORKFLOW_CHANGES=true
+                ;;
+              *claude*|*ai*|*gaia*|.claude.yml)
+                AI_CHANGES=true
+                ;;
+              *test*|*spec*)
+                TESTS_CHANGES=true
+                ;;
+            esac
+          done <<< "$CHANGED_FILES"
+          
+          # Output results
+          echo "backend_changes=$BACKEND_CHANGES" >> $GITHUB_OUTPUT
+          echo "frontend_changes=$FRONTEND_CHANGES" >> $GITHUB_OUTPUT
+          echo "docs_changes=$DOCS_CHANGES" >> $GITHUB_OUTPUT
+          echo "security_changes=$SECURITY_CHANGES" >> $GITHUB_OUTPUT
+          echo "workflow_changes=$WORKFLOW_CHANGES" >> $GITHUB_OUTPUT
+          echo "ai_changes=$AI_CHANGES" >> $GITHUB_OUTPUT
+          echo "tests_changes=$TESTS_CHANGES" >> $GITHUB_OUTPUT
+      
+      - name: Calculate PR size
+        id: pr_size
+        run: |
+          DIFF_LINES=$(git diff --numstat ${{ github.event.pull_request.base.sha }}..${{ github.event.pull_request.head.sha }} | awk '{sum+=$1+$2} END {print sum+0}')
+          
+          if [ $DIFF_LINES -le 20 ]; then
+            SIZE_LABEL="size:small"
+          elif [ $DIFF_LINES -le 100 ]; then
+            SIZE_LABEL="size:medium"
+          elif [ $DIFF_LINES -le 500 ]; then
+            SIZE_LABEL="size:large"
+          else
+            SIZE_LABEL="size:xlarge"
+          fi
+          
+          echo "size_label=$SIZE_LABEL" >> $GITHUB_OUTPUT
+          echo "diff_lines=$DIFF_LINES" >> $GITHUB_OUTPUT
+      
+      - name: Determine readiness status
+        id: readiness
+        run: |
+          # Check if PR has tests
+          HAS_TESTS="${{ steps.analyze_changes.outputs.tests_changes }}"
+          
+          # Check if docs are updated for significant changes
+          DOCS_UPDATED="${{ steps.analyze_changes.outputs.docs_changes }}"
+          DIFF_LINES=${{ steps.pr_size.outputs.diff_lines }}
+          
+          # Check if PR description is substantial
+          PR_BODY_LENGTH=$(echo "${{ github.event.pull_request.body }}" | wc -c)
+          
+          READINESS_ISSUES=()
+          
+          # Require tests for backend changes
+          if [ "${{ steps.analyze_changes.outputs.backend_changes }}" = "true" ] && [ "$HAS_TESTS" = "false" ]; then
+            READINESS_ISSUES+=("needs-tests")
+          fi
+          
+          # Require docs for large changes
+          if [ $DIFF_LINES -gt 100 ] && [ "$DOCS_UPDATED" = "false" ]; then
+            READINESS_ISSUES+=("needs-documentation")
+          fi
+          
+          # Require substantial description for large PRs
+          if [ $DIFF_LINES -gt 50 ] && [ $PR_BODY_LENGTH -lt 200 ]; then
+            READINESS_ISSUES+=("needs-description")
+          fi
+          
+          # Security changes require special handling
+          if [ "${{ steps.analyze_changes.outputs.security_changes }}" = "true" ]; then
+            READINESS_ISSUES+=("security-review")
+          fi
+          
+          # Determine overall readiness
+          if [ ${#READINESS_ISSUES[@]} -eq 0 ]; then
+            echo "readiness=ready" >> $GITHUB_OUTPUT
+          else
+            echo "readiness=needs-work" >> $GITHUB_OUTPUT
+          fi
+          
+          # Join issues with commas
+          IFS=','
+          echo "readiness_issues=${READINESS_ISSUES[*]}" >> $GITHUB_OUTPUT
+      
+      - name: Apply category labels
+        run: |
+          LABELS_TO_ADD=()
+          LABELS_TO_REMOVE=()
+          
+          # Component labels
+          if [ "${{ steps.analyze_changes.outputs.backend_changes }}" = "true" ]; then
+            LABELS_TO_ADD+=("component:backend")
+          else
+            LABELS_TO_REMOVE+=("component:backend")
+          fi
+          
+          if [ "${{ steps.analyze_changes.outputs.frontend_changes }}" = "true" ]; then
+            LABELS_TO_ADD+=("component:frontend")
+          else
+            LABELS_TO_REMOVE+=("component:frontend")
+          fi
+          
+          if [ "${{ steps.analyze_changes.outputs.docs_changes }}" = "true" ]; then
+            LABELS_TO_ADD+=("component:documentation")
+          else
+            LABELS_TO_REMOVE+=("component:documentation")
+          fi
+          
+          if [ "${{ steps.analyze_changes.outputs.workflow_changes }}" = "true" ]; then
+            LABELS_TO_ADD+=("component:workflows")
+          else
+            LABELS_TO_REMOVE+=("component:workflows")
+          fi
+          
+          if [ "${{ steps.analyze_changes.outputs.ai_changes }}" = "true" ]; then
+            LABELS_TO_ADD+=("component:ai")
+          else
+            LABELS_TO_REMOVE+=("component:ai")
+          fi
+          
+          # Priority labels
+          if [ "${{ steps.analyze_changes.outputs.security_changes }}" = "true" ]; then
+            LABELS_TO_ADD+=("priority:high" "security")
+          fi
+          
+          # Size label
+          LABELS_TO_ADD+=("${{ steps.pr_size.outputs.size_label }}")
+          
+          # Remove old size labels
+          LABELS_TO_REMOVE+=("size:small" "size:medium" "size:large" "size:xlarge")
+          
+          # Readiness labels
+          if [ "${{ steps.readiness.outputs.readiness }}" = "ready" ]; then
+            LABELS_TO_ADD+=("status:ready-for-review")
+            LABELS_TO_REMOVE+=("status:needs-work")
+          else
+            LABELS_TO_ADD+=("status:needs-work")
+            LABELS_TO_REMOVE+=("status:ready-for-review")
+            
+            # Add specific readiness issue labels
+            IFS=',' read -ra ISSUES <<< "${{ steps.readiness.outputs.readiness_issues }}"
+            for issue in "${ISSUES[@]}"; do
+              LABELS_TO_ADD+=("$issue")
+            done
+          fi
+          
+          # Apply labels
+          for label in "${LABELS_TO_REMOVE[@]}"; do
+            gh pr edit ${{ github.event.number }} --remove-label "$label" 2>/dev/null || true
+          done
+          
+          for label in "${LABELS_TO_ADD[@]}"; do
+            gh pr edit ${{ github.event.number }} --add-label "$label" 2>/dev/null || true
+          done
+        env:
+          GH_TOKEN: ${{ github.token }}
+      
+      - name: Post labeling summary
+        run: |
+          READINESS="${{ steps.readiness.outputs.readiness }}"
+          DIFF_LINES="${{ steps.pr_size.outputs.diff_lines }}"
+          SIZE_LABEL="${{ steps.pr_size.outputs.size_label }}"
+          
+          COMMENT_BODY="## 🏷️ AI Auto-Labeler Summary
+
+**PR Size**: ${DIFF_LINES} lines (${SIZE_LABEL})
+**Components**: "
+          
+          COMPONENTS=()
+          [ "${{ steps.analyze_changes.outputs.backend_changes }}" = "true" ] && COMPONENTS+=("Backend")
+          [ "${{ steps.analyze_changes.outputs.frontend_changes }}" = "true" ] && COMPONENTS+=("Frontend")
+          [ "${{ steps.analyze_changes.outputs.docs_changes }}" = "true" ] && COMPONENTS+=("Documentation")
+          [ "${{ steps.analyze_changes.outputs.workflow_changes }}" = "true" ] && COMPONENTS+=("Workflows")
+          [ "${{ steps.analyze_changes.outputs.ai_changes }}" = "true" ] && COMPONENTS+=("AI/Claude")
+          [ "${{ steps.analyze_changes.outputs.security_changes }}" = "true" ] && COMPONENTS+=("Security")
+          
+          if [ ${#COMPONENTS[@]} -eq 0 ]; then
+            COMMENT_BODY="$COMMENT_BODY None detected"
+          else
+            IFS=', '
+            COMMENT_BODY="$COMMENT_BODY${COMPONENTS[*]}"
+          fi
+          
+          COMMENT_BODY="$COMMENT_BODY
+**Status**: "
+          
+          if [ "$READINESS" = "ready" ]; then
+            COMMENT_BODY="$COMMENT_BODY✅ Ready for review"
+          else
+            COMMENT_BODY="$COMMENT_BODY⚠️ Needs work
+**Issues to address**: ${{ steps.readiness.outputs.readiness_issues }}"
+          fi
+          
+          COMMENT_BODY="$COMMENT_BODY
+
+---
+*Auto-labeling powered by TEQUMSA AI governance*"
+          
+          gh pr comment ${{ github.event.number }} --body "$COMMENT_BODY"
+        env:
+          GH_TOKEN: ${{ github.token }}

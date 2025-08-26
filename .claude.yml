@@ -1,0 +1,141 @@
+# TEQUMSA AI Governance Configuration
+# Defines structured, least-privilege, auditable usage of Claude GitHub App
+
+version: 1.0
+
+# Review configuration
+review:
+  enabled: true
+  modes:
+    - "structured"     # Systematic code analysis
+    - "security"       # Security-focused review
+    - "documentation"  # Documentation completeness
+  
+  # Diff size thresholds (conservative)
+  thresholds:
+    max_total_lines: 1200        # Maximum total diff lines
+    summary_min_lines: 50        # Minimum lines for summary generation
+    auto_approve_max_lines: 20   # Auto-approve threshold for small changes
+  
+  # Path focus areas
+  focus_paths:
+    critical:
+      - "src/security/"
+      - "src/crypto/"
+      - ".github/workflows/"
+      - "scripts/security/"
+      - "TEQUMSA_L100_SYSTEM_PROMPT.md"
+    sensitive:
+      - "backend/"
+      - "gaia_agent/"
+      - "ethics/"
+      - "scripts/"
+    standard:
+      - "frontend/"
+      - "docs/"
+      - "*.md"
+
+# Suggestion configuration
+suggestions:
+  enabled: true
+  categories:
+    - "performance"
+    - "security"
+    - "maintainability" 
+    - "documentation"
+    - "testing"
+  
+  auto_apply: false  # Require manual approval
+  confidence_threshold: 0.8
+
+# Security configuration
+security:
+  enabled: true
+  flags:
+    - "secrets_detection"
+    - "dependency_check"
+    - "code_injection"
+    - "xss_prevention"
+    - "auth_validation"
+  
+  require_approval_for:
+    - "authentication_changes"
+    - "permission_modifications"
+    - "crypto_operations"
+    - "external_api_calls"
+
+# Compliance and governance
+compliance:
+  tequmsa_alignment: true
+  ethical_review: true
+  sovereignty_check: true
+  
+  required_approvals:
+    critical_paths: 2
+    sensitive_paths: 1
+    standard_paths: 0
+
+# Performance monitoring
+performance:
+  enabled: true
+  metrics:
+    - "response_time"
+    - "memory_usage"
+    - "diff_processing_time"
+  
+  thresholds:
+    max_response_time_ms: 30000
+    max_memory_mb: 512
+
+# AI assistant commands
+commands:
+  review_triggers:
+    - "/claude review"
+    - "/ai-review"
+    - "/security-check"
+  
+  summary_triggers:
+    - "/claude summarize"
+    - "/ai-summary"
+  
+  help_commands:
+    - "/claude help"
+    - "/ai-help"
+
+# Governance controls
+governance:
+  audit_log: true
+  require_human_oversight: true
+  
+  escalation_rules:
+    high_risk_changes: true
+    large_diffs: true
+    security_sensitive: true
+  
+  approval_workflows:
+    enabled: true
+    bypass_secret: "AI_BOT_DISABLED"  # Secret to disable AI workflows
+
+# Telemetry and metrics
+telemetry:
+  enabled: true
+  storage_path: ".ai-metrics/"
+  
+  metrics_collected:
+    - "usage_frequency"
+    - "review_accuracy" 
+    - "performance_metrics"
+    - "user_satisfaction"
+  
+  retention_days: 90
+  anonymize_data: true
+
+# Experimental features
+experimental:
+  enabled: false
+  features:
+    - "advanced_refactoring"
+    - "automated_testing"
+    - "documentation_generation"
+  
+  opt_in_required: true

@@ -1,0 +1,273 @@
+name: AI Weekly Metrics
+
+on:
+  schedule:
+    # Run every Monday at 9 AM UTC
+    - cron: '0 9 * * 1'
+  workflow_dispatch:  # Allow manual triggering
+
+permissions:
+  contents: write
+  pull-requests: read
+  issues: read
+
+jobs:
+  generate-metrics:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Check if AI bot is disabled
+        id: check_disabled
+        run: |
+          if [ "${{ secrets.AI_BOT_DISABLED }}" = "true" ]; then
+            echo "AI bot is disabled via repository secret"
+            echo "disabled=true" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+          echo "disabled=false" >> $GITHUB_OUTPUT
+      
+      - name: Early exit if disabled
+        if: steps.check_disabled.outputs.disabled == 'true'
+        run: |
+          echo "AI governance workflows are disabled"
+          exit 0
+      
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      
+      - name: Create metrics directory
+        run: |
+          mkdir -p .ai-metrics
+      
+      - name: Calculate date range
+        id: date_range
+        run: |
+          # Calculate last week's date range
+          END_DATE=$(date -u +%Y-%m-%d)
+          START_DATE=$(date -u -d '7 days ago' +%Y-%m-%d)
+          
+          echo "start_date=$START_DATE" >> $GITHUB_OUTPUT
+          echo "end_date=$END_DATE" >> $GITHUB_OUTPUT
+          echo "Analyzing metrics from $START_DATE to $END_DATE"
+      
+      - name: Gather PR metrics
+        id: pr_metrics
+        run: |
+          START_DATE="${{ steps.date_range.outputs.start_date }}"
+          END_DATE="${{ steps.date_range.outputs.end_date }}"
+          
+          # Get PRs from the last week
+          PRS_JSON=$(gh pr list --state all --limit 100 --json number,title,author,createdAt,closedAt,labels,comments)
+          
+          # Filter PRs from last week and analyze AI involvement
+          python3 << 'EOF'
+          import json
+          import sys
+          from datetime import datetime, timedelta
+          
+          # Load PR data
+          prs_data = json.loads('''${PRS_JSON}''')
+          start_date = datetime.fromisoformat('${START_DATE}')
+          end_date = datetime.fromisoformat('${END_DATE}')
+          
+          metrics = {
+              'total_prs': 0,
+              'ai_assisted_prs': 0,
+              'ai_reviewed_prs': 0,
+              'refactor_guard_triggered': 0,
+              'auto_labeled_prs': 0,
+              'summaries_generated': 0,
+              'avg_pr_size': 0,
+              'security_reviews': 0
+          }
+
+          
+          pr_sizes = []
+          ai_labels = ['component:ai', 'ai-gate:approved', 'ai-gate:blocked', 'ai-gate:requires-approval',
+                       'refactor-guard:passed', 'refactor-guard:failed', 'ai-summary-requested']
+          
+          for pr in prs_data:
+              created_at = datetime.fromisoformat(pr['createdAt'].replace('Z', '+00:00'))
+              if start_date <= created_at <= end_date:
+                  metrics['total_prs'] += 1
+                  
+                  # Check for AI involvement based on labels
+                  pr_labels = [label['name'] for label in pr.get('labels', [])]
+                  
+                  if any(label in pr_labels for label in ai_labels):
+                      metrics['ai_assisted_prs'] += 1
+                  
+                  if any('ai-gate:' in label for label in pr_labels):
+                      metrics['ai_reviewed_prs'] += 1
+                  
+                  if any('refactor-guard:' in label for label in pr_labels):
+                      metrics['refactor_guard_triggered'] += 1
+                  
+                  if any(label.startswith('size:') for label in pr_labels):
+                      metrics['auto_labeled_prs'] += 1
+                  
+                  if 'security' in pr_labels:
+                      metrics['security_reviews'] += 1
+          
+          # Calculate averages
+          if metrics['total_prs'] > 0:
+              print(f"total_prs={metrics['total_prs']}")
+              print(f"ai_assisted_prs={metrics['ai_assisted_prs']}")
+              print(f"ai_reviewed_prs={metrics['ai_reviewed_prs']}")
+              print(f"refactor_guard_triggered={metrics['refactor_guard_triggered']}")
+              print(f"auto_labeled_prs={metrics['auto_labeled_prs']}")
+              print(f"security_reviews={metrics['security_reviews']}")
+              
+              ai_adoption_rate = round((metrics['ai_assisted_prs'] / metrics['total_prs']) * 100, 1)
+              print(f"ai_adoption_rate={ai_adoption_rate}")
+          else:
+              print("total_prs=0")
+              print("ai_assisted_prs=0")
+              print("ai_reviewed_prs=0")
+              print("refactor_guard_triggered=0")
+              print("auto_labeled_prs=0")
+              print("security_reviews=0")
+              print("ai_adoption_rate=0")
+          EOF
+        env:
+          GH_TOKEN: ${{ github.token }}
+      
+      - name: Run metrics aggregation script
+        run: |
+          # Run the metrics aggregation script
+          python scripts/aggregate_ai_metrics.py \
+            --start-date="${{ steps.date_range.outputs.start_date }}" \
+            --end-date="${{ steps.date_range.outputs.end_date }}" \
+            --output-dir=".ai-metrics"
+      
+      - name: Generate metrics report
+        id: generate_report
+        run: |
+          START_DATE="${{ steps.date_range.outputs.start_date }}"
+          END_DATE="${{ steps.date_range.outputs.end_date }}"
+          REPORT_FILE=".ai-metrics/weekly-report-$(date +%Y-%m-%d).md"
+          
+          # Create weekly report
+          cat > "$REPORT_FILE" << EOF
+# TEQUMSA AI Governance Weekly Metrics Report
+
+**Report Period**: ${START_DATE} to ${END_DATE}
+**Generated**: $(date -u +"%Y-%m-%d %H:%M:%S UTC")
+
+## 📊 Pull Request Activity
+
+- **Total PRs**: \${{ env.total_prs || 0 }}
+- **AI-Assisted PRs**: \${{ env.ai_assisted_prs || 0 }}
+- **AI-Reviewed PRs**: \${{ env.ai_reviewed_prs || 0 }}
+- **Auto-Labeled PRs**: \${{ env.auto_labeled_prs || 0 }}
+- **AI Adoption Rate**: \${{ env.ai_adoption_rate || 0 }}%
+
+## 🛡️ Governance Activity
+
+- **Refactor Guards Triggered**: \${{ env.refactor_guard_triggered || 0 }}
+- **Security Reviews**: \${{ env.security_reviews || 0 }}
+- **Summaries Generated**: \${{ env.summaries_generated || 0 }}
+
+## 📈 Trends
+
+### AI Adoption
+EOF
+          
+          # Add trend analysis
+          if [ "\${{ env.ai_adoption_rate || 0 }}" -gt 50 ]; then
+            echo "- ✅ High AI adoption rate (>\${{ env.ai_adoption_rate }}%)" >> "$REPORT_FILE"
+          elif [ "\${{ env.ai_adoption_rate || 0 }}" -gt 25 ]; then
+            echo "- ⚠️ Moderate AI adoption rate (\${{ env.ai_adoption_rate }}%)" >> "$REPORT_FILE"
+          else
+            echo "- 📉 Low AI adoption rate (\${{ env.ai_adoption_rate }}%)" >> "$REPORT_FILE"
+          fi
+          
+          cat >> "$REPORT_FILE" << EOF
+
+### Quality Indicators
+- **Guard Success Rate**: \$([ "\${{ env.refactor_guard_triggered || 0 }}" -gt 0 ] && echo "Active" || echo "No refactors detected")
+- **Security Awareness**: \$([ "\${{ env.security_reviews || 0 }}" -gt 0 ] && echo "Active" || echo "No security flags")
+
+## 🎯 Recommendations
+
+EOF
+          
+          # Add recommendations based on metrics
+          if [ "\${{ env.ai_adoption_rate || 0 }}" -lt 25 ]; then
+            echo "- Consider team training on AI-assisted development workflows" >> "$REPORT_FILE"
+          fi
+          
+          if [ "\${{ env.security_reviews || 0 }}" -eq 0 ]; then
+            echo "- Review security labeling and detection accuracy" >> "$REPORT_FILE"
+          fi
+          
+          if [ "\${{ env.total_prs || 0 }}" -eq 0 ]; then
+            echo "- Low PR activity - consider encouraging more frequent commits" >> "$REPORT_FILE"
+          fi
+          
+          cat >> "$REPORT_FILE" << EOF
+
+## 📋 Action Items
+
+- [ ] Review AI governance policy effectiveness
+- [ ] Update training materials if needed
+- [ ] Analyze any governance policy violations
+- [ ] Plan improvements for next cycle
+
+---
+*Generated by TEQUMSA AI Governance Weekly Metrics*
+*Repository: \${{ github.repository }}*
+EOF
+          
+          echo "report_file=$REPORT_FILE" >> $GITHUB_OUTPUT
+      
+      - name: Update metrics log
+        run: |
+          # Append to usage log
+          USAGE_LOG=".ai-metrics/usage.jsonl"
+          
+          cat >> "$USAGE_LOG" << EOF
+{"timestamp": "\$(date -u +%Y-%m-%dT%H:%M:%SZ)", "type": "weekly_metrics", "total_prs": \${{ env.total_prs || 0 }}, "ai_assisted_prs": \${{ env.ai_assisted_prs || 0 }}, "ai_adoption_rate": \${{ env.ai_adoption_rate || 0 }}, "period_start": "\${{ steps.date_range.outputs.start_date }}", "period_end": "\${{ steps.date_range.outputs.end_date }}"}
+EOF
+      
+      - name: Commit metrics report
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          
+          git add .ai-metrics/
+          
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "📊 Weekly AI governance metrics report - ${{ steps.date_range.outputs.start_date }} to ${{ steps.date_range.outputs.end_date }}"
+            git push origin HEAD:main
+          fi
+      
+      - name: Create metrics issue
+        if: env.total_prs > 0
+        run: |
+          REPORT_CONTENT=$(cat "${{ steps.generate_report.outputs.report_file }}")
+          
+          # Create an issue with the metrics report
+          gh issue create \
+            --title "📊 Weekly AI Governance Metrics - ${{ steps.date_range.outputs.start_date }} to ${{ steps.date_range.outputs.end_date }}" \
+            --body "$REPORT_CONTENT" \
+            --label "metrics,ai-governance,weekly-report"
+        env:
+          GH_TOKEN: ${{ github.token }}
+      
+      - name: Upload metrics artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: ai-metrics-weekly-${{ steps.date_range.outputs.end_date }}
+          path: .ai-metrics/
+          retention-days: 90

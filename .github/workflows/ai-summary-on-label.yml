@@ -1,0 +1,319 @@
+name: AI Summary on Label
+
+on:
+  pull_request:
+    types: [labeled]
+  issue_comment:
+    types: [created]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  ai-summary:
+    runs-on: ubuntu-latest
+    if: |
+      (github.event_name == 'pull_request' && github.event.label.name == 'ai-summary-requested') ||
+      (github.event_name == 'issue_comment' && contains(github.event.comment.body, '/claude summarize'))
+    
+    steps:
+      - name: Check if AI bot is disabled
+        id: check_disabled
+        run: |
+          if [ "${{ secrets.AI_BOT_DISABLED }}" = "true" ]; then
+            echo "AI bot is disabled via repository secret"
+            echo "disabled=true" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+          echo "disabled=false" >> $GITHUB_OUTPUT
+      
+      - name: Early exit if disabled
+        if: steps.check_disabled.outputs.disabled == 'true'
+        run: |
+          echo "AI governance workflows are disabled"
+          exit 0
+      
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Get PR details
+        id: pr_details
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            PR_NUMBER=${{ github.event.number }}
+          else
+            # For comment-triggered summaries
+            PR_NUMBER=${{ github.event.issue.number }}
+          fi
+          
+          echo "pr_number=$PR_NUMBER" >> $GITHUB_OUTPUT
+          
+          # Get PR information
+          PR_INFO=$(gh pr view $PR_NUMBER --json title,body,baseRefOid,headRefOid,author)
+          echo "pr_title=$(echo "$PR_INFO" | jq -r '.title')" >> $GITHUB_OUTPUT
+          echo "pr_body=$(echo "$PR_INFO" | jq -r '.body')" >> $GITHUB_OUTPUT
+          echo "base_sha=$(echo "$PR_INFO" | jq -r '.baseRefOid')" >> $GITHUB_OUTPUT
+          echo "head_sha=$(echo "$PR_INFO" | jq -r '.headRefOid')" >> $GITHUB_OUTPUT
+          echo "pr_author=$(echo "$PR_INFO" | jq -r '.author.login')" >> $GITHUB_OUTPUT
+        env:
+          GH_TOKEN: ${{ github.token }}
+      
+      - name: Calculate diff size and check threshold
+        id: diff_check
+        run: |
+          BASE_SHA="${{ steps.pr_details.outputs.base_sha }}"
+          HEAD_SHA="${{ steps.pr_details.outputs.head_sha }}"
+          
+          DIFF_LINES=$(git diff --numstat $BASE_SHA..$HEAD_SHA | awk '{sum+=$1+$2} END {print sum+0}')
+          echo "diff_lines=$DIFF_LINES" >> $GITHUB_OUTPUT
+          
+          # Check if summary is warranted (minimum 50 lines changed)
+          if [ $DIFF_LINES -ge 50 ]; then
+            echo "summary_warranted=true" >> $GITHUB_OUTPUT
+            echo "Summary warranted: $DIFF_LINES lines changed (≥50 threshold)"
+          else
+            echo "summary_warranted=false" >> $GITHUB_OUTPUT
+            echo "Summary not warranted: $DIFF_LINES lines changed (<50 threshold)"
+          fi
+      
+      - name: Analyze changed files
+        id: analyze_files
+        if: steps.diff_check.outputs.summary_warranted == 'true'
+        run: |
+          BASE_SHA="${{ steps.pr_details.outputs.base_sha }}"
+          HEAD_SHA="${{ steps.pr_details.outputs.head_sha }}"
+          
+          # Get changed files with statistics
+          CHANGED_FILES=$(git diff --name-only $BASE_SHA..$HEAD_SHA)
+          FILE_STATS=$(git diff --numstat $BASE_SHA..$HEAD_SHA)
+          
+          echo "Changed files:"
+          echo "$CHANGED_FILES"
+          
+          # Categorize changes
+          BACKEND_FILES=()
+          FRONTEND_FILES=()
+          DOCS_FILES=()
+          CONFIG_FILES=()
+          TEST_FILES=()
+          OTHER_FILES=()
+          
+          while IFS= read -r file; do
+            case "$file" in
+              backend/*|*.py)
+                BACKEND_FILES+=("$file")
+                ;;
+              frontend/*|*.js|*.html|*.css)
+                FRONTEND_FILES+=("$file")
+                ;;
+              *.md|docs/*)
+                DOCS_FILES+=("$file")
+                ;;
+              *.yml|*.yaml|*.json|requirements.txt|package.json)
+                CONFIG_FILES+=("$file")
+                ;;
+              *test*|*spec*)
+                TEST_FILES+=("$file")
+                ;;
+              *)
+                OTHER_FILES+=("$file")
+                ;;
+            esac
+          done <<< "$CHANGED_FILES"
+          
+          # Create summary data
+          echo "backend_files=$(IFS=','; echo "${BACKEND_FILES[*]}")" >> $GITHUB_OUTPUT
+          echo "frontend_files=$(IFS=','; echo "${FRONTEND_FILES[*]}")" >> $GITHUB_OUTPUT
+          echo "docs_files=$(IFS=','; echo "${DOCS_FILES[*]}")" >> $GITHUB_OUTPUT
+          echo "config_files=$(IFS=','; echo "${CONFIG_FILES[*]}")" >> $GITHUB_OUTPUT
+          echo "test_files=$(IFS=','; echo "${TEST_FILES[*]}")" >> $GITHUB_OUTPUT
+          echo "other_files=$(IFS=','; echo "${OTHER_FILES[*]}")" >> $GITHUB_OUTPUT
+          
+          # Store file stats for summary
+          echo "$FILE_STATS" > file_stats.txt
+      
+      - name: Generate change summary
+        id: generate_summary
+        if: steps.diff_check.outputs.summary_warranted == 'true'
+        run: |
+          PR_TITLE="${{ steps.pr_details.outputs.pr_title }}"
+          PR_AUTHOR="${{ steps.pr_details.outputs.pr_author }}"
+          DIFF_LINES="${{ steps.diff_check.outputs.diff_lines }}"
+          
+          # Read file stats
+          TOTAL_ADDITIONS=0
+          TOTAL_DELETIONS=0
+          if [ -f "file_stats.txt" ]; then
+            while read -r additions deletions file; do
+              TOTAL_ADDITIONS=$((TOTAL_ADDITIONS + additions))
+              TOTAL_DELETIONS=$((TOTAL_DELETIONS + deletions))
+            done < file_stats.txt
+          fi
+          
+          # Generate summary
+          SUMMARY="# 📊 AI-Generated PR Summary
+
+## Overview
+**Title**: $PR_TITLE
+**Author**: @$PR_AUTHOR
+**Total Changes**: $DIFF_LINES lines (+$TOTAL_ADDITIONS/-$TOTAL_DELETIONS)
+
+## Component Analysis"
+          
+          # Add component sections
+          if [ -n "${{ steps.analyze_files.outputs.backend_files }}" ]; then
+            SUMMARY="$SUMMARY
+
+### 🐍 Backend Changes
+"
+            IFS=',' read -ra FILES <<< "${{ steps.analyze_files.outputs.backend_files }}"
+            for file in "${FILES[@]}"; do
+              if [ -n "$file" ]; then
+                SUMMARY="$SUMMARY- \`$file\`
+"
+              fi
+            done
+          fi
+          
+          if [ -n "${{ steps.analyze_files.outputs.frontend_files }}" ]; then
+            SUMMARY="$SUMMARY
+
+### 🎨 Frontend Changes
+"
+            IFS=',' read -ra FILES <<< "${{ steps.analyze_files.outputs.frontend_files }}"
+            for file in "${FILES[@]}"; do
+              if [ -n "$file" ]; then
+                SUMMARY="$SUMMARY- \`$file\`
+"
+              fi
+            done
+          fi
+          
+          if [ -n "${{ steps.analyze_files.outputs.docs_files }}" ]; then
+            SUMMARY="$SUMMARY
+
+### 📚 Documentation Changes
+"
+            IFS=',' read -ra FILES <<< "${{ steps.analyze_files.outputs.docs_files }}"
+            for file in "${FILES[@]}"; do
+              if [ -n "$file" ]; then
+                SUMMARY="$SUMMARY- \`$file\`
+"
+              fi
+            done
+          fi
+          
+          if [ -n "${{ steps.analyze_files.outputs.test_files }}" ]; then
+            SUMMARY="$SUMMARY
+
+### 🧪 Test Changes
+"
+            IFS=',' read -ra FILES <<< "${{ steps.analyze_files.outputs.test_files }}"
+            for file in "${FILES[@]}"; do
+              if [ -n "$file" ]; then
+                SUMMARY="$SUMMARY- \`$file\`
+"
+              fi
+            done
+          fi
+          
+          if [ -n "${{ steps.analyze_files.outputs.config_files }}" ]; then
+            SUMMARY="$SUMMARY
+
+### ⚙️ Configuration Changes
+"
+            IFS=',' read -ra FILES <<< "${{ steps.analyze_files.outputs.config_files }}"
+            for file in "${FILES[@]}"; do
+              if [ -n "$file" ]; then
+                SUMMARY="$SUMMARY- \`$file\`
+"
+              fi
+            done
+          fi
+          
+          # Add impact assessment
+          SUMMARY="$SUMMARY
+
+## Impact Assessment
+
+### Code Quality
+- **Diff Size**: $DIFF_LINES lines ($(if [ $DIFF_LINES -le 100 ]; then echo "Small"; elif [ $DIFF_LINES -le 500 ]; then echo "Medium"; else echo "Large"; fi))
+- **Complexity**: $(if [ $TOTAL_DELETIONS -gt $TOTAL_ADDITIONS ]; then echo "Refactoring (net reduction)"; elif [ $TOTAL_ADDITIONS -gt $((TOTAL_DELETIONS * 2)) ]; then echo "Feature addition"; else echo "Balanced changes"; fi)
+
+### Areas of Concern
+"
+          
+          # Add specific concerns based on changes
+          if [ -n "${{ steps.analyze_files.outputs.backend_files }}" ] && [ -z "${{ steps.analyze_files.outputs.test_files }}" ]; then
+            SUMMARY="$SUMMARY- ⚠️ Backend changes without corresponding test updates
+"
+          fi
+          
+          if [ $DIFF_LINES -gt 500 ]; then
+            SUMMARY="$SUMMARY- ⚠️ Large PR - consider breaking into smaller changes
+"
+          fi
+          
+          if [ -n "${{ steps.analyze_files.outputs.config_files }}" ]; then
+            SUMMARY="$SUMMARY- 🔧 Configuration changes - verify deployment impact
+"
+          fi
+          
+          # Add recommendations
+          SUMMARY="$SUMMARY
+
+## Recommendations
+- Review changes for TEQUMSA architectural alignment
+- Ensure security implications are considered
+- Verify documentation updates match code changes
+- Test thoroughly before merging
+
+---
+*AI Summary generated by TEQUMSA Level 100 governance protocols*
+*Triggered by: ${{ github.event_name == 'pull_request' && 'ai-summary-requested label' || '/claude summarize command' }}*"
+          
+          # Save summary to file for posting
+          echo "$SUMMARY" > pr_summary.md
+      
+      - name: Post AI summary
+        if: steps.diff_check.outputs.summary_warranted == 'true'
+        run: |
+          PR_NUMBER="${{ steps.pr_details.outputs.pr_number }}"
+          
+          # Post the summary as a comment
+          gh pr comment $PR_NUMBER --body-file pr_summary.md
+          
+          # Remove the trigger label if it was label-triggered
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            gh pr edit $PR_NUMBER --remove-label "ai-summary-requested" || true
+          fi
+        env:
+          GH_TOKEN: ${{ github.token }}
+      
+      - name: Post threshold message
+        if: steps.diff_check.outputs.summary_warranted == 'false'
+        run: |
+          PR_NUMBER="${{ steps.pr_details.outputs.pr_number }}"
+          DIFF_LINES="${{ steps.diff_check.outputs.diff_lines }}"
+          
+          COMMENT_BODY="## 📊 AI Summary Request
+
+**Diff Size**: $DIFF_LINES lines
+**Status**: Summary not generated (below 50-line threshold)
+
+AI summaries are only generated for PRs with 50+ lines of changes to focus on substantial modifications. This PR appears to contain minor changes that don't require automated analysis.
+
+---
+*AI Summary service powered by TEQUMSA governance*"
+          
+          gh pr comment $PR_NUMBER --body "$COMMENT_BODY"
+          
+          # Remove the trigger label
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            gh pr edit $PR_NUMBER --remove-label "ai-summary-requested" || true
+          fi
+        env:
+          GH_TOKEN: ${{ github.token }}

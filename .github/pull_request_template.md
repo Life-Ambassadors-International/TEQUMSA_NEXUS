@@ -184,6 +184,49 @@ Following Anthropic's Claude Code development methodologies
 ### Additional Review Comments
 <!-- Reviewers: Add specific feedback here -->
 
+## 🤖 AI Assistance Metadata
+<!-- Required for TEQUMSA AI governance compliance -->
+
+### AI Tools Used
+- [ ] Claude GitHub App
+- [ ] GitHub Copilot  
+- [ ] Other AI assistant: [specify]
+- [ ] No AI assistance used
+
+### AI Assistance Level
+- [ ] **Minimal** - AI used for basic suggestions only
+- [ ] **Moderate** - AI helped with code generation/review
+- [ ] **Significant** - Major portions AI-generated or AI-refactored
+- [ ] **Extensive** - Primary development done with AI assistance
+
+### AI-Generated Content
+<!-- Check all that apply -->
+- [ ] Code implementation
+- [ ] Test cases
+- [ ] Documentation
+- [ ] Commit messages
+- [ ] PR description
+- [ ] Configuration files
+
+### Human Oversight
+- [ ] All AI suggestions reviewed and validated
+- [ ] AI-generated code tested independently
+- [ ] AI recommendations aligned with TEQUMSA principles
+- [ ] Human decision-making maintained for architecture choices
+
+### Refactor Declaration
+<!-- Required if AI was used for refactoring -->
+- [ ] AI-assisted refactoring performed
+- [ ] Corresponding tests updated/added
+- [ ] Original functionality preserved
+- [ ] Performance impact assessed
+
+### Governance Compliance
+- [ ] Changes comply with AI governance policy
+- [ ] Critical paths reviewed if modified
+- [ ] Security implications considered
+- [ ] Documentation updated as needed
+
 ---
 
-**This PR follows [Anthropic's Claude Code methodologies](./Claude.md) for enhanced development workflows and team collaboration.**
+**This PR follows [Anthropic's Claude Code methodologies](./Claude.md) and [TEQUMSA AI governance policies](./AI_POLICY.md) for enhanced development workflows and ethical AI collaboration.**

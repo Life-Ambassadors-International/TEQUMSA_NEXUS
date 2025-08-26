@@ -1,0 +1,64 @@
+# CODEOWNERS for TEQUMSA Repository
+# This file defines code ownership and review requirements for different paths
+# Following TEQUMSA Level 100 governance and sovereignty principles
+
+# Global fallback - organization team as default reviewers
+* @Life-Ambassadors-International
+
+# Critical AI and Governance Files
+# These require explicit approval from the organization team
+/.claude.yml @Life-Ambassadors-International
+/AI_POLICY.md @Life-Ambassadors-International
+/GOVERNANCE_AI.md @Life-Ambassadors-International
+/CONTRIBUTING_AI_APPENDIX.md @Life-Ambassadors-International
+/TEQUMSA_L100_SYSTEM_PROMPT.md @Life-Ambassadors-International
+/CODEX_INSTRUCTIONS.md @Life-Ambassadors-International
+
+# AI Governance Workflows and Scripts
+/.github/workflows/ai-*.yml @Life-Ambassadors-International
+/scripts/aggregate_ai_metrics.py @Life-Ambassadors-International
+/scripts/refactor_test_guard.py @Life-Ambassadors-International
+/scripts/diff_utils.py @Life-Ambassadors-International
+
+# Security-Sensitive Paths
+# These paths contain or may contain security-critical functionality
+/src/security/ @Life-Ambassadors-International
+/src/crypto/ @Life-Ambassadors-International
+/backend/ai_service.py @Life-Ambassadors-International
+/scripts/check_secrets.py @Life-Ambassadors-International
+
+# Gaia Agent and Ethics Components
+# Consciousness simulation and ethical frameworks
+/gaia_agent/ @Life-Ambassadors-International
+/ethics/ @Life-Ambassadors-International
+
+# GitHub Configuration and Actions
+# Infrastructure and automation configuration
+/.github/ @Life-Ambassadors-International
+/.pre-commit-config.yaml @Life-Ambassadors-International
+
+# AI Metrics and Governance Data
+# Metrics, logs, and governance tracking
+/.ai-metrics/ @Life-Ambassadors-International
+/docs/AI_*.md @Life-Ambassadors-International
+
+# Core System Documentation
+# Foundational documentation that affects system understanding
+/README.md @Life-Ambassadors-International
+/DEVELOPMENT.md @Life-Ambassadors-International
+/Claude.md @Life-Ambassadors-International
+
+# Infrastructure and Deployment
+# Deployment, configuration, and infrastructure as code
+/infra/ @Life-Ambassadors-International
+/backend/Dockerfile @Life-Ambassadors-International
+/backend/requirements.txt @Life-Ambassadors-International
+/frontend/package.json @Life-Ambassadors-International
+
+# Test Infrastructure
+# Testing frameworks and critical test files
+/backend/test_*.py @Life-Ambassadors-International
+/scripts/generate_tests.py @Life-Ambassadors-International
+
+# Note: Individual file ownership can be overridden by more specific patterns
+# Pattern matching follows gitignore-style rules with most specific match winning
