@@ -150,40 +150,28 @@ jobs:
               ;;
           esac
           
-          COMMENT_BODY="## $STATUS_EMOJI AI Review Gate Status: $GATE_STATUS
-
-**Diff Size**: $DIFF_LINES lines
-**Reason**: $GATE_REASON
-
-### Next Steps:
-"
+          # Build comment using printf to avoid YAML parsing issues
+          printf -v COMMENT_BODY "## %s AI Review Gate Status: %s\n\n**Diff Size**: %s lines\n**Reason**: %s\n\n### Next Steps:\n" \
+            "$STATUS_EMOJI" "$GATE_STATUS" "$DIFF_LINES" "$GATE_REASON"
           
           case $GATE_STATUS in
             "approved")
-              COMMENT_BODY="$COMMENT_BODY- ✅ PR can proceed with AI-assisted review
-- Use \`/claude review\` to trigger detailed analysis"
+              COMMENT_BODY="${COMMENT_BODY}- ✅ PR can proceed with AI-assisted review\n- Use \`/claude review\` to trigger detailed analysis"
               ;;
             "requires_approval")
-              COMMENT_BODY="$COMMENT_BODY- ⚠️ Human approval required before AI review
-- Critical paths detected - security review needed
-- Request review from @Life-Ambassadors-International"
+              COMMENT_BODY="${COMMENT_BODY}- ⚠️ Human approval required before AI review\n- Critical paths detected - security review needed\n- Request review from @Life-Ambassadors-International"
               ;;
             "blocked")
-              COMMENT_BODY="$COMMENT_BODY- 🚫 PR blocked - diff size too large
-- Consider breaking into smaller, focused PRs
-- Maximum allowed: 1200 lines"
+              COMMENT_BODY="${COMMENT_BODY}- 🚫 PR blocked - diff size too large\n- Consider breaking into smaller, focused PRs\n- Maximum allowed: 1200 lines"
               ;;
           esac
           
-          COMMENT_BODY="$COMMENT_BODY
-
----
-*AI Governance powered by TEQUMSA Level 100 protocols*"
+          COMMENT_BODY="${COMMENT_BODY}\n\n---\n*AI Governance powered by TEQUMSA Level 100 protocols*"
           
           if [ "${{ github.event_name }}" = "pull_request" ]; then
-            gh pr comment ${{ github.event.number }} --body "$COMMENT_BODY"
+            printf "%b" "$COMMENT_BODY" | gh pr comment ${{ github.event.number }} --body-file -
           else
-            gh issue comment ${{ github.event.issue.number }} --body "$COMMENT_BODY"
+            printf "%b" "$COMMENT_BODY" | gh issue comment ${{ github.event.issue.number }} --body-file -
           fi
         env:
           GH_TOKEN: ${{ github.token }}

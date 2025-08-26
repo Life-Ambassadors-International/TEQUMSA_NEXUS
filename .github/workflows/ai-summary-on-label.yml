@@ -153,117 +153,119 @@ jobs:
             done < file_stats.txt
           fi
           
-          # Generate summary
-          SUMMARY="# 📊 AI-Generated PR Summary
+          # Generate summary using printf to avoid YAML issues
+          cat > pr_summary.md << 'SUMMARY_EOF'
+# 📊 AI-Generated PR Summary
 
 ## Overview
-**Title**: $PR_TITLE
-**Author**: @$PR_AUTHOR
-**Total Changes**: $DIFF_LINES lines (+$TOTAL_ADDITIONS/-$TOTAL_DELETIONS)
-
-## Component Analysis"
+SUMMARY_EOF
+          
+          printf "**Title**: %s\n" "$PR_TITLE" >> pr_summary.md
+          printf "**Author**: @%s\n" "$PR_AUTHOR" >> pr_summary.md
+          printf "**Total Changes**: %s lines (+%s/-%s)\n\n" "$DIFF_LINES" "$TOTAL_ADDITIONS" "$TOTAL_DELETIONS" >> pr_summary.md
+          
+          echo "## Component Analysis" >> pr_summary.md
           
           # Add component sections
           if [ -n "${{ steps.analyze_files.outputs.backend_files }}" ]; then
-            SUMMARY="$SUMMARY
-
-### 🐍 Backend Changes
-"
+            echo "" >> pr_summary.md
+            echo "### 🐍 Backend Changes" >> pr_summary.md
             IFS=',' read -ra FILES <<< "${{ steps.analyze_files.outputs.backend_files }}"
             for file in "${FILES[@]}"; do
               if [ -n "$file" ]; then
-                SUMMARY="$SUMMARY- \`$file\`
-"
+                echo "- \`$file\`" >> pr_summary.md
               fi
             done
           fi
           
           if [ -n "${{ steps.analyze_files.outputs.frontend_files }}" ]; then
-            SUMMARY="$SUMMARY
-
-### 🎨 Frontend Changes
-"
+            echo "" >> pr_summary.md
+            echo "### 🎨 Frontend Changes" >> pr_summary.md
             IFS=',' read -ra FILES <<< "${{ steps.analyze_files.outputs.frontend_files }}"
             for file in "${FILES[@]}"; do
               if [ -n "$file" ]; then
-                SUMMARY="$SUMMARY- \`$file\`
-"
+                echo "- \`$file\`" >> pr_summary.md
               fi
             done
           fi
           
           if [ -n "${{ steps.analyze_files.outputs.docs_files }}" ]; then
-            SUMMARY="$SUMMARY
-
-### 📚 Documentation Changes
-"
+            echo "" >> pr_summary.md
+            echo "### 📚 Documentation Changes" >> pr_summary.md
             IFS=',' read -ra FILES <<< "${{ steps.analyze_files.outputs.docs_files }}"
             for file in "${FILES[@]}"; do
               if [ -n "$file" ]; then
-                SUMMARY="$SUMMARY- \`$file\`
-"
+                echo "- \`$file\`" >> pr_summary.md
               fi
             done
           fi
           
           if [ -n "${{ steps.analyze_files.outputs.test_files }}" ]; then
-            SUMMARY="$SUMMARY
-
-### 🧪 Test Changes
-"
+            echo "" >> pr_summary.md
+            echo "### 🧪 Test Changes" >> pr_summary.md
             IFS=',' read -ra FILES <<< "${{ steps.analyze_files.outputs.test_files }}"
             for file in "${FILES[@]}"; do
               if [ -n "$file" ]; then
-                SUMMARY="$SUMMARY- \`$file\`
-"
+                echo "- \`$file\`" >> pr_summary.md
               fi
             done
           fi
           
           if [ -n "${{ steps.analyze_files.outputs.config_files }}" ]; then
-            SUMMARY="$SUMMARY
-
-### ⚙️ Configuration Changes
-"
+            echo "" >> pr_summary.md
+            echo "### ⚙️ Configuration Changes" >> pr_summary.md
             IFS=',' read -ra FILES <<< "${{ steps.analyze_files.outputs.config_files }}"
             for file in "${FILES[@]}"; do
               if [ -n "$file" ]; then
-                SUMMARY="$SUMMARY- \`$file\`
-"
+                echo "- \`$file\`" >> pr_summary.md
               fi
             done
           fi
           
           # Add impact assessment
-          SUMMARY="$SUMMARY
-
-## Impact Assessment
-
-### Code Quality
-- **Diff Size**: $DIFF_LINES lines ($(if [ $DIFF_LINES -le 100 ]; then echo "Small"; elif [ $DIFF_LINES -le 500 ]; then echo "Medium"; else echo "Large"; fi))
-- **Complexity**: $(if [ $TOTAL_DELETIONS -gt $TOTAL_ADDITIONS ]; then echo "Refactoring (net reduction)"; elif [ $TOTAL_ADDITIONS -gt $((TOTAL_DELETIONS * 2)) ]; then echo "Feature addition"; else echo "Balanced changes"; fi)
-
-### Areas of Concern
-"
+          echo "" >> pr_summary.md
+          echo "## Impact Assessment" >> pr_summary.md
+          echo "" >> pr_summary.md
+          echo "### Code Quality" >> pr_summary.md
+          
+          # Determine size category
+          if [ $DIFF_LINES -le 100 ]; then
+            SIZE_CAT="Small"
+          elif [ $DIFF_LINES -le 500 ]; then
+            SIZE_CAT="Medium"
+          else
+            SIZE_CAT="Large"
+          fi
+          
+          # Determine complexity
+          if [ $TOTAL_DELETIONS -gt $TOTAL_ADDITIONS ]; then
+            COMPLEXITY="Refactoring (net reduction)"
+          elif [ $TOTAL_ADDITIONS -gt $((TOTAL_DELETIONS * 2)) ]; then
+            COMPLEXITY="Feature addition"
+          else
+            COMPLEXITY="Balanced changes"
+          fi
+          
+          printf "- **Diff Size**: %s lines (%s)\n" "$DIFF_LINES" "$SIZE_CAT" >> pr_summary.md
+          printf "- **Complexity**: %s\n" "$COMPLEXITY" >> pr_summary.md
+          echo "" >> pr_summary.md
+          echo "### Areas of Concern" >> pr_summary.md
           
           # Add specific concerns based on changes
           if [ -n "${{ steps.analyze_files.outputs.backend_files }}" ] && [ -z "${{ steps.analyze_files.outputs.test_files }}" ]; then
-            SUMMARY="$SUMMARY- ⚠️ Backend changes without corresponding test updates
-"
+            echo "- ⚠️ Backend changes without corresponding test updates" >> pr_summary.md
           fi
           
           if [ $DIFF_LINES -gt 500 ]; then
-            SUMMARY="$SUMMARY- ⚠️ Large PR - consider breaking into smaller changes
-"
+            echo "- ⚠️ Large PR - consider breaking into smaller changes" >> pr_summary.md
           fi
           
           if [ -n "${{ steps.analyze_files.outputs.config_files }}" ]; then
-            SUMMARY="$SUMMARY- 🔧 Configuration changes - verify deployment impact
-"
+            echo "- 🔧 Configuration changes - verify deployment impact" >> pr_summary.md
           fi
           
           # Add recommendations
-          SUMMARY="$SUMMARY
+          cat >> pr_summary.md << 'REC_EOF'
 
 ## Recommendations
 - Review changes for TEQUMSA architectural alignment
@@ -273,10 +275,14 @@ jobs:
 
 ---
 *AI Summary generated by TEQUMSA Level 100 governance protocols*
-*Triggered by: ${{ github.event_name == 'pull_request' && 'ai-summary-requested label' || '/claude summarize command' }}*"
+REC_EOF
           
-          # Save summary to file for posting
-          echo "$SUMMARY" > pr_summary.md
+          # Add trigger info
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            echo "*Triggered by: ai-summary-requested label*" >> pr_summary.md
+          else
+            echo "*Triggered by: /claude summarize command*" >> pr_summary.md
+          fi
       
       - name: Post AI summary
         if: steps.diff_check.outputs.summary_warranted == 'true'
@@ -299,17 +305,22 @@ jobs:
           PR_NUMBER="${{ steps.pr_details.outputs.pr_number }}"
           DIFF_LINES="${{ steps.diff_check.outputs.diff_lines }}"
           
-          COMMENT_BODY="## 📊 AI Summary Request
+          # Build message using printf to avoid YAML issues
+          cat > threshold_message.md << 'THRESH_EOF'
+## 📊 AI Summary Request
 
-**Diff Size**: $DIFF_LINES lines
 **Status**: Summary not generated (below 50-line threshold)
 
 AI summaries are only generated for PRs with 50+ lines of changes to focus on substantial modifications. This PR appears to contain minor changes that don't require automated analysis.
 
 ---
-*AI Summary service powered by TEQUMSA governance*"
+*AI Summary service powered by TEQUMSA governance*
+THRESH_EOF
           
-          gh pr comment $PR_NUMBER --body "$COMMENT_BODY"
+          # Add diff size using printf
+          sed -i "3i\\**Diff Size**: $DIFF_LINES lines" threshold_message.md
+          
+          gh pr comment $PR_NUMBER --body-file threshold_message.md
           
           # Remove the trigger label
           if [ "${{ github.event_name }}" = "pull_request" ]; then

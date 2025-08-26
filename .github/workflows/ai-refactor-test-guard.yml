@@ -145,48 +145,27 @@ except:
             STATUS="PASSED"
           fi
           
-          COMMENT_BODY="## ${STATUS_EMOJI} AI Refactor Test Guard: ${STATUS}
-
-**AI Refactor Detected**: ${AI_REFACTOR}
-**Message**: ${GUARD_MESSAGE}
-
-### Refactored Files:
-"
+          printf -v COMMENT_BODY "## %s AI Refactor Test Guard: %s\n\n**AI Refactor Detected**: %s\n**Message**: %s\n\n### Refactored Files:\n" \
+            "$STATUS_EMOJI" "$STATUS" "$AI_REFACTOR" "$GUARD_MESSAGE"
           
           if [ "$REFACTOR_FILES" != "none" ]; then
             IFS=',' read -ra FILES <<< "$REFACTOR_FILES"
             for file in "${FILES[@]}"; do
-              COMMENT_BODY="$COMMENT_BODY- \`${file}\`
-"
+              COMMENT_BODY="${COMMENT_BODY}- \`${file}\`\n"
             done
           else
-            COMMENT_BODY="$COMMENT_BODY- No AI refactor files detected
-"
+            COMMENT_BODY="${COMMENT_BODY}- No AI refactor files detected\n"
           fi
           
           if [ "$TEST_GUARD_FAILED" = "true" ]; then
-            COMMENT_BODY="$COMMENT_BODY
-### ⚠️ Action Required:
-- AI-driven refactoring detected without corresponding test updates
-- Please ensure tests are updated to cover refactored functionality
-- Add tests for new code paths or modified behavior
-- Update existing tests if interfaces have changed
-
-### Compliance:
-This check enforces TEQUMSA AI governance policy requiring test updates for AI-driven refactors to maintain code quality and prevent regressions."
+            COMMENT_BODY="${COMMENT_BODY}\n### ⚠️ Action Required:\n- AI-driven refactoring detected without corresponding test updates\n- Please ensure tests are updated to cover refactored functionality\n- Add tests for new code paths or modified behavior\n- Update existing tests if interfaces have changed\n\n### Compliance:\nThis check enforces TEQUMSA AI governance policy requiring test updates for AI-driven refactors to maintain code quality and prevent regressions."
           else
-            COMMENT_BODY="$COMMENT_BODY
-### ✅ Compliance Status:
-- Test requirements satisfied for AI refactoring
-- Code quality governance maintained"
+            COMMENT_BODY="${COMMENT_BODY}\n### ✅ Compliance Status:\n- Test requirements satisfied for AI refactoring\n- Code quality governance maintained"
           fi
           
-          COMMENT_BODY="$COMMENT_BODY
-
----
-*Refactor guard powered by TEQUMSA AI governance*"
+          COMMENT_BODY="${COMMENT_BODY}\n\n---\n*Refactor guard powered by TEQUMSA AI governance*"
           
-          gh pr comment ${{ github.event.number }} --body "$COMMENT_BODY"
+          printf "%b" "$COMMENT_BODY" | gh pr comment ${{ github.event.number }} --body-file -
         env:
           GH_TOKEN: ${{ github.token }}
       

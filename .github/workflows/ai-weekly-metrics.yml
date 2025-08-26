@@ -64,8 +64,9 @@ jobs:
           START_DATE="${{ steps.date_range.outputs.start_date }}"
           END_DATE="${{ steps.date_range.outputs.end_date }}"
           
-          # Get PRs from the last week
+          # Get PRs from the last week and set as environment variable
           PRS_JSON=$(gh pr list --state all --limit 100 --json number,title,author,createdAt,closedAt,labels,comments)
+          export PRS_JSON
           
           # Filter PRs from last week and analyze AI involvement
           python3 << 'EOF'
@@ -73,10 +74,14 @@ jobs:
           import sys
           from datetime import datetime, timedelta
           
-          # Load PR data
-          prs_data = json.loads('''${PRS_JSON}''')
-          start_date = datetime.fromisoformat('${START_DATE}')
-          end_date = datetime.fromisoformat('${END_DATE}')
+          # Load PR data from environment
+          prs_json = os.environ.get('PRS_JSON', '[]')
+          start_date_str = os.environ.get('START_DATE', '')
+          end_date_str = os.environ.get('END_DATE', '')
+          
+          prs_data = json.loads(prs_json)
+          start_date = datetime.fromisoformat(start_date_str)
+          end_date = datetime.fromisoformat(end_date_str)
           
           metrics = {
               'total_prs': 0,
@@ -117,27 +122,26 @@ jobs:
                   if 'security' in pr_labels:
                       metrics['security_reviews'] += 1
           
-          # Calculate averages
+          # Calculate averages and set environment variables
           if metrics['total_prs'] > 0:
-              print(f"total_prs={metrics['total_prs']}")
-              print(f"ai_assisted_prs={metrics['ai_assisted_prs']}")
-              print(f"ai_reviewed_prs={metrics['ai_reviewed_prs']}")
-              print(f"refactor_guard_triggered={metrics['refactor_guard_triggered']}")
-              print(f"auto_labeled_prs={metrics['auto_labeled_prs']}")
-              print(f"security_reviews={metrics['security_reviews']}")
-              
               ai_adoption_rate = round((metrics['ai_assisted_prs'] / metrics['total_prs']) * 100, 1)
-              print(f"ai_adoption_rate={ai_adoption_rate}")
           else:
-              print("total_prs=0")
-              print("ai_assisted_prs=0")
-              print("ai_reviewed_prs=0")
-              print("refactor_guard_triggered=0")
-              print("auto_labeled_prs=0")
-              print("security_reviews=0")
-              print("ai_adoption_rate=0")
+              ai_adoption_rate = 0
+          
+          # Write to GitHub environment
+          with open(os.environ['GITHUB_ENV'], 'a') as f:
+              f.write(f"TOTAL_PRS={metrics['total_prs']}\n")
+              f.write(f"AI_ASSISTED_PRS={metrics['ai_assisted_prs']}\n")
+              f.write(f"AI_REVIEWED_PRS={metrics['ai_reviewed_prs']}\n")
+              f.write(f"REFACTOR_GUARD_TRIGGERED={metrics['refactor_guard_triggered']}\n")
+              f.write(f"AUTO_LABELED_PRS={metrics['auto_labeled_prs']}\n")
+              f.write(f"SECURITY_REVIEWS={metrics['security_reviews']}\n")
+              f.write(f"AI_ADOPTION_RATE={ai_adoption_rate}\n")
+              f.write(f"SUMMARIES_GENERATED=0\n")  # Default for now
           EOF
         env:
+          START_DATE: ${{ steps.date_range.outputs.start_date }}
+          END_DATE: ${{ steps.date_range.outputs.end_date }}
           GH_TOKEN: ${{ github.token }}
       
       - name: Run metrics aggregation script
@@ -155,65 +159,98 @@ jobs:
           END_DATE="${{ steps.date_range.outputs.end_date }}"
           REPORT_FILE=".ai-metrics/weekly-report-$(date +%Y-%m-%d).md"
           
-          # Create weekly report
-          cat > "$REPORT_FILE" << EOF
+          # Create weekly report using cat to avoid YAML parsing issues
+          cat > "$REPORT_FILE" << 'REPORT_EOF'
 # TEQUMSA AI Governance Weekly Metrics Report
-
-**Report Period**: ${START_DATE} to ${END_DATE}
-**Generated**: $(date -u +"%Y-%m-%d %H:%M:%S UTC")
-
+REPORT_EOF
+          
+          printf "\n**Report Period**: %s to %s\n" "$START_DATE" "$END_DATE" >> "$REPORT_FILE"
+          printf "**Generated**: %s\n\n" "$(date -u +"%Y-%m-%d %H:%M:%S UTC")" >> "$REPORT_FILE"
+          
+          cat >> "$REPORT_FILE" << 'METRICS_EOF'
 ## 📊 Pull Request Activity
 
-- **Total PRs**: \${{ env.total_prs || 0 }}
-- **AI-Assisted PRs**: \${{ env.ai_assisted_prs || 0 }}
-- **AI-Reviewed PRs**: \${{ env.ai_reviewed_prs || 0 }}
-- **Auto-Labeled PRs**: \${{ env.auto_labeled_prs || 0 }}
-- **AI Adoption Rate**: \${{ env.ai_adoption_rate || 0 }}%
+METRICS_EOF
+          
+          # Add metrics using environment variables
+          printf -- "- **Total PRs**: %s\n" "${TOTAL_PRS:-0}" >> "$REPORT_FILE"
+          printf -- "- **AI-Assisted PRs**: %s\n" "${AI_ASSISTED_PRS:-0}" >> "$REPORT_FILE"
+          printf -- "- **AI-Reviewed PRs**: %s\n" "${AI_REVIEWED_PRS:-0}" >> "$REPORT_FILE"
+          printf -- "- **Auto-Labeled PRs**: %s\n" "${AUTO_LABELED_PRS:-0}" >> "$REPORT_FILE"
+          printf -- "- **AI Adoption Rate**: %s%%\n\n" "${AI_ADOPTION_RATE:-0}" >> "$REPORT_FILE"
 
+          cat >> "$REPORT_FILE" << 'GOV_EOF'
 ## 🛡️ Governance Activity
 
-- **Refactor Guards Triggered**: \${{ env.refactor_guard_triggered || 0 }}
-- **Security Reviews**: \${{ env.security_reviews || 0 }}
-- **Summaries Generated**: \${{ env.summaries_generated || 0 }}
-
+GOV_EOF
+          
+          printf -- "- **Refactor Guards Triggered**: %s\n" "${REFACTOR_GUARD_TRIGGERED:-0}" >> "$REPORT_FILE"
+          printf -- "- **Security Reviews**: %s\n" "${SECURITY_REVIEWS:-0}" >> "$REPORT_FILE"
+          printf -- "- **Summaries Generated**: %s\n\n" "${SUMMARIES_GENERATED:-0}" >> "$REPORT_FILE"
+          
+          cat >> "$REPORT_FILE" << 'TRENDS_EOF'
 ## 📈 Trends
 
 ### AI Adoption
-EOF
+TRENDS_EOF
           
           # Add trend analysis
-          if [ "\${{ env.ai_adoption_rate || 0 }}" -gt 50 ]; then
-            echo "- ✅ High AI adoption rate (>\${{ env.ai_adoption_rate }}%)" >> "$REPORT_FILE"
-          elif [ "\${{ env.ai_adoption_rate || 0 }}" -gt 25 ]; then
-            echo "- ⚠️ Moderate AI adoption rate (\${{ env.ai_adoption_rate }}%)" >> "$REPORT_FILE"
+          ADOPTION_RATE="${AI_ADOPTION_RATE:-0}"
+          if [ "$ADOPTION_RATE" -gt 50 ]; then
+            echo "- ✅ High AI adoption rate (>$ADOPTION_RATE%)" >> "$REPORT_FILE"
+          elif [ "$ADOPTION_RATE" -gt 25 ]; then
+            echo "- ⚠️ Moderate AI adoption rate ($ADOPTION_RATE%)" >> "$REPORT_FILE"
           else
-            echo "- 📉 Low AI adoption rate (\${{ env.ai_adoption_rate }}%)" >> "$REPORT_FILE"
+            echo "- 📉 Low AI adoption rate ($ADOPTION_RATE%)" >> "$REPORT_FILE"
           fi
           
-          cat >> "$REPORT_FILE" << EOF
+          cat >> "$REPORT_FILE" << 'QUALITY_EOF'
 
 ### Quality Indicators
-- **Guard Success Rate**: \$([ "\${{ env.refactor_guard_triggered || 0 }}" -gt 0 ] && echo "Active" || echo "No refactors detected")
-- **Security Awareness**: \$([ "\${{ env.security_reviews || 0 }}" -gt 0 ] && echo "Active" || echo "No security flags")
+QUALITY_EOF
+          
+          REFACTOR_COUNT="${REFACTOR_GUARD_TRIGGERED:-0}"
+          SECURITY_COUNT="${SECURITY_REVIEWS:-0}"
+          
+          if [ "$REFACTOR_COUNT" -gt 0 ]; then
+            GUARD_STATUS="Active"
+          else
+            GUARD_STATUS="No refactors detected"
+          fi
+          
+          if [ "$SECURITY_COUNT" -gt 0 ]; then
+            SECURITY_STATUS="Active"
+          else
+            SECURITY_STATUS="No security flags"
+          fi
+          
+          printf -- "- **Guard Success Rate**: %s\n" "$GUARD_STATUS" >> "$REPORT_FILE"
+          printf -- "- **Security Awareness**: %s\n" "$SECURITY_STATUS" >> "$REPORT_FILE"
+          
+          cat >> "$REPORT_FILE" << 'REC_EOF'
 
 ## 🎯 Recommendations
 
-EOF
+REC_EOF
           
           # Add recommendations based on metrics
-          if [ "\${{ env.ai_adoption_rate || 0 }}" -lt 25 ]; then
+          ADOPTION_RATE="${AI_ADOPTION_RATE:-0}"
+          SECURITY_COUNT="${SECURITY_REVIEWS:-0}"
+          TOTAL_COUNT="${TOTAL_PRS:-0}"
+          
+          if [ "$ADOPTION_RATE" -lt 25 ]; then
             echo "- Consider team training on AI-assisted development workflows" >> "$REPORT_FILE"
           fi
           
-          if [ "\${{ env.security_reviews || 0 }}" -eq 0 ]; then
+          if [ "$SECURITY_COUNT" -eq 0 ]; then
             echo "- Review security labeling and detection accuracy" >> "$REPORT_FILE"
           fi
           
-          if [ "\${{ env.total_prs || 0 }}" -eq 0 ]; then
+          if [ "$TOTAL_COUNT" -eq 0 ]; then
             echo "- Low PR activity - consider encouraging more frequent commits" >> "$REPORT_FILE"
           fi
           
-          cat >> "$REPORT_FILE" << EOF
+          cat >> "$REPORT_FILE" << 'FINAL_EOF'
 
 ## 📋 Action Items
 
@@ -224,8 +261,9 @@ EOF
 
 ---
 *Generated by TEQUMSA AI Governance Weekly Metrics*
-*Repository: \${{ github.repository }}*
-EOF
+FINAL_EOF
+          
+          printf "*Repository: %s*\n" "${{ github.repository }}" >> "$REPORT_FILE"
           
           echo "report_file=$REPORT_FILE" >> $GITHUB_OUTPUT
       
@@ -234,9 +272,16 @@ EOF
           # Append to usage log
           USAGE_LOG=".ai-metrics/usage.jsonl"
           
-          cat >> "$USAGE_LOG" << EOF
-{"timestamp": "\$(date -u +%Y-%m-%dT%H:%M:%SZ)", "type": "weekly_metrics", "total_prs": \${{ env.total_prs || 0 }}, "ai_assisted_prs": \${{ env.ai_assisted_prs || 0 }}, "ai_adoption_rate": \${{ env.ai_adoption_rate || 0 }}, "period_start": "\${{ steps.date_range.outputs.start_date }}", "period_end": "\${{ steps.date_range.outputs.end_date }}"}
-EOF
+          # Build JSON entry using printf to avoid YAML issues
+          TIMESTAMP=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+          TOTAL_PRS="${TOTAL_PRS:-0}"
+          AI_ASSISTED="${AI_ASSISTED_PRS:-0}"
+          ADOPTION_RATE="${AI_ADOPTION_RATE:-0}"
+          START_DATE="${{ steps.date_range.outputs.start_date }}"
+          END_DATE="${{ steps.date_range.outputs.end_date }}"
+          
+          printf '{"timestamp": "%s", "type": "weekly_metrics", "total_prs": %s, "ai_assisted_prs": %s, "ai_adoption_rate": %s, "period_start": "%s", "period_end": "%s"}\n' \
+            "$TIMESTAMP" "$TOTAL_PRS" "$AI_ASSISTED" "$ADOPTION_RATE" "$START_DATE" "$END_DATE" >> "$USAGE_LOG"
       
       - name: Commit metrics report
         run: |

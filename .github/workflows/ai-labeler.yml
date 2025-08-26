@@ -232,10 +232,9 @@ jobs:
           DIFF_LINES="${{ steps.pr_size.outputs.diff_lines }}"
           SIZE_LABEL="${{ steps.pr_size.outputs.size_label }}"
           
-          COMMENT_BODY="## 🏷️ AI Auto-Labeler Summary
-
-**PR Size**: ${DIFF_LINES} lines (${SIZE_LABEL})
-**Components**: "
+          # Build comment using printf to avoid YAML parsing issues  
+          printf -v COMMENT_BODY "## 🏷️ AI Auto-Labeler Summary\n\n**PR Size**: %s lines (%s)\n**Components**: " \
+            "$DIFF_LINES" "$SIZE_LABEL"
           
           COMPONENTS=()
           [ "${{ steps.analyze_changes.outputs.backend_changes }}" = "true" ] && COMPONENTS+=("Backend")
@@ -246,27 +245,22 @@ jobs:
           [ "${{ steps.analyze_changes.outputs.security_changes }}" = "true" ] && COMPONENTS+=("Security")
           
           if [ ${#COMPONENTS[@]} -eq 0 ]; then
-            COMMENT_BODY="$COMMENT_BODY None detected"
+            COMMENT_BODY="${COMMENT_BODY} None detected"
           else
             IFS=', '
-            COMMENT_BODY="$COMMENT_BODY${COMPONENTS[*]}"
+            COMMENT_BODY="${COMMENT_BODY}${COMPONENTS[*]}"
           fi
           
-          COMMENT_BODY="$COMMENT_BODY
-**Status**: "
+          COMMENT_BODY="${COMMENT_BODY}\n**Status**: "
           
           if [ "$READINESS" = "ready" ]; then
-            COMMENT_BODY="$COMMENT_BODY✅ Ready for review"
+            COMMENT_BODY="${COMMENT_BODY}✅ Ready for review"
           else
-            COMMENT_BODY="$COMMENT_BODY⚠️ Needs work
-**Issues to address**: ${{ steps.readiness.outputs.readiness_issues }}"
+            COMMENT_BODY="${COMMENT_BODY}⚠️ Needs work\n**Issues to address**: ${{ steps.readiness.outputs.readiness_issues }}"
           fi
           
-          COMMENT_BODY="$COMMENT_BODY
-
----
-*Auto-labeling powered by TEQUMSA AI governance*"
+          COMMENT_BODY="${COMMENT_BODY}\n\n---\n*Auto-labeling powered by TEQUMSA AI governance*"
           
-          gh pr comment ${{ github.event.number }} --body "$COMMENT_BODY"
+          printf "%b" "$COMMENT_BODY" | gh pr comment ${{ github.event.number }} --body-file -
         env:
           GH_TOKEN: ${{ github.token }}
