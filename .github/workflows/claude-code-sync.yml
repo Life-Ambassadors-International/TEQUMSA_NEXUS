@@ -1,0 +1,51 @@
+name: Claude Code Submodule Sync
+
+on:
+  workflow_dispatch: {}
+  schedule:
+    - cron: '0 5 * * 1'  # Weekly Monday 05:00 UTC
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository (with submodules)
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Update submodule to latest main
+        run: |
+          git config user.name 'github-actions'
+          git config user.email 'github-actions@users.noreply.github.com'
+          git submodule update --remote --merge external/claude-code
+          CHANGES="$(git status --porcelain external/claude-code)"
+          if [ -n "$CHANGES" ]; then
+            git add external/claude-code
+            NEW_COMMIT=$(git -C external/claude-code rev-parse --short HEAD)
+            git commit -m "chore(submodule): update claude-code to $NEW_COMMIT"
+            BRANCH="automation/claude-code-sync-${NEW_COMMIT}"
+            git branch $BRANCH
+            git push origin $BRANCH
+            echo "branch=$BRANCH" >> $GITHUB_OUTPUT
+          else
+            echo "No updates found.";
+          fi
+        id: update
+
+      - name: Open PR (if changes)
+        if: steps.update.outputs.branch
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ steps.update.outputs.branch }}
+          title: "chore: sync claude-code submodule"
+          body: |
+            Automated submodule sync.
+            - Updated claude-code to latest main commit.
+            Refer to INTEGRATIONS/CLAUDE_CODE.md for procedure.
+          labels: submodule, automation

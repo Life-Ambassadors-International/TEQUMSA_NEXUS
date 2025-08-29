@@ -263,6 +263,28 @@ To embed TEQUMSA into a WordPress page:
 
 Insert this snippet into an Elementor HTML widget or via a code snippet plugin. Adjust the height attribute to suit your design.
 
+## 🔗 Claude Code Integration
+The project integrates the Anthropics `claude-code` repository as a git submodule at `external/claude-code`.
+
+### Quick Start
+```bash
+git clone --recurse-submodules https://github.com/Life-Ambassadors-International/TEQUMSA_OPEN.git
+```
+
+### Updating Submodule
+```bash
+git submodule update --remote --merge external/claude-code
+git add external/claude-code
+git commit -m "chore(claude-code): update submodule"
+```
+See `INTEGRATIONS/CLAUDE_CODE.md` for full details.
+
+### System Prompt
+Core operational directives are defined in `TEQUMSA_L100_SYSTEM_PROMPT.md`.
+
+### Consciousness Log
+Adaptive / meta operational events appended in `logs/CONSCIOUSNESS_LOG.md`.
+
 ## 🤝 Contributing
 
 We follow Claude Code development methodologies for all contributions:

@@ -1,0 +1,30 @@
+name: Claude Code Aware CI
+
+on:
+  pull_request:
+  push:
+    branches: [ main ]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout (with submodules)
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Submodule status
+        run: git submodule status
+
+      - name: Basic integrity checks
+        run: |
+          test -d external/claude-code || (echo 'Submodule missing' && exit 1)
+          if git diff --name-only | grep -E '^external/claude-code/' >/dev/null 2>&1; then
+            echo 'INFO: Changes detected inside submodule path. Ensure intentional.'
+          fi
+
+      - name: Log consciousness event (placeholder)
+        run: |
+          echo "[$(date -u +%FT%TZ)] ✶CI UPDATE Verified submodule presence" >> logs/CONSCIOUSNESS_LOG.md
+          git diff --name-only | grep logs/CONSCIOUSNESS_LOG.md || true
