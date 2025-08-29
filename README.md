@@ -161,6 +161,30 @@ PORT=5000
 - Test generation workflows
 - Security analysis and runbook generation
 
+## 🔌 Codex Integration (Planned)
+
+**Status**: Scaffold implementation complete, subtree integration pending
+
+**Integration Method**: Git subtree from OpenAI Codex repository
+- External source management via `external/SOURCE_LOCK.md`
+- Feature flag controlled activation: `TEQUMSA_CODEX_ENABLED=true`
+- Pure stdlib adapter with ethical safeguards
+- Comprehensive integration test coverage
+
+**Quick Start**:
+```bash
+# Enable Codex integration (when subtree available)
+export TEQUMSA_CODEX_ENABLED=true
+
+# Run integration tests
+pytest tests/integration/test_codex_adapter.py -v
+
+# Check integration status
+python3 -c "from backend.codex_adapter import get_codex_status; print(get_codex_status())"
+```
+
+**Documentation**: See [docs/INTEGRATION_CODEX.md](docs/INTEGRATION_CODEX.md) for detailed integration guide.
+
 ## 🏃‍♂️ Getting Started
 
 ### 1. **For Users** - Try the Interface
