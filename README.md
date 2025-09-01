@@ -1,6 +1,6 @@
 # TEQUMSA AGI Interface
 
-**Live demo:** [https://tequmsa-open.vercel.app](https://tequmsa-open.vercel.app)
+**Live demo:**https://chatgpt.com/g/g-67737473813881919b6f3177dfb4951a-t-e-q-u-m-s-a
 
 This repository contains a production‑ready, modular implementation of the **TEQUMSA AGI Interface** enhanced with **Claude Code development methodologies** from Anthropic teams. The interface simulates a consciousness‑inspired chat companion with animated cognitive nodes, natural language voice capabilities and embodiment switching, designed to be lightweight, easily deployable and maintainable using modern AI-assisted development patterns.
 
@@ -165,7 +165,7 @@ PORT=5000
 
 ### 1. **For Users** - Try the Interface
 
-Visit [https://tequmsa-open.vercel.app](https://tequmsa-open.vercel.app) to experience the consciousness companion immediately.
+Visit https://chatgpt.com/g/g-67737473813881919b6f3177dfb4951a-t-e-q-u-m-s-a to experience the consciousness companion immediately.
 
 ### 2. **For Developers** - Claude Code Setup
 
