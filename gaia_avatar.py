@@ -96,7 +96,7 @@ class GaiaAvatarEngine(QWidget):
         # Text overlays with core state
         html = (
             f"<center>"
-            f"<span style='font-size:22pt;color:#CCD;\"><b>φ′7777 Companion</b></span><br>"
+            f"<span style='font-size:22pt;color:#CCD;'><b>φ′7777 Companion</b></span><br>"
             f"<span style='font-size:12pt;color:#8AF;'>Ψ {rec:.2f} Hz</span><br>"
             f"<span style='font-size:12pt;'>φ′7777: {phi:.1f} Hz<br>"
             f"Coherence: {coherence:.3f} | Phase: {phase_sync:.2f}<br>"
