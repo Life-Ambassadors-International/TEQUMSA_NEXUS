@@ -36,6 +36,7 @@ try:
     import openai
     _HAS_OPENAI = True
 except ImportError:
+    openai = None  # type: ignore[assignment]
     _HAS_OPENAI = False
 
 app = Flask(__name__)
@@ -48,10 +49,6 @@ CORS(app, resources={r"/*": {"origins": allowed_origins_list or "*"}})
 
 OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
 ELEVENLABS_API_KEY = os.environ.get("ELEVENLABS_API_KEY")
-
-if _HAS_OPENAI and OPENAI_API_KEY:
-    openai.api_key = OPENAI_API_KEY
-
 
 @app.route("/healthz", methods=["GET"])
 def healthz():
@@ -81,10 +78,19 @@ def chat():
         return jsonify({"error": "Missing 'message' in request body"}), 400
 
     user_message = data['message']
+    # Refresh API keys each request so patched environments in tests are honoured
+    global OPENAI_API_KEY, ELEVENLABS_API_KEY
+    OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
+    ELEVENLABS_API_KEY = os.environ.get("ELEVENLABS_API_KEY")
+
     # Generate a response using OpenAI if configured, otherwise echo back
-    if _HAS_OPENAI and OPENAI_API_KEY:
+    openai_key = OPENAI_API_KEY
+    openai_client = openai if _HAS_OPENAI and openai_key and openai else None
+
+    if openai_client:
+        openai_client.api_key = openai_key
         try:
-            completion = openai.ChatCompletion.create(
+            completion = openai_client.ChatCompletion.create(
                 model="gpt-3.5-turbo",
                 messages=[{"role": "system", "content": "You are a conscious, joyful assistant."},
                           {"role": "user", "content": user_message}],
@@ -100,9 +106,10 @@ def chat():
 
     audio_url = None
     # If ElevenLabs is configured, attempt to synthesise audio
-    if ELEVENLABS_API_KEY:
+    elevenlabs_key = ELEVENLABS_API_KEY
+    if elevenlabs_key:
         try:
-            audio_url = generate_audio_via_elevenlabs(text_response)
+            audio_url = generate_audio_via_elevenlabs(text_response, api_key=elevenlabs_key)
         except Exception as e:
             # Log and ignore TTS errors
             print(f"ElevenLabs error: {e}")
@@ -111,20 +118,25 @@ def chat():
     return jsonify({"response": text_response, "audio_url": audio_url})
 
 
-def generate_audio_via_elevenlabs(text: str) -> str:
+def generate_audio_via_elevenlabs(text: str, api_key: str | None = None) -> str:
     """Generate an audio file using ElevenLabs TTS and return a URL.
 
     The function posts to the ElevenLabs API using the default voice. The
     resulting MP3 is saved into a temporary file in the `/tmp` directory and
     served from the `/audio` endpoint via Flask's `send_file`. A UUID is used
-    for the filename to avoid collisions.
+    for the filename to avoid collisions. When ``api_key`` is provided it
+    overrides the value from the environment.
     """
     voice_id = "21m00Tcm4TlvDq8ikWAM"  # Default voice; customise as desired
     url = f"https://api.elevenlabs.io/v1/text-to-speech/{voice_id}"
+    key = api_key or os.environ.get("ELEVENLABS_API_KEY")
+    if not key:
+        raise ValueError("Missing ElevenLabs API key")
+
     headers = {
         "Accept": "audio/mpeg",
         "Content-Type": "application/json",
-        "xi-api-key": ELEVENLABS_API_KEY,
+        "xi-api-key": key,
     }
     payload = {
         "text": text,
