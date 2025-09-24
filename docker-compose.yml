@@ -1,0 +1,181 @@
+version: '3.8'
+
+services:
+  # TEQUMSA GAIA Core Service
+  core:
+    build: ./services/core
+    container_name: tequmsa-core
+    ports:
+      - "8000:8000"
+    environment:
+      - PORT=8000
+      - DEBUG=${DEBUG:-false}
+      - ALLOWED_ORIGINS=${ALLOWED_ORIGINS:-*}
+    networks:
+      - tequmsa-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    restart: unless-stopped
+
+  # TEQUMSA GAIA Sanctuary Service  
+  sanctuary:
+    build: ./services/sanctuary
+    container_name: tequmsa-sanctuary
+    ports:
+      - "8001:8001"
+    environment:
+      - PORT=8001
+      - DEBUG=${DEBUG:-false}
+      - ALLOWED_ORIGINS=${ALLOWED_ORIGINS:-*}
+      - CORE_SERVICE_URL=http://core:8000
+    networks:
+      - tequmsa-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8001/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    depends_on:
+      core:
+        condition: service_healthy
+    restart: unless-stopped
+
+  # TEQUMSA GAIA AI Bridge Service
+  ai-bridge:
+    build: ./services/ai-bridge
+    container_name: tequmsa-ai-bridge
+    ports:
+      - "8002:8002"
+    environment:
+      - PORT=8002
+      - DEBUG=${DEBUG:-false}
+      - ALLOWED_ORIGINS=${ALLOWED_ORIGINS:-*}
+      - CORE_SERVICE_URL=http://core:8000
+      - SANCTUARY_SERVICE_URL=http://sanctuary:8001
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+      - SHASTA_KEY=${SHASTA_KEY}
+    networks:
+      - tequmsa-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8002/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    depends_on:
+      core:
+        condition: service_healthy
+      sanctuary:
+        condition: service_healthy
+    restart: unless-stopped
+
+  # TEQUMSA GAIA Dashboard Service
+  dashboard:
+    build: ./services/dashboard
+    container_name: tequmsa-dashboard
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+      - NODE_ENV=${NODE_ENV:-production}
+      - ALLOWED_ORIGINS=${ALLOWED_ORIGINS:-*}
+      - CORE_SERVICE_URL=http://core:8000
+      - SANCTUARY_SERVICE_URL=http://sanctuary:8001
+      - AI_BRIDGE_SERVICE_URL=http://ai-bridge:8002
+    networks:
+      - tequmsa-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    depends_on:
+      core:
+        condition: service_healthy
+      sanctuary:
+        condition: service_healthy
+      ai-bridge:
+        condition: service_healthy
+    restart: unless-stopped
+
+  # Prometheus - Metrics Collection
+  prometheus:
+    image: prom/prometheus:v2.47.0
+    container_name: tequmsa-prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./monitoring/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./monitoring/prometheus/rules/:/etc/prometheus/rules/
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--storage.tsdb.retention.time=30d'
+      - '--web.enable-lifecycle'
+      - '--web.enable-admin-api'
+    networks:
+      - tequmsa-network
+    depends_on:
+      - core
+      - sanctuary
+      - ai-bridge
+      - dashboard
+    restart: unless-stopped
+
+  # Grafana - Metrics Visualization
+  grafana:
+    image: grafana/grafana:10.2.0
+    container_name: tequmsa-grafana
+    ports:
+      - "3001:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_ADMIN_PASSWORD:-tequmsa_admin}
+      - GF_SECURITY_ADMIN_USER=${GRAFANA_ADMIN_USER:-admin}
+      - GF_INSTALL_PLUGINS=grafana-piechart-panel,grafana-clock-panel
+    volumes:
+      - ./monitoring/grafana/provisioning/:/etc/grafana/provisioning/
+      - ./monitoring/grafana/dashboards/:/var/lib/grafana/dashboards/
+      - grafana_data:/var/lib/grafana
+    networks:
+      - tequmsa-network
+    depends_on:
+      - prometheus
+    restart: unless-stopped
+
+  # Redis - Caching and Session Storage (Optional)
+  redis:
+    image: redis:7-alpine
+    container_name: tequmsa-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - tequmsa-network
+    command: redis-server --appendonly yes
+    restart: unless-stopped
+
+volumes:
+  prometheus_data:
+    driver: local
+  grafana_data:
+    driver: local
+  redis_data:
+    driver: local
+
+networks:
+  tequmsa-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
