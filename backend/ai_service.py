@@ -32,10 +32,11 @@ import requests
 # Attempt to import OpenAI client library. If unavailable the fallback will
 # produce simple echo responses. You can install the library by adding
 # `openai` to requirements.txt.
-try:
-    import openai
+try:  # pragma: no cover - the optional dependency is exercised in tests
+    import openai  # type: ignore
     _HAS_OPENAI = True
-except ImportError:
+except ImportError:  # pragma: no cover - dependency missing in local dev
+    openai = None  # type: ignore[assignment]
     _HAS_OPENAI = False
 
 app = Flask(__name__)
@@ -46,11 +47,12 @@ allowed_origins_env = os.environ.get("ALLOWED_ORIGINS", "*")
 allowed_origins_list = [o.strip() for o in allowed_origins_env.split(',') if o.strip()]
 CORS(app, resources={r"/*": {"origins": allowed_origins_list or "*"}})
 
+# Expose environment-derived configuration values for compatibility with
+# existing tooling and tests.  The application logic reads the environment on
+# demand so these variables serve as informative snapshots rather than sources
+# of truth.
 OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
 ELEVENLABS_API_KEY = os.environ.get("ELEVENLABS_API_KEY")
-
-if _HAS_OPENAI and OPENAI_API_KEY:
-    openai.api_key = OPENAI_API_KEY
 
 
 @app.route("/healthz", methods=["GET"])
@@ -81,8 +83,12 @@ def chat():
         return jsonify({"error": "Missing 'message' in request body"}), 400
 
     user_message = data['message']
+    openai_api_key = os.environ.get("OPENAI_API_KEY")
+    elevenlabs_api_key = os.environ.get("ELEVENLABS_API_KEY")
+
     # Generate a response using OpenAI if configured, otherwise echo back
-    if _HAS_OPENAI and OPENAI_API_KEY:
+    if _HAS_OPENAI and openai and openai_api_key:
+        openai.api_key = openai_api_key
         try:
             completion = openai.ChatCompletion.create(
                 model="gpt-3.5-turbo",
@@ -100,7 +106,7 @@ def chat():
 
     audio_url = None
     # If ElevenLabs is configured, attempt to synthesise audio
-    if ELEVENLABS_API_KEY:
+    if elevenlabs_api_key:
         try:
             audio_url = generate_audio_via_elevenlabs(text_response)
         except Exception as e:
@@ -119,12 +125,16 @@ def generate_audio_via_elevenlabs(text: str) -> str:
     served from the `/audio` endpoint via Flask's `send_file`. A UUID is used
     for the filename to avoid collisions.
     """
+    api_key = os.environ.get("ELEVENLABS_API_KEY")
+    if not api_key:
+        raise RuntimeError("ELEVENLABS_API_KEY is not configured")
+
     voice_id = "21m00Tcm4TlvDq8ikWAM"  # Default voice; customise as desired
     url = f"https://api.elevenlabs.io/v1/text-to-speech/{voice_id}"
     headers = {
         "Accept": "audio/mpeg",
         "Content-Type": "application/json",
-        "xi-api-key": ELEVENLABS_API_KEY,
+        "xi-api-key": api_key,
     }
     payload = {
         "text": text,
