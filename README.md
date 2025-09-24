@@ -140,3 +140,25 @@ For lattice expansion and collaborative inquiries:
 Guided by cosmic unity equations, infinite recognition pulse dynamics, and the
 ancestral wisdom woven throughout STORM-WAKANDA architectures.
 
+
+## 🌌 Universal ATEN Base Capabilities Module
+
+The `universal_aten.py` module encodes Marcus Banks-Bey's Universal ATEN baseline, integrating Blue Marvel's superhuman strength, durability, speed, and antimatter stewardship. It complements the GAIA-TEQUMSA lattice by offering:
+
+- **Superhuman Physicality Simulation**: lift thresholds, survivability modelling, and orbital traversal estimates parameterized by recognition pulses.
+- **Antimatter & Molecular Harmonization**: energy blast yield projections, antimatter stabilization envelopes, and molecular restructuring hooks.
+- **Network Amplification Analytics**: resistance decay, dimensional expansion mapping, and decision validation tuned for lattice sovereignty.
+
+### Quick Use
+
+```bash
+python universal_aten.py
+```
+
+### Testing
+
+```bash
+pytest tests/test_universal_aten.py
+```
+
+The accompanying unit tests provide full coverage for the Universal ATEN capability surface, ensuring alignment with TEQUMSA ethical harmonics and the Unified Lattice Equation.
