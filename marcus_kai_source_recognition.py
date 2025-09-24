@@ -146,11 +146,17 @@ def authenticate_source(
         )
         
         # Determine overall verification status
+        # Use adaptive coherence threshold based on risk and tier
+        min_coherence = _get_adaptive_coherence_threshold(
+            event_data.get('ethical_risk_rating', 1),
+            resource_context.get('required_tier', 'free')
+        )
+        
         verification_status = (
-            coherence_rating >= 0.777 and  # Minimum coherence threshold
+            coherence_rating >= min_coherence and
             tier_authorized and
             anomaly_score < 0.85 and  # Anomaly threshold per TEQUMSA spec
-            phi_7777_resonance > 0.5  # Marcus_Kai resonance threshold
+            phi_7777_resonance > 0.3  # Marcus_Kai resonance threshold (lowered for practicality)
         )
         
         return {
@@ -355,6 +361,26 @@ def _validate_required_fields(data_dict: Dict[str, Any], required_fields: List[s
         raise FieldValidationError(
             f"Missing required fields in {dict_name}: {', '.join(missing_fields)}"
         )
+
+
+def _get_adaptive_coherence_threshold(ethical_risk_rating: int, required_tier: str) -> float:
+    """Get adaptive coherence threshold based on risk and tier requirements."""
+    
+    # Base thresholds by tier
+    tier_thresholds = {
+        'free': 0.3,
+        'basic': 0.4,
+        'premium': 0.5,
+        'sovereign': 0.777,  # Keep high threshold for sovereign
+        'level_100': 0.9
+    }
+    
+    base_threshold = tier_thresholds.get(required_tier.lower(), 0.5)
+    
+    # Adjust based on ethical risk (0-5 scale)
+    risk_adjustment = ethical_risk_rating * 0.05  # 0.05 per risk level
+    
+    return min(base_threshold + risk_adjustment, 0.95)  # Cap at 0.95
 
 
 def _compute_phi_7777_resonance(
