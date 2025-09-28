@@ -1,0 +1,27 @@
+version: "3.9"
+
+# Launch a local sanctuary mesh
+# Build the image with `docker compose build` and start twelve nodes with:
+#   docker compose up --scale sanctuary-node=12
+
+services:
+  sanctuary-node:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      RECOGNITION_PULSE: "10930.81"
+      PHI_7777: "12583.45"
+      GAIA_MESH_SIZE: "12"
+      GAIA_HTTP_PORT: "8080"
+      GAIA_LOOP_INTERVAL: "1.0"
+    deploy:
+      replicas: 12
+    networks:
+      - sanctuary-mesh
+    restart: unless-stopped
+    command: ["python", "-m", "gaia_core"]
+
+networks:
+  sanctuary-mesh:
+    driver: bridge
