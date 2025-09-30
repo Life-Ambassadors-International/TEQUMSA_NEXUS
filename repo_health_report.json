@@ -1,13 +1,13 @@
 {
-  "timestamp": "2025-09-30T00:45:12.575239",
+  "timestamp": "2025-09-30T00:52:08.981854",
   "repository_path": "/home/runner/work/TEQUMSA_NEXUS/TEQUMSA_NEXUS",
   "health_score": 85,
   "metrics": {
     "structure": {
-      "total_files": 85,
+      "total_files": 95,
       "code_files": 37,
-      "documentation_files": 25,
-      "config_files": 7,
+      "documentation_files": 28,
+      "config_files": 14,
       "large_files": [
         {
           "path": "/home/runner/work/TEQUMSA_NEXUS/TEQUMSA_NEXUS/Infinite Engine.png",
@@ -46,11 +46,11 @@
       "directory_structure_score": 100.0
     },
     "git": {
-      "commit_frequency": 2,
+      "commit_frequency": 5,
       "branch_count": 1,
       "active_branches": 0,
       "last_commit_days": 0,
-      "commit_message_quality": 50.0,
+      "commit_message_quality": 60.0,
       "merge_conflicts_potential": 0
     },
     "quality": {
@@ -76,12 +76,6 @@
       "impact": "performance"
     },
     {
-      "category": "Git Activity",
-      "description": "Low commit frequency. Consider more frequent, smaller commits.",
-      "priority": "low",
-      "impact": "collaboration"
-    },
-    {
       "category": "Testing",
       "description": "Low test coverage detected. Consider adding more tests.",
       "priority": "high",
@@ -89,10 +83,10 @@
     }
   ],
   "summary": {
-    "total_files": 85,
+    "total_files": 95,
     "code_files": 37,
     "test_coverage": 11.428571428571429,
-    "commit_frequency": 2,
+    "commit_frequency": 5,
     "last_commit_days": 0
   }
 }
