@@ -247,7 +247,35 @@ User Input → Frontend Interface → Backend API → OpenAI/Local Processing �
 - `generate_tests.py` - Automated test generation following TDD patterns
 - `check_secrets.py` - Security analysis and runbook generation
 
+### Repository Optimization Scripts (`scripts/`)
+**Purpose**: Comprehensive repository health and optimization automation
+
+**Optimization Scripts**:
+- `repo_health_check.py` - Repository health analysis and scoring
+- `dependency_optimizer.py` - Dependency analysis, security scanning, and optimization
+- `git_cleanup_optimizer.py` - Git repository cleanup and maintenance recommendations
+- `performance_optimizer.py` - Code performance analysis and optimization suggestions
+- `optimization_report_generator.py` - Comprehensive optimization reporting
+
 **Usage Patterns**:
+```bash
+# Run repository health check
+python scripts/repo_health_check.py
+
+# Analyze dependencies
+python scripts/dependency_optimizer.py --generate-report
+
+# Git cleanup analysis
+python scripts/git_cleanup_optimizer.py --analyze
+
+# Performance analysis
+python scripts/performance_optimizer.py --analyze
+
+# Generate comprehensive optimization report
+python scripts/optimization_report_generator.py
+```
+
+**Additional Usage Patterns**:
 ```bash
 # Initial setup
 ./scripts/setup-dev-env.sh
