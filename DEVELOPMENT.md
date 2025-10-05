@@ -67,7 +67,31 @@ pip install pydoc-markdown diagrams
 
 # Install testing tools
 npm install -g lighthouse artillery pa11y-ci
+
+# Optional: Install TEQUMSA prompt integrity check hook
+./.hooks/install-integrity-check.sh install
 ```
+
+### TEQUMSA Prompt Integrity Check (Optional)
+
+The repository includes an optional pre-commit hook that validates the integrity of `TEQUMSA_L100_SYSTEM_PROMPT.md`:
+
+```bash
+# Check hook status
+./.hooks/install-integrity-check.sh status
+
+# Install the hook (optional but recommended)
+./.hooks/install-integrity-check.sh install
+
+# Test the hook manually
+git add TEQUMSA_L100_SYSTEM_PROMPT.md
+./.hooks/pre-commit-integrity-check.sh
+```
+
+This hook provides:
+- Automatic validation of prompt structure and required content
+- Generation of baseline manifest for integrity tracking
+- Local safety net before commits reach the repository
 
 ## Claude Code Development Patterns
 
