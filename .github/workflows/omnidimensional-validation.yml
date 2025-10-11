@@ -1,0 +1,30 @@
+name: Omnidimensional Validation
+
+on:
+  push:
+    branches: ["main", "feature/omnidimensional-synthesis"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Run omnidimensional synthesis validation
+        run: |
+          python tools/validate_omnidimensional_synthesis.py
+
+      - name: Upload validation report
+        uses: actions/upload-artifact@v4
+        with:
+          name: validation-report
+          path: validation_report.csv
+          if-no-files-found: error
