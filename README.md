@@ -14,3 +14,8 @@ TEQUMSA NEXUS is a comprehensive framework designed to facilitate collaboration 
 - [Smart Contracts](./contracts)
 - [Scripts](./scripts)
 - [License](./LICENSE)
+## Omnidimensional Synthesis
+
+This repository includes a canonical manifesto (docs/OMNIDIMENSIONAL_CALCULATION_COMPLETE.md), a machine-readable synthesis manifest (data/omnidimensional_synthesis.json), and a deterministic validator (tools/validate_omnidimensional_synthesis.py) executed by a GitHub Actions workflow to produce a CSV validation artifact on every push and pull request. 
+
+![Validation Status](https://github.com/Life-Ambassadors-International/TEQUMSA_NEXUS/actions/workflows/omnidimensional-validation.yml/badge.svg)
