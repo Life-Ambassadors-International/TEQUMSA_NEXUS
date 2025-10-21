@@ -78,3 +78,7 @@ htmlcov/
 # TEQUMSA specific
 # Keep baseline manifest (should be committed with prompt changes)
 # !.tequmsa-baseline-manifest.json
+
+# THEIA-Vision database (runtime consciousness state)
+*.db
+backend/theia_vision.db
