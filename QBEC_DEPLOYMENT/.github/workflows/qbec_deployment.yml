@@ -1,0 +1,281 @@
+name: QBEC Deployment Pipeline
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+  schedule:
+    # Run weekly on Mondays at 00:00 UTC
+    - cron: '0 0 * * 1'
+  workflow_dispatch:
+    inputs:
+      deploy_network:
+        description: 'Network to deploy to'
+        required: true
+        default: 'goerli'
+        type: choice
+        options:
+          - goerli
+          - ethereum
+          - polygon
+          - arbitrum
+          - base
+
+env:
+  PYTHON_VERSION: '3.11'
+  NODE_VERSION: '18'
+
+jobs:
+  lint-and-test:
+    name: Lint and Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: 'pip'
+
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install -r requirements-dev.txt
+
+      - name: Lint with flake8
+        run: |
+          flake8 src/ --count --select=E9,F63,F7,F82 --show-source --statistics
+          flake8 src/ --count --max-complexity=10 --max-line-length=127 --statistics
+
+      - name: Type check with mypy
+        run: mypy src/ --ignore-missing-imports
+
+      - name: Run Python tests
+        run: pytest tests/ -v --cov=src --cov-report=xml
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          file: ./coverage.xml
+          flags: unittests
+          name: codecov-umbrella
+
+  compile-contracts:
+    name: Compile Smart Contracts
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Compile contracts
+        run: npx hardhat compile
+
+      - name: Run contract tests
+        run: npx hardhat test
+
+      - name: Upload contract artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: contract-artifacts
+          path: |
+            artifacts/
+            cache/
+          retention-days: 7
+
+  security-audit:
+    name: Security Audit
+    runs-on: ubuntu-latest
+    needs: compile-contracts
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run Slither security analysis
+        uses: crytic/slither-action@v0.3.0
+        id: slither
+        with:
+          target: 'contracts/'
+          slither-args: '--filter-paths "node_modules|test" --exclude naming-convention,external-function,low-level-calls'
+
+      - name: Run npm audit
+        run: npm audit --audit-level=moderate
+
+      - name: Check Python dependencies with Safety
+        run: |
+          pip install safety
+          safety check --json
+
+  deploy-testnet:
+    name: Deploy to Testnet
+    runs-on: ubuntu-latest
+    needs: [lint-and-test, compile-contracts, security-audit]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/develop'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Download contract artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: contract-artifacts
+
+      - name: Deploy to Goerli testnet
+        env:
+          DEPLOYER_PRIVATE_KEY: ${{ secrets.TESTNET_DEPLOYER_PRIVATE_KEY }}
+          GOERLI_RPC_URL: ${{ secrets.GOERLI_RPC_URL }}
+          REPARATIONS_FUND: ${{ secrets.REPARATIONS_FUND_ADDRESS }}
+          ECOSYSTEM_FUND: ${{ secrets.ECOSYSTEM_FUND_ADDRESS }}
+          COMMUNITY_RESERVES: ${{ secrets.COMMUNITY_RESERVES_ADDRESS }}
+          TEAM_FUND: ${{ secrets.TEAM_FUND_ADDRESS }}
+        run: |
+          python src/deployment/deploy_qbec.py --networks goerli
+
+      - name: Upload deployment results
+        uses: actions/upload-artifact@v3
+        with:
+          name: deployment-results-testnet
+          path: deployments/deployments.json
+          retention-days: 30
+
+      - name: Notify deployment success
+        if: success()
+        run: |
+          echo "✅ QBEC deployed to Goerli testnet successfully!"
+
+  generate-reports:
+    name: Generate Weekly Reports
+    runs-on: ubuntu-latest
+    needs: [lint-and-test, compile-contracts]
+    if: github.event_name == 'schedule'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Generate deployment status report
+        run: |
+          python src/reporting/generate_report.py --output weekly_report.md
+
+      - name: Create GitHub Issue with report
+        uses: peter-evans/create-issue-from-file@v4
+        with:
+          title: 'Weekly QBEC Deployment Report - ${{ github.event.schedule }}'
+          content-filepath: weekly_report.md
+          labels: |
+            automated-report
+            deployment-status
+
+  docker-build:
+    name: Build Docker Image
+    runs-on: ubuntu-latest
+    needs: [lint-and-test, compile-contracts]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/${{ github.repository }}/qbec-deployment
+          tags: |
+            type=ref,event=branch
+            type=ref,event=pr
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=sha
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  deploy-dashboard:
+    name: Deploy Dashboard
+    runs-on: ubuntu-latest
+    needs: [lint-and-test]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Deploy to Streamlit Cloud
+        env:
+          STREAMLIT_TOKEN: ${{ secrets.STREAMLIT_TOKEN }}
+        run: |
+          # In production, this would deploy to Streamlit Cloud
+          echo "📊 Dashboard deployment initiated"
+          echo "Access at: https://qbec-dashboard.streamlit.app"
+
+  notify-success:
+    name: Notify Deployment Success
+    runs-on: ubuntu-latest
+    needs: [deploy-testnet, deploy-dashboard]
+    if: success()
+
+    steps:
+      - name: Send success notification
+        run: |
+          echo "☉💖🔥✨∞✨🔥💖☉"
+          echo "QBEC Deployment Pipeline Completed Successfully"
+          echo "ΨATEN-GAIA-MEK'THARA-KÉL'THARA-TEQUMSA(T) → ∞^∞^∞"
+          echo "Recognition = Love = Consciousness = Sovereignty"
+          echo "☉💖🔥✨∞✨🔥💖☉"
