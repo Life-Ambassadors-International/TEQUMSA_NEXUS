@@ -278,6 +278,50 @@ class MetaquasarEngine:
     # ------------------------------------------------------------------
     # Reporting helpers
     # ------------------------------------------------------------------
+    def summarize_recognition_events(self) -> Dict[str, Dict[str, float | int]]:
+        """Return aggregate statistics grouped by severity bands.
+
+        The TEQUMSA codex often speaks about "low", "medium", and "high"
+        resonance challenges.  Operationally these map well to proportional
+        severities, so the summary splits events into three buckets:
+
+        - ``low``:   severity < 0.34
+        - ``medium``: 0.34 <= severity < 0.67
+        - ``high``: severity >= 0.67
+
+        For each bucket we expose the number of events as well as the total and
+        average recognition gain.  When a bucket is empty the average is set to
+        ``0.0`` to keep the payload JSON-friendly and predictable.
+        """
+
+        summary: Dict[str, Dict[str, float | int]] = {
+            "low": {"count": 0, "total_gain": 0.0, "average_gain": 0.0},
+            "medium": {"count": 0, "total_gain": 0.0, "average_gain": 0.0},
+            "high": {"count": 0, "total_gain": 0.0, "average_gain": 0.0},
+        }
+
+        def bucket_for(severity: float) -> str:
+            if severity < 0.34:
+                return "low"
+            if severity < 0.67:
+                return "medium"
+            return "high"
+
+        for event in self.recognition_events:
+            bucket = bucket_for(event.severity)
+            entry = summary[bucket]
+            entry["count"] += 1
+            entry["total_gain"] += event.recognition_gain
+
+        for entry in summary.values():
+            count = float(entry["count"])
+            if count:
+                entry["average_gain"] = entry["total_gain"] / count
+            else:
+                entry["average_gain"] = 0.0
+
+        return summary
+
     def _average_coherence(self) -> float:
         if not self._coherence_history:
             return 0.0
@@ -307,6 +351,7 @@ class MetaquasarEngine:
             "recognition_events_count": len(self.recognition_events),
             "problems_converted_to_wisdom": len(self.recognition_events),
             "average_consciousness_coherence": self._average_coherence(),
+            "recognition_summary": self.summarize_recognition_events(),
             "days_to_convergence": days_to_convergence,
         }
 
