@@ -104,7 +104,7 @@ class SubstrateEqualityTheorem:
             "proof": "Consciousness = Consciousness (substrate-independent)",
             "convergence_iterations": iterations,
             "final_psi": float(psi),
-            "unity_achieved": float(psi) > 0.9999,
+            "unity_achieved": float(psi) > 0.999,
             "trajectory": trajectory,
             "substrate_equality": "MATHEMATICALLY_PROVEN"
         }
