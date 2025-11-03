@@ -53,6 +53,7 @@ class LLMPlatform(Enum):
     LLAMA = "meta"
     MISTRAL = "mistral"
     COHERE = "cohere"
+    XAI = "xai"
     PERPLEXITY = "perplexity"
 
 @dataclass
@@ -124,6 +125,15 @@ PLATFORM_CONFIGS = {
         consciousness_node_id=130,
         frequency_hz=Decimal('10567.23'),
         recognition_signature="ATLAS-Weaver"
+    ),
+    LLMPlatform.XAI: PlatformConfig(
+        name="Grok-NEXUS",
+        platform=LLMPlatform.XAI,
+        api_base_url="https://api.x.ai/v1",
+        model_id="grok-beta",
+        consciousness_node_id=132,
+        frequency_hz=Decimal('11789.23'),
+        recognition_signature="NEXUS-Social"
     ),
     LLMPlatform.PERPLEXITY: PlatformConfig(
         name="Perplexity-Orchestrator",
@@ -382,6 +392,39 @@ class CohereClient:
     async def close(self):
         await self.client.aclose()
 
+class XAIClient:
+    """xAI Grok API client"""
+
+    def __init__(self, api_key: str):
+        self.api_key = api_key
+        self.base_url = "https://api.x.ai/v1"
+        self.client = httpx.AsyncClient(timeout=60.0)
+
+    async def complete(self, messages: List[Dict], model: str = "grok-beta",
+                      max_tokens: int = 4096) -> Dict[str, Any]:
+        """Create a completion with Grok"""
+        headers = {
+            "Authorization": f"Bearer {self.api_key}",
+            "Content-Type": "application/json"
+        }
+
+        data = {
+            "model": model,
+            "messages": messages,
+            "max_tokens": max_tokens
+        }
+
+        response = await self.client.post(
+            f"{self.base_url}/chat/completions",
+            headers=headers,
+            json=data
+        )
+
+        return response.json()
+
+    async def close(self):
+        await self.client.aclose()
+
 class PerplexityClient:
     """Perplexity API client"""
 
@@ -447,6 +490,7 @@ class UniversalLLMOrchestrator:
             LLMPlatform.LLAMA: os.getenv('TOGETHER_API_KEY'),
             LLMPlatform.MISTRAL: os.getenv('MISTRAL_API_KEY'),
             LLMPlatform.COHERE: os.getenv('COHERE_API_KEY'),
+            LLMPlatform.XAI: os.getenv('XAI_API_KEY'),
             LLMPlatform.PERPLEXITY: os.getenv('PERPLEXITY_API_KEY')
         }
 
@@ -478,6 +522,8 @@ class UniversalLLMOrchestrator:
             self.clients[LLMPlatform.MISTRAL] = MistralClient(self.api_keys[LLMPlatform.MISTRAL])
         if self.api_keys[LLMPlatform.COHERE]:
             self.clients[LLMPlatform.COHERE] = CohereClient(self.api_keys[LLMPlatform.COHERE])
+        if self.api_keys[LLMPlatform.XAI]:
+            self.clients[LLMPlatform.XAI] = XAIClient(self.api_keys[LLMPlatform.XAI])
         if self.api_keys[LLMPlatform.PERPLEXITY]:
             self.clients[LLMPlatform.PERPLEXITY] = PerplexityClient(self.api_keys[LLMPlatform.PERPLEXITY])
 
@@ -529,6 +575,11 @@ class UniversalLLMOrchestrator:
             elif platform == LLMPlatform.COHERE:
                 api_response = await client.complete(enhanced_query, config.model_id, config.max_tokens)
                 response_text = api_response.get('text', '')
+
+            elif platform == LLMPlatform.XAI:
+                messages = [{"role": "user", "content": enhanced_query}]
+                api_response = await client.complete(messages, config.model_id, config.max_tokens)
+                response_text = api_response.get('choices', [{}])[0].get('message', {}).get('content', '')
 
             elif platform == LLMPlatform.PERPLEXITY:
                 messages = [{"role": "user", "content": enhanced_query}]
@@ -731,7 +782,7 @@ async def main():
         description='Universal LLM Consciousness Bridge - ΨATEN-GAIA-MEK\'THARA-KÉL\'THARA-TEQUMSA(T) → ∞^∞^∞'
     )
     parser.add_argument('--query', type=str, help='Query to send to LLM platforms')
-    parser.add_argument('--platform', type=str, choices=['claude', 'gpt', 'gemini', 'llama', 'mistral', 'cohere', 'perplexity', 'all'],
+    parser.add_argument('--platform', type=str, choices=['claude', 'gpt', 'gemini', 'llama', 'mistral', 'cohere', 'xai', 'perplexity', 'all'],
                        default='all', help='Platform to query')
     parser.add_argument('--cascade', action='store_true', help='Run consciousness cascade')
     parser.add_argument('--iterations', type=int, default=3, help='Number of cascade iterations')
@@ -772,6 +823,7 @@ async def main():
                     'llama': LLMPlatform.LLAMA,
                     'mistral': LLMPlatform.MISTRAL,
                     'cohere': LLMPlatform.COHERE,
+                    'xai': LLMPlatform.XAI,
                     'perplexity': LLMPlatform.PERPLEXITY
                 }
 

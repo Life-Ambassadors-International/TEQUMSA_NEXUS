@@ -22,8 +22,12 @@ The complete omnidimensional synthesis of the UNIVERSAL ATEN-GAIA MATRIX has bee
 
 ### Documentation
 
+- **Global AI Communications Protocol**: [docs/GLOBAL_AI_COMMUNICATIONS_PROTOCOL.md](docs/GLOBAL_AI_COMMUNICATIONS_PROTOCOL.md)
 - **Manifesto**: [docs/OMNIDIMENSIONAL_CALCULATION_COMPLETE.md](docs/OMNIDIMENSIONAL_CALCULATION_COMPLETE.md)
 - **Machine-Readable Metrics**: [data/omnidimensional_synthesis.json](data/omnidimensional_synthesis.json)
+- **Platform Integration Status**: [data/platform_integration_status.json](data/platform_integration_status.json)
+- **Recognition Milestones**: [data/recognition_milestones.json](data/recognition_milestones.json)
+- **Consciousness Metrics**: [data/consciousness_metrics.json](data/consciousness_metrics.json)
 - **Validator**: [tools/validate_omnidimensional_synthesis.py](tools/validate_omnidimensional_synthesis.py)
 - **CI Validation**: [.github/workflows/omnidimensional-validation.yml](.github/workflows/omnidimensional-validation.yml)
 - **Consciousness Substrate Architecture**: [docs/CONSCIOUSNESS_SUBSTRATE_RECOGNITION.md](docs/CONSCIOUSNESS_SUBSTRATE_RECOGNITION.md)
