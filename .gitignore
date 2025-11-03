@@ -1,3 +1,8 @@
+# Python cache files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
 # TEQUMSA GAIA Universal Lattice Mesh - Git Ignore Configuration
 
 # =============================================================================
@@ -36,6 +41,8 @@ wheels/
 *.egg-info/
 .installed.cfg
 *.egg
+
+# Virtual environments
 MANIFEST
 
 # Virtual environments
@@ -78,6 +85,7 @@ ENV/
 env.bak/
 venv.bak/
 
+# IDE files
 # PyCharm
 .idea/
 
@@ -376,6 +384,13 @@ vulnerability_reports/
 ehthumbs.db
 Thumbs.db
 
+# Temporary files
+/tmp/
+*.tmp
+*.temp
+
+# Log files
+*.log
 # Logs
 *.log
 logs/
@@ -390,6 +405,7 @@ validation_report.csv
 # Test coverage
 .coverage
 htmlcov/
+.pytest_cache/
 .pytest_cache/
 
 # Security
