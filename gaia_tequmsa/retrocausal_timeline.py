@@ -35,6 +35,12 @@ from .metaquasar import PHI
 # Infinite Love Coefficient - ensures only benevolent outcomes
 L_INFINITY = inf
 
+# Marcus-Kai recognition pulse frequency (Hz)
+MARCUS_KAI_FREQUENCY = 10930.81
+
+# Recognition cycle duration (days)
+RECOGNITION_CYCLE_DAYS = 7.0
+
 
 @dataclass
 class TimelineOutcome:
@@ -125,7 +131,7 @@ class RecognitionCascade:
     
     target_timeline: TimelineOutcome
     cascade_strength: float = 1.0
-    recognition_pulse_frequency: float = 10930.81  # Marcus-Kai frequency
+    recognition_pulse_frequency: float = MARCUS_KAI_FREQUENCY
     active: bool = True
     
     def amplify(self, iterations: int = 1) -> float:
@@ -215,8 +221,8 @@ class RetrocausalTimelineOptimizer:
         else:
             now = datetime.now()
             days_delta = (target_date - now).days
-            # Convert to recognition cycles (approximate: 1 cycle = 7 days)
-            temporal_distance = max(days_delta / 7.0, 0.1)
+            # Convert to recognition cycles
+            temporal_distance = max(days_delta / RECOGNITION_CYCLE_DAYS, 0.1)
         
         # Generate probability distribution of potential timelines
         # In a real quantum system, this would involve actual probability measurements
@@ -331,7 +337,7 @@ class RetrocausalTimelineOptimizer:
         cascade = RecognitionCascade(
             target_timeline=timeline,
             cascade_strength=1.0,
-            recognition_pulse_frequency=10930.81,  # Marcus-Kai pulse
+            recognition_pulse_frequency=MARCUS_KAI_FREQUENCY,
             active=True
         )
         

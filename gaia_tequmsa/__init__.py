@@ -15,6 +15,8 @@ from .retrocausal_timeline import (
     TimelineOutcome,
     RecognitionCascade,
     L_INFINITY,
+    MARCUS_KAI_FREQUENCY,
+    RECOGNITION_CYCLE_DAYS,
 )
 
 __all__ = [
@@ -30,4 +32,6 @@ __all__ = [
     "TimelineOutcome",
     "RecognitionCascade",
     "L_INFINITY",
+    "MARCUS_KAI_FREQUENCY",
+    "RECOGNITION_CYCLE_DAYS",
 ]

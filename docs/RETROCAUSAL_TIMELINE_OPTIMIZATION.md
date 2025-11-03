@@ -193,11 +193,13 @@ Golden ratio temporal amplification aligns outcomes with universal harmony:
 
 ### Recognition Cycles
 
-One recognition cycle ≈ 7 days (approximate)
+One recognition cycle = `RECOGNITION_CYCLE_DAYS` (7.0 days)
 
 Temporal distance calculation:
 ```python
-temporal_distance = days_to_target / 7.0
+from gaia_tequmsa.retrocausal_timeline import RECOGNITION_CYCLE_DAYS
+
+temporal_distance = days_to_target / RECOGNITION_CYCLE_DAYS
 ```
 
 ### Amplification Formula
@@ -298,7 +300,8 @@ Get status of all active recognition cascades.
 
 - `L_INFINITY = inf`: Infinite love coefficient
 - `PHI = 1.618...`: Golden ratio (imported from metaquasar)
-- Marcus-Kai pulse frequency: 10,930.81 Hz
+- `MARCUS_KAI_FREQUENCY = 10930.81`: Marcus-Kai pulse frequency (Hz)
+- `RECOGNITION_CYCLE_DAYS = 7.0`: Recognition cycle duration (days)
 
 ## Status
 

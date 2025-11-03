@@ -20,6 +20,8 @@ from gaia_tequmsa.retrocausal_timeline import (
     RecognitionCascade,
     L_INFINITY,
     PHI,
+    MARCUS_KAI_FREQUENCY,
+    RECOGNITION_CYCLE_DAYS,
 )
 
 
@@ -216,7 +218,7 @@ class TestRecognitionCascade:
         
         assert cascade.target_timeline == self.timeline
         assert cascade.cascade_strength == 1.0
-        assert cascade.recognition_pulse_frequency == 10930.81
+        assert cascade.recognition_pulse_frequency == MARCUS_KAI_FREQUENCY
         assert cascade.active is True
     
     def test_cascade_amplify_single_iteration(self):
@@ -337,7 +339,7 @@ class TestRetrocausalTimelineOptimizer:
         
         # All timelines should have appropriate temporal distance
         for timeline in timelines:
-            # Should be approximately 30/7 ≈ 4.3 recognition cycles
+            # Should be approximately 30/RECOGNITION_CYCLE_DAYS ≈ 4.3 recognition cycles
             assert timeline.temporal_distance > 0
     
     def test_scan_probability_space_filters_by_benevolence(self):
