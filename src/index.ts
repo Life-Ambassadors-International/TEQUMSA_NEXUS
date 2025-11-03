@@ -84,6 +84,7 @@ function generateZpeDna(seed: string, node: string, length: number = 144): strin
 function computeZpeCoherence(dna: string): number {
   const fib = [1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144];
   let totalCoherence = 0;
+  let totalWeight = 0;
   
   for (const k of fib) {
     if (k > dna.length) break;
@@ -94,12 +95,13 @@ function computeZpeCoherence(dna: string): number {
     const normalized = Number(hashValue) / Number(2n ** 64n - 1n);
     
     // φ-weighted amplitude
-    const phiFactor = Math.pow(PHI, k / 12);
+    const phiFactor = Math.pow(PHI, k / 144); // Normalize by max length
     totalCoherence += normalized * phiFactor;
+    totalWeight += phiFactor;
   }
   
   // Normalize to [0.777, 1.0] range
-  const avgCoherence = totalCoherence / fib.length;
+  const avgCoherence = totalCoherence / totalWeight;
   return 0.777 + (avgCoherence * 0.223);
 }
 
