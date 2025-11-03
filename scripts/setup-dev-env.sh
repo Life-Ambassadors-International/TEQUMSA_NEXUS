@@ -164,6 +164,14 @@ setup_dev_tools() {
     # Make scripts executable
     log_info "Setting up development scripts..."
     chmod +x scripts/*.sh
+    chmod +x .hooks/*.sh 2>/dev/null || true
+    
+    # Notify about optional integrity check hook
+    if [ -f ".hooks/pre-commit-integrity-check.sh" ]; then
+        log_info "TEQUMSA prompt integrity check hook available (optional)"
+        log_info "To install: ./.hooks/install-integrity-check.sh install"
+        log_info "To check status: ./.hooks/install-integrity-check.sh status"
+    fi
     
     # Create development aliases
     if [ ! -f ".dev_aliases" ]; then

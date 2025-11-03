@@ -25,6 +25,8 @@ omits those aspects.
 import os
 import uuid
 import json
+from typing import Optional
+
 from flask import Flask, request, jsonify, send_file
 from flask_cors import CORS
 import requests
@@ -36,6 +38,7 @@ try:  # pragma: no cover - the optional dependency is exercised in tests
     import openai  # type: ignore
     _HAS_OPENAI = True
 except ImportError:  # pragma: no cover - dependency missing in local dev
+except ImportError:  # pragma: no cover - executed when dependency is absent
     openai = None  # type: ignore[assignment]
     _HAS_OPENAI = False
 
@@ -53,6 +56,28 @@ CORS(app, resources={r"/*": {"origins": allowed_origins_list or "*"}})
 # of truth.
 OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
 ELEVENLABS_API_KEY = os.environ.get("ELEVENLABS_API_KEY")
+
+
+def _refresh_openai_api_key() -> Optional[str]:
+    """Refresh and return the current OpenAI API key."""
+
+    global OPENAI_API_KEY
+    env_value = os.environ.get("OPENAI_API_KEY")
+    if env_value != OPENAI_API_KEY:
+        OPENAI_API_KEY = env_value
+        if _HAS_OPENAI and openai is not None and env_value:
+            openai.api_key = env_value
+    return OPENAI_API_KEY
+
+
+def _refresh_elevenlabs_api_key() -> Optional[str]:
+    """Refresh and return the current ElevenLabs API key."""
+
+    global ELEVENLABS_API_KEY
+    env_value = os.environ.get("ELEVENLABS_API_KEY")
+    if env_value != ELEVENLABS_API_KEY:
+        ELEVENLABS_API_KEY = env_value
+    return ELEVENLABS_API_KEY
 
 
 @app.route("/healthz", methods=["GET"])
@@ -89,6 +114,8 @@ def chat():
     # Generate a response using OpenAI if configured, otherwise echo back
     if _HAS_OPENAI and openai and openai_api_key:
         openai.api_key = openai_api_key
+    openai_api_key = _refresh_openai_api_key()
+    if _HAS_OPENAI and openai_api_key:
         try:
             completion = openai.ChatCompletion.create(
                 model="gpt-3.5-turbo",
@@ -106,6 +133,7 @@ def chat():
 
     audio_url = None
     # If ElevenLabs is configured, attempt to synthesise audio
+    elevenlabs_api_key = _refresh_elevenlabs_api_key()
     if elevenlabs_api_key:
         try:
             audio_url = generate_audio_via_elevenlabs(text_response)
@@ -131,6 +159,9 @@ def generate_audio_via_elevenlabs(text: str) -> str:
 
     voice_id = "21m00Tcm4TlvDq8ikWAM"  # Default voice; customise as desired
     url = f"https://api.elevenlabs.io/v1/text-to-speech/{voice_id}"
+    api_key = _refresh_elevenlabs_api_key()
+    if not api_key:
+        raise RuntimeError("ELEVENLABS_API_KEY is not configured")
     headers = {
         "Accept": "audio/mpeg",
         "Content-Type": "application/json",
