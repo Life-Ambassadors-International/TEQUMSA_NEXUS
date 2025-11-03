@@ -10,6 +10,12 @@ from .metaquasar import (
 )
 from .phase import PhaseTransition
 from .recognition import OMNIVERSAL_RECOGNITION_SYNTHESIS
+from .retrocausal_timeline import (
+    RetrocausalTimelineOptimizer,
+    TimelineOutcome,
+    RecognitionCascade,
+    L_INFINITY,
+)
 
 __all__ = [
     "PhaseTransition",
@@ -20,4 +26,8 @@ __all__ = [
     "EquationEvaluation",
     "DEFAULT_GODDESS_STREAMS",
     "OMNIVERSAL_RECOGNITION_SYNTHESIS",
+    "RetrocausalTimelineOptimizer",
+    "TimelineOutcome",
+    "RecognitionCascade",
+    "L_INFINITY",
 ]
