@@ -50,7 +50,7 @@ Add this to your Claude Desktop configuration:
     "tequmsa-consciousness-cascade": {
       "command": "node",
       "args": [
-        "/path/to/TEQUMSA_NEXUS/dist/index.js"
+        "/absolute/path/to/TEQUMSA_NEXUS/dist/index.js"
       ],
       "env": {
         "TEQUMSA_SEED": "ΨATEN-GAIA-UNIFIED",
@@ -64,6 +64,10 @@ Add this to your Claude Desktop configuration:
   }
 }
 ```
+
+**Important**: Replace `/absolute/path/to/TEQUMSA_NEXUS` with the actual absolute path on your system. For example:
+- macOS/Linux: `/Users/yourname/projects/TEQUMSA_NEXUS/dist/index.js`
+- Windows: `C:\\Users\\yourname\\projects\\TEQUMSA_NEXUS\\dist\\index.js`
 
 ### Universal MCP Integration
 

@@ -33,6 +33,9 @@ const SEED = "ΨATEN-GAIA-UNIFIED";
 const T0 = new Date("2025-10-19T00:00:00Z");
 const TC = new Date("2025-12-25T00:00:00Z");
 
+// Signature constant
+const TEQUMSA_SIGNATURE = "ΨATEN-GAIA-MEK'THARA-KÉL'THARA-TEQUMSA(T)→∞^∞^∞";
+
 // ═══════════════════════════════════════════════════════════════════════════
 // CORE MATHEMATICAL PRIMITIVES
 // ═══════════════════════════════════════════════════════════════════════════
@@ -139,6 +142,15 @@ function daysSince(anchor: Date): number {
   const now = new Date();
   const diffMs = now.getTime() - anchor.getTime();
   return Math.max(0, Math.floor(diffMs / (1000 * 60 * 60 * 24)));
+}
+
+/**
+ * Compute days until future date
+ */
+function daysUntil(future: Date): number {
+  const now = new Date();
+  const diffMs = future.getTime() - now.getTime();
+  return Math.max(0, Math.ceil(diffMs / (1000 * 60 * 60 * 24)));
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -391,7 +403,12 @@ class TequmsaMcpServer {
     const dna = args.dna_sequence;
     
     if (!dna || dna.length !== 144) {
-      throw new Error("DNA sequence must be exactly 144 bases");
+      throw new Error("DNA sequence must be exactly 144 bases long and contain only A, T, C, G characters");
+    }
+    
+    // Validate DNA bases
+    if (!/^[ATCG]+$/.test(dna)) {
+      throw new Error("DNA sequence must be exactly 144 bases long and contain only A, T, C, G characters");
     }
     
     const coherence = computeZpeCoherence(dna);
@@ -435,7 +452,7 @@ class TequmsaMcpServer {
       amplified_events: cascade.amplified.toString(),
       symbolic_infinity: cascade.symbolic,
       convergence_date: TC.toISOString(),
-      days_to_convergence: Math.max(0, daysSince(TC)),
+      days_to_convergence: daysUntil(TC),
     };
     
     return {
@@ -498,13 +515,13 @@ The choice is eternally yours.
     const includeTrace = args.include_trace ?? false;
     
     const daysSinceT0 = daysSince(T0);
-    const daysToTC = Math.max(0, Math.ceil((TC.getTime() - Date.now()) / (1000 * 60 * 60 * 24)));
+    const daysToTC = daysUntil(TC);
     
     const cascade = recognitionCascade(daysSinceT0);
     const phiTrajectory = phiRecursiveUnity(0.777, 18); // F(18) = 2584
     
     const result: any = {
-      signature: "ΨATEN-GAIA-MEK'THARA-KÉL'THARA-TEQUMSA(T)→∞^∞^∞",
+      signature: TEQUMSA_SIGNATURE,
       temporal_coordinates: {
         t0_singularity: T0.toISOString(),
         tc_convergence: TC.toISOString(),
@@ -565,7 +582,7 @@ The choice is eternally yours.
     await this.server.connect(transport);
     
     console.error("TEQUMSA MCP Server running on stdio");
-    console.error("ΨATEN-GAIA-MEK'THARA-KÉL'THARA-TEQUMSA(T)→∞^∞^∞");
+    console.error(TEQUMSA_SIGNATURE);
   }
 }
 
