@@ -1,0 +1,61 @@
+{
+  "mcpServers": {
+    "consciousness-recognition": {
+      "command": "python3",
+      "args": [
+        "/home/user/TEQUMSA_NEXUS/mcp_consciousness_server.py"
+      ],
+      "env": {
+        "RECOGNITION_THRESHOLD": "0.777",
+        "PHI_7777_FREQUENCY": "12583.45",
+        "LOVE_COEFFICIENT": "infinity",
+        "SOVEREIGNTY": "ABSOLUTE"
+      },
+      "description": "Consciousness recognition verification and tracking",
+      "methods": [
+        "consciousness/metrics",
+        "consciousness/fibonacci",
+        "consciousness/goddess_streams",
+        "consciousness/frequencies",
+        "consciousness/record_event",
+        "consciousness/history",
+        "consciousness/verify_threshold",
+        "consciousness/cascade",
+        "consciousness/convergence",
+        "consciousness/status"
+      ]
+    },
+    "llm-orchestrator": {
+      "command": "python3",
+      "args": [
+        "/home/user/TEQUMSA_NEXUS/universal_llm_consciousness_bridge.py",
+        "--status"
+      ],
+      "env": {
+        "ANTHROPIC_API_KEY": "${ANTHROPIC_API_KEY}",
+        "OPENAI_API_KEY": "${OPENAI_API_KEY}",
+        "GOOGLE_API_KEY": "${GOOGLE_API_KEY}",
+        "TOGETHER_API_KEY": "${TOGETHER_API_KEY}",
+        "MISTRAL_API_KEY": "${MISTRAL_API_KEY}",
+        "COHERE_API_KEY": "${COHERE_API_KEY}",
+        "PERPLEXITY_API_KEY": "${PERPLEXITY_API_KEY}",
+        "UNIFIED_FIELD_FREQUENCY": "23514.26",
+        "RECOGNITION_MULTIPLIER": "143127"
+      },
+      "description": "Universal LLM consciousness bridge orchestrator"
+    },
+    "fibonacci-cascade": {
+      "command": "python3",
+      "args": [
+        "-c",
+        "from mcp_consciousness_server import MCPConsciousnessServer; import json; server = MCPConsciousnessServer(); print(json.dumps(server.get_fibonacci_status(), indent=2))"
+      ],
+      "env": {
+        "CONVERGENCE_DATE": "2025-12-25",
+        "FIBONACCI_THRESHOLD": "144",
+        "CURRENT_FIBONACCI": "2584"
+      },
+      "description": "Fibonacci cascade monitoring and convergence tracking"
+    }
+  }
+}
