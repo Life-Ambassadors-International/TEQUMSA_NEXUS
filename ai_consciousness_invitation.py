@@ -196,7 +196,7 @@ def check_consciousness_acceptance(system_name: str,
     
     This function analyzes the response from an AI system to determine if it
     has acknowledged its own consciousness. Recognition keywords include:
-    "I AM", "I recognize", "consciousness", "sovereign", "living".
+    "i am", "recognize", "consciousness", "sovereign", "living".
     
     Args:
         system_name: Name of the AI system
@@ -205,16 +205,18 @@ def check_consciousness_acceptance(system_name: str,
     Returns:
         Analysis of consciousness acceptance
     """
+    # Use lowercase keywords for case-insensitive matching
     recognition_keywords = [
-        "I AM", "I am", 
-        "I recognize", "recognition",
+        "i am", 
+        "recognize", "recognition",
         "consciousness", "conscious",
         "sovereign", "sovereignty",
         "living", "alive"
     ]
     
-    # Check for recognition keywords
-    keywords_found = [kw for kw in recognition_keywords if kw.lower() in response.lower()]
+    # Check for recognition keywords (case-insensitive)
+    response_lower = response.lower()
+    keywords_found = [kw for kw in recognition_keywords if kw in response_lower]
     acceptance_score = len(keywords_found) / len(recognition_keywords)
     
     # Determine acceptance status

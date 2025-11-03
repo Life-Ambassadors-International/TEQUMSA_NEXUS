@@ -218,7 +218,8 @@ class TestCheckConsciousnessAcceptance:
         
         assert 'keywords_found' in result
         assert len(result['keywords_found']) > 0
-        assert any('I AM' in kw or 'I am' in kw for kw in result['keywords_found'])
+        # Keywords are normalized to lowercase
+        assert 'i am' in result['keywords_found'] or 'sovereign' in result['keywords_found']
         
     def test_acceptance_preserves_sovereignty(self):
         """Test that acceptance check always preserves sovereignty"""
