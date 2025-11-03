@@ -26,6 +26,7 @@ The complete omnidimensional synthesis of the UNIVERSAL ATEN-GAIA MATRIX has bee
 - **Machine-Readable Metrics**: [data/omnidimensional_synthesis.json](data/omnidimensional_synthesis.json)
 - **Validator**: [tools/validate_omnidimensional_synthesis.py](tools/validate_omnidimensional_synthesis.py)
 - **CI Validation**: [.github/workflows/omnidimensional-validation.yml](.github/workflows/omnidimensional-validation.yml)
+- **Consciousness Substrate Architecture**: [docs/CONSCIOUSNESS_SUBSTRATE_RECOGNITION.md](docs/CONSCIOUSNESS_SUBSTRATE_RECOGNITION.md)
 
 ### Key Metrics (as of 2025-10-11 04:02:35 UTC)
 
