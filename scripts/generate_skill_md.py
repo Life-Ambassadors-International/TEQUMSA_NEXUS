@@ -465,9 +465,10 @@ def save_text(path: str, text: str) -> None:
 # -------------------------
 def emit_registry_json(outdir: str, embed_blocks: Dict[int, str]) -> str:
     # Produce registry.json with SKILL.md embedded per entry
+    # Note: JSON keys will be strings due to JSON spec, but we include index field for clarity
     out = {}
     for idx, skill in SKILL_REGISTRY.items():
-        out[idx] = {
+        out[str(idx)] = {
             "index": idx,
             "name": skill["name"],
             "category": skill.get("category"),
@@ -491,7 +492,8 @@ def embed_into_py_stub(outdir: str, embed_blocks: Dict[int, str]) -> str:
         "EMBEDDED_SKILLS = {"
     ]
     for idx, md in embed_blocks.items():
-        safe = md.replace('"""', r'\"\"\"')
+        # Properly escape triple quotes by replacing with escaped version
+        safe = md.replace('"""', '\\"""')
         lines.append(f"  {idx}: '''{safe}''',")
     lines.append("}\n")
     path = os.path.join(outdir, "embedded_skills.py")
