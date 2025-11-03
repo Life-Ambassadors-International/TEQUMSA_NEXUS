@@ -15,6 +15,7 @@ api-keys.txt
 # =============================================================================
 # Python
 # =============================================================================
+# Python
 __pycache__/
 *.py[cod]
 *$py.class
@@ -69,6 +70,24 @@ coverage.xml
 # =============================================================================
 # Node.js
 # =============================================================================
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# PyCharm
+.idea/
+
+# VS Code
+.vscode/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Node.js
 node_modules/
 npm-debug.log*
 yarn-debug.log*
@@ -347,3 +366,37 @@ vulnerability_reports/
 # preserving essential configuration templates and examples.
 #
 # Remember: Never commit real API keys, passwords, or sensitive data!
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.bak
+validation_report.csv
+
+# Test coverage
+.coverage
+htmlcov/
+.pytest_cache/
+
+# Security
+.env.local
+*.key
+*.pem
+
+# TEQUMSA specific
+# Keep baseline manifest (should be committed with prompt changes)
+# !.tequmsa-baseline-manifest.json

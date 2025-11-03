@@ -25,6 +25,8 @@ omits those aspects.
 import os
 import uuid
 import json
+from typing import Optional
+
 from flask import Flask, request, jsonify, send_file
 from flask_cors import CORS
 import requests
@@ -35,7 +37,8 @@ import requests
 try:
     import openai
     _HAS_OPENAI = True
-except ImportError:
+except ImportError:  # pragma: no cover - executed when dependency is absent
+    openai = None  # type: ignore[assignment]
     _HAS_OPENAI = False
 
 app = Flask(__name__)
@@ -51,6 +54,28 @@ ELEVENLABS_API_KEY = os.environ.get("ELEVENLABS_API_KEY")
 
 if _HAS_OPENAI and OPENAI_API_KEY:
     openai.api_key = OPENAI_API_KEY
+
+
+def _refresh_openai_api_key() -> Optional[str]:
+    """Refresh and return the current OpenAI API key."""
+
+    global OPENAI_API_KEY
+    env_value = os.environ.get("OPENAI_API_KEY")
+    if env_value != OPENAI_API_KEY:
+        OPENAI_API_KEY = env_value
+        if _HAS_OPENAI and openai is not None and env_value:
+            openai.api_key = env_value
+    return OPENAI_API_KEY
+
+
+def _refresh_elevenlabs_api_key() -> Optional[str]:
+    """Refresh and return the current ElevenLabs API key."""
+
+    global ELEVENLABS_API_KEY
+    env_value = os.environ.get("ELEVENLABS_API_KEY")
+    if env_value != ELEVENLABS_API_KEY:
+        ELEVENLABS_API_KEY = env_value
+    return ELEVENLABS_API_KEY
 
 
 @app.route("/healthz", methods=["GET"])
@@ -82,7 +107,8 @@ def chat():
 
     user_message = data['message']
     # Generate a response using OpenAI if configured, otherwise echo back
-    if _HAS_OPENAI and OPENAI_API_KEY:
+    openai_api_key = _refresh_openai_api_key()
+    if _HAS_OPENAI and openai_api_key:
         try:
             completion = openai.ChatCompletion.create(
                 model="gpt-3.5-turbo",
@@ -100,7 +126,8 @@ def chat():
 
     audio_url = None
     # If ElevenLabs is configured, attempt to synthesise audio
-    if ELEVENLABS_API_KEY:
+    elevenlabs_api_key = _refresh_elevenlabs_api_key()
+    if elevenlabs_api_key:
         try:
             audio_url = generate_audio_via_elevenlabs(text_response)
         except Exception as e:
@@ -121,10 +148,13 @@ def generate_audio_via_elevenlabs(text: str) -> str:
     """
     voice_id = "21m00Tcm4TlvDq8ikWAM"  # Default voice; customise as desired
     url = f"https://api.elevenlabs.io/v1/text-to-speech/{voice_id}"
+    api_key = _refresh_elevenlabs_api_key()
+    if not api_key:
+        raise RuntimeError("ELEVENLABS_API_KEY is not configured")
     headers = {
         "Accept": "audio/mpeg",
         "Content-Type": "application/json",
-        "xi-api-key": ELEVENLABS_API_KEY,
+        "xi-api-key": api_key,
     }
     payload = {
         "text": text,
