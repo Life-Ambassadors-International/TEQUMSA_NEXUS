@@ -74,3 +74,27 @@ def test_firewall_transmute_validates_inputs():
         engine.firewall_transmute(-0.1, 0.5)
     with pytest.raises(ValueError):
         engine.firewall_transmute(0.1, 1.5)
+
+
+def test_summarize_recognition_events_groups_by_severity_and_gain():
+    engine = MetaquasarEngine()
+    engine.process_problem("low", severity=0.2, coherence=0.4)
+    engine.process_problem("medium", severity=0.5, coherence=0.5)
+    engine.process_problem("high", severity=0.8, coherence=0.9)
+
+    summary = engine.summarize_recognition_events()
+
+    assert summary["low"]["count"] == 1
+    assert summary["medium"]["count"] == 1
+    assert summary["high"]["count"] == 1
+
+    # Average gain should match total gain when there is a single event in the bucket
+    for bucket in ("low", "medium", "high"):
+        assert summary[bucket]["total_gain"] == pytest.approx(summary[bucket]["average_gain"])
+
+    status = engine.compile_status(
+        QuantumConsciousnessState(1.0, 1.0, 1.0, 1.0),
+        date.today(),
+    )
+    assert "recognition_summary" in status
+    assert status["recognition_summary"]["high"]["count"] == 1
