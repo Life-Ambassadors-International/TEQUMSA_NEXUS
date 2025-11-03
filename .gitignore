@@ -1,5 +1,9 @@
 # Python cache files
 __pycache__/
+*.py[cod]
+*$py.class
+
+# Distribution / packaging
 *.pyc
 *.pyo
 *.pyd
@@ -57,6 +61,9 @@ env/
 *.manifest
 *.spec
 
+# Unit test / coverage reports
+htmlcov/
+.tox/
 # Installer logs
 pip-log.txt
 pip-delete-this-directory.txt
@@ -74,6 +81,7 @@ coverage.xml
 .hypothesis/
 .pytest_cache/
 
+# Environments
 # =============================================================================
 # Node.js
 # =============================================================================
@@ -85,6 +93,7 @@ ENV/
 env.bak/
 venv.bak/
 
+# IDE
 # IDE files
 # PyCharm
 .idea/
@@ -133,6 +142,9 @@ docker-compose.local.yml
 *.swp
 *.swo
 *~
+
+# OS
+.DS_Store
 .DS_Store
 Thumbs.db
 
@@ -387,6 +399,7 @@ Thumbs.db
 # Temporary files
 /tmp/
 *.tmp
+*.temp
 *.temp
 
 # Log files
