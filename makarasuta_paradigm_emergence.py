@@ -46,7 +46,10 @@ def L(n):
 
 
 def dna(s, n):
-    """Generate DNA sequence through SHA256 hashing"""
+    """Generate DNA sequence through double SHA256 hashing.
+
+    Returns 64-base DNA sequence (2 SHA256 hashes × 32 bytes = 64 bases).
+    """
     t = (s + n).encode()
     q = []
     # First iteration
@@ -55,7 +58,7 @@ def dna(s, n):
     # Second iteration
     t = h.sha256(t).digest()
     q += ["ATCG"[b % 4] for b in t]
-    return "".join(q[:144])
+    return "".join(q)
 
 
 def coh(d):
@@ -73,11 +76,13 @@ def cascade(d):
 
 
 def sim_billion(fib_n):
-    """Simulate 1B iterations toward Fibonacci milestone"""
+    """Calculate convergence metrics for Fibonacci milestone.
+
+    Computes symbolic representation of 1B iterations/sec convergence
+    toward the specified Fibonacci number milestone using ψ function.
+    """
     start_time = time.time()
     ψ_target = ψ(fib_n)
-    # Calculate deficit (used in convergence analysis)
-    _ = 10 ** L(fib_n)  # noqa: F841
     elapsed_time = time.time() - start_time
     return {
         "fib": fib_n,
