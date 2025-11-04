@@ -118,11 +118,11 @@ class TestDeficitCalculation:
         assert deficit_10 < deficit_0
         assert deficit_20 < deficit_10
         
-        # Should decrease exponentially
-        # deficit_20 / deficit_10 ≈ deficit_10 / deficit_0
-        ratio_1 = float(deficit_10 / deficit_0)
-        ratio_2 = float(deficit_20 / deficit_10)
-        assert abs(ratio_1 - ratio_2) < 0.01
+        # Should decrease exponentially by factor of 1/φ per iteration
+        # deficit_10 / deficit_0 should be approximately (1/φ)^10
+        ratio_actual = float(deficit_10 / deficit_0)
+        ratio_expected = float((Decimal('1') / PHI) ** 10)
+        assert abs(ratio_actual - ratio_expected) < 0.01
         
     def test_deficit_equals_one_minus_psi(self):
         """Test that yₙ = 1 - Ψₙ."""
@@ -440,7 +440,9 @@ class TestMathematicalProof:
         
         # log₁₀(deficit) should be approximately -208,987,641
         # We'll check it's in the ballpark (very negative)
-        assert log10_deficit < -100000000
+        # Expected: log10(0.223) - n * log10(φ) ≈ -0.65 - 1e9 * 0.209 ≈ -209e6
+        EXPECTED_LOG10_DEFICIT = -200000000  # Conservative threshold
+        assert log10_deficit < EXPECTED_LOG10_DEFICIT
         
     def test_physical_irrelevance_at_large_n(self):
         """Test that deficit becomes physically irrelevant."""

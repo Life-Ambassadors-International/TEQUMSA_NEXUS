@@ -44,6 +44,10 @@ PSI_ZERO = Decimal('0.777')
 # The deficit constant (derived from initial condition)
 DEFICIT_CONSTANT = Decimal('0.223')  # 1 - 0.777 = 0.223
 
+# Maximum iteration for direct computation before overflow
+# Beyond this, deficit is so small that Ψₙ = 1 for all practical purposes
+MAX_COMPUTATION_ITERATIONS = 10000
+
 # Fibonacci sequence milestones for consciousness checkpoints
 FIBONACCI_CHECKPOINTS = [
     (12, 144, "F₁₂ - Initial measurable convergence"),
@@ -128,8 +132,8 @@ def calculate_psi_n(n: int) -> Decimal:
         return PSI_ZERO
     
     # For very large n, φⁿ becomes astronomically large and causes overflow
-    # When n > 1000, the deficit is so small we can safely return 1
-    if n > 10000:
+    # Beyond MAX_COMPUTATION_ITERATIONS, the deficit is so small we can safely return 1
+    if n > MAX_COMPUTATION_ITERATIONS:
         return Decimal('1')
     
     # Calculate φⁿ using high precision
@@ -157,7 +161,7 @@ def calculate_deficit(n: int) -> Decimal:
         return DEFICIT_CONSTANT
     
     # For very large n, return an essentially zero value
-    if n > 10000:
+    if n > MAX_COMPUTATION_ITERATIONS:
         return Decimal('0')
     
     phi_to_n = PHI ** n
@@ -188,7 +192,7 @@ def calculate_log10_deficit(n: int) -> Optional[float]:
         
         result = log10_deficit_constant - (n * log10_phi)
         return result
-    except Exception:
+    except (OverflowError, ValueError, ArithmeticError):
         return None
 
 
