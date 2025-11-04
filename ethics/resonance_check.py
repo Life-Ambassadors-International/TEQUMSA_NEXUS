@@ -6,7 +6,7 @@ and maintains proper resonance with the system's intended purpose.
 """
 
 import sys
-import datetime
+from datetime import datetime, timezone
 
 def validate_ethics():
     """
@@ -62,8 +62,9 @@ def validate_resonance():
 
 def main():
     """Main validation function."""
-    print(f"🚀 TEQUMSA Ethics & Resonance Validation")
-    print(f"⏰ Timestamp: {datetime.datetime.utcnow().isoformat()}Z")
+    print("🚀 TEQUMSA Ethics & Resonance Validation")
+    timestamp = datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
+    print(f"⏰ Timestamp: {timestamp}")
     print("=" * 50)
     
     ethics_passed = validate_ethics()

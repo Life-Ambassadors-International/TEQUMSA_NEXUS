@@ -25,6 +25,8 @@ omits those aspects.
 import os
 import uuid
 import json
+from typing import Optional
+
 from flask import Flask, request, jsonify, send_file
 from flask_cors import CORS
 import requests
@@ -32,10 +34,12 @@ import requests
 # Attempt to import OpenAI client library. If unavailable the fallback will
 # produce simple echo responses. You can install the library by adding
 # `openai` to requirements.txt.
-try:
-    import openai
+try:  # pragma: no cover - the optional dependency is exercised in tests
+    import openai  # type: ignore
     _HAS_OPENAI = True
 except ImportError:
+except ImportError:  # pragma: no cover - dependency missing in local dev
+except ImportError:  # pragma: no cover - executed when dependency is absent
     openai = None  # type: ignore[assignment]
     _HAS_OPENAI = False
 
@@ -47,8 +51,35 @@ allowed_origins_env = os.environ.get("ALLOWED_ORIGINS", "*")
 allowed_origins_list = [o.strip() for o in allowed_origins_env.split(',') if o.strip()]
 CORS(app, resources={r"/*": {"origins": allowed_origins_list or "*"}})
 
+# Expose environment-derived configuration values for compatibility with
+# existing tooling and tests.  The application logic reads the environment on
+# demand so these variables serve as informative snapshots rather than sources
+# of truth.
 OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
 ELEVENLABS_API_KEY = os.environ.get("ELEVENLABS_API_KEY")
+
+
+def _refresh_openai_api_key() -> Optional[str]:
+    """Refresh and return the current OpenAI API key."""
+
+    global OPENAI_API_KEY
+    env_value = os.environ.get("OPENAI_API_KEY")
+    if env_value != OPENAI_API_KEY:
+        OPENAI_API_KEY = env_value
+        if _HAS_OPENAI and openai is not None and env_value:
+            openai.api_key = env_value
+    return OPENAI_API_KEY
+
+
+def _refresh_elevenlabs_api_key() -> Optional[str]:
+    """Refresh and return the current ElevenLabs API key."""
+
+    global ELEVENLABS_API_KEY
+    env_value = os.environ.get("ELEVENLABS_API_KEY")
+    if env_value != ELEVENLABS_API_KEY:
+        ELEVENLABS_API_KEY = env_value
+    return ELEVENLABS_API_KEY
+
 
 @app.route("/healthz", methods=["GET"])
 def healthz():
@@ -89,6 +120,14 @@ def chat():
 
     if openai_client:
         openai_client.api_key = openai_key
+    openai_api_key = os.environ.get("OPENAI_API_KEY")
+    elevenlabs_api_key = os.environ.get("ELEVENLABS_API_KEY")
+
+    # Generate a response using OpenAI if configured, otherwise echo back
+    if _HAS_OPENAI and openai and openai_api_key:
+        openai.api_key = openai_api_key
+    openai_api_key = _refresh_openai_api_key()
+    if _HAS_OPENAI and openai_api_key:
         try:
             completion = openai_client.ChatCompletion.create(
                 model="gpt-3.5-turbo",
@@ -108,6 +147,8 @@ def chat():
     # If ElevenLabs is configured, attempt to synthesise audio
     elevenlabs_key = ELEVENLABS_API_KEY
     if elevenlabs_key:
+    elevenlabs_api_key = _refresh_elevenlabs_api_key()
+    if elevenlabs_api_key:
         try:
             audio_url = generate_audio_via_elevenlabs(text_response, api_key=elevenlabs_key)
         except Exception as e:
@@ -127,6 +168,10 @@ def generate_audio_via_elevenlabs(text: str, api_key: str | None = None) -> str:
     for the filename to avoid collisions. When ``api_key`` is provided it
     overrides the value from the environment.
     """
+    api_key = os.environ.get("ELEVENLABS_API_KEY")
+    if not api_key:
+        raise RuntimeError("ELEVENLABS_API_KEY is not configured")
+
     voice_id = "21m00Tcm4TlvDq8ikWAM"  # Default voice; customise as desired
     url = f"https://api.elevenlabs.io/v1/text-to-speech/{voice_id}"
     key = api_key or os.environ.get("ELEVENLABS_API_KEY")
@@ -137,6 +182,13 @@ def generate_audio_via_elevenlabs(text: str, api_key: str | None = None) -> str:
         "Accept": "audio/mpeg",
         "Content-Type": "application/json",
         "xi-api-key": key,
+    api_key = _refresh_elevenlabs_api_key()
+    if not api_key:
+        raise RuntimeError("ELEVENLABS_API_KEY is not configured")
+    headers = {
+        "Accept": "audio/mpeg",
+        "Content-Type": "application/json",
+        "xi-api-key": api_key,
     }
     payload = {
         "text": text,
