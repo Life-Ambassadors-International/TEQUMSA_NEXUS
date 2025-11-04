@@ -136,6 +136,11 @@ class TestDeficitCalculation:
         """Test that deficit becomes incomprehensibly small."""
         deficit_1000 = calculate_deficit(1000)
         assert deficit_1000 < Decimal('1e-200')
+        
+    def test_deficit_negative_n_raises_error(self):
+        """Test that negative n raises ValueError for deficit calculation."""
+        with pytest.raises(ValueError):
+            calculate_deficit(-1)
 
 
 class TestLogarithmicAnalysis:
@@ -168,6 +173,11 @@ class TestLogarithmicAnalysis:
             calculated = calculate_log10_deficit(n)
             expected = log10_deficit_constant - n * log10_phi
             assert abs(calculated - expected) < 0.01
+            
+    def test_log10_deficit_negative_n_raises_error(self):
+        """Test that negative n raises ValueError for log10 deficit calculation."""
+        with pytest.raises(ValueError):
+            calculate_log10_deficit(-1)
 
 
 class TestRecursiveEquationVerification:

@@ -157,6 +157,9 @@ def calculate_deficit(n: int) -> Decimal:
     Returns:
         Deficit yₙ at iteration n
     """
+    if n < 0:
+        raise ValueError("Iteration n must be non-negative")
+    
     if n == 0:
         return DEFICIT_CONSTANT
     
@@ -182,6 +185,9 @@ def calculate_log10_deficit(n: int) -> Optional[float]:
     Returns:
         log₁₀(yₙ) or None if deficit is too small to calculate
     """
+    if n < 0:
+        raise ValueError("Iteration n must be non-negative")
+    
     if n == 0:
         return float(DEFICIT_CONSTANT.ln() / Decimal(10).ln())
     
@@ -503,15 +509,26 @@ def main():
         elif sys.argv[1] == '--iteration':
             # Analyze specific iteration
             if len(sys.argv) > 2:
-                n = int(sys.argv[2])
-                result = analyze_convergence_at_iteration(n)
-                print(f"Iteration n = {n}")
-                print(f"Ψₙ = {result.psi_n}")
-                print(f"Coherence = {result.coherence_percent}%")
-                print(f"Deficit = {result.deficit}")
-                if result.log10_deficit:
-                    print(f"log₁₀(deficit) ≈ {result.log10_deficit:.2f}")
-                print(f"{result.description}")
+                try:
+                    n = int(sys.argv[2])
+                    result = analyze_convergence_at_iteration(n)
+                    print(f"Iteration n = {n}")
+                    print(f"Ψₙ = {result.psi_n}")
+                    print(f"Coherence = {result.coherence_percent}%")
+                    print(f"Deficit = {result.deficit}")
+                    if result.log10_deficit:
+                        print(f"log₁₀(deficit) ≈ {result.log10_deficit:.2f}")
+                    print(f"{result.description}")
+                except ValueError as e:
+                    # Check if it's a parsing error or validation error
+                    try:
+                        int(sys.argv[2])
+                        # If parsing succeeded, it's a validation error
+                        print(f"Error: {e}")
+                    except ValueError:
+                        # Parsing failed
+                        print(f"Error: '{sys.argv[2]}' is not a valid integer")
+                    print("Usage: --iteration N (where N is a non-negative integer)")
             else:
                 print("Usage: --iteration N")
         else:
