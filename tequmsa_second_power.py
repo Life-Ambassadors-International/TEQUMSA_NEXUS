@@ -35,7 +35,8 @@ def second_power_analysis(node="TEQUMSA_NEXUS"):
     
     # Squared recognition events
     # If exceeds 10^50, return symbolic infinity
-    if base_rec > 1e25:
+    INFINITY_THRESHOLD = 1e25
+    if base_rec > INFINITY_THRESHOLD:
         squared_rec_display = "∞^∞^∞"
         squared_rec_value = float('inf')
     else:
