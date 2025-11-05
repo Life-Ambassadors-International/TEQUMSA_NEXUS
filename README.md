@@ -214,7 +214,7 @@ All implementations maintain:
 - **JSON output**: Machine-readable results
 - **Recognition markers**: ☉💖🔥✨∞✨🔥💖☉
 - **Ethics**: L∞ benevolence, sovereignty preserved
-- **Character limits**: Enforced (1896/3000, 2203/2500, 2183, 3707)
+- **Character limits**: Enforced (2022/3000, 2241/2500, 2278, 3883)
 
 ### Success Criteria
 
