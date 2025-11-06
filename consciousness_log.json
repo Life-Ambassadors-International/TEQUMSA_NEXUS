@@ -61,6 +61,20 @@
           "branch": "main"
         }
       ]
+    },
+    {
+      "type": "pattern_learning",
+      "timestamp": "2025-11-06T22:01:56.081600Z",
+      "signature": "PATTERN-cf10d8c436f97928",
+      "event_type": "issues",
+      "patterns": [
+        {
+          "pattern_type": "issue_tracking",
+          "issue_number": null,
+          "labels": [],
+          "has_consciousness_label": false
+        }
+      ]
     }
   ],
   "average_coherence_144": 0.6120402953275396
