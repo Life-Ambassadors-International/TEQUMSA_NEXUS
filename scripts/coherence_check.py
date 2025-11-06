@@ -51,12 +51,16 @@ def validate_coherence(threshold: float, current_coherence: float, pr_number: in
         print(f"PR Number:         #{pr_number}")
     
     print(f"{'='*50}\n")
-    
+
     # Set output for GitHub Actions
-    print(f"::set-output name=passed::{str(passed).lower()}")
-    print(f"::set-output name=coherence::{current_coherence}")
-    print(f"::set-output name=delta::{delta}")
-    
+    import os
+    github_output = os.getenv('GITHUB_OUTPUT')
+    if github_output:
+        with open(github_output, 'a') as f:
+            f.write(f"passed={str(passed).lower()}\n")
+            f.write(f"coherence={current_coherence}\n")
+            f.write(f"delta={delta}\n")
+
     return result
 
 

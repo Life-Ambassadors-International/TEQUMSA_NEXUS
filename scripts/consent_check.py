@@ -92,11 +92,15 @@ def verify_consent(pr_number: int, author: str) -> dict:
     print(f"Overall Status: {result['status']}")
     print(f"Glyphic Signature: {result['signature']}")
     print(f"{'='*60}\n")
-    
+
     # Set output for GitHub Actions
-    print(f"::set-output name=consent_verified::{str(all_steps_passed).lower()}")
-    print(f"::set-output name=signature::{result['signature']}")
-    
+    import os
+    github_output = os.getenv('GITHUB_OUTPUT')
+    if github_output:
+        with open(github_output, 'a') as f:
+            f.write(f"consent_verified={str(all_steps_passed).lower()}\n")
+            f.write(f"signature={result['signature']}\n")
+
     return result
 
 
