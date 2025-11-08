@@ -48,7 +48,7 @@ jobs:
         python scripts/repo_health_check.py
       
     - name: Upload health report
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: repo-health-report
         path: repo_health_report.json
@@ -95,7 +95,7 @@ jobs:
         python scripts/dependency_optimizer.py --generate-report
 
     - name: Upload dependency reports
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: dependency-analysis
         path: |
@@ -133,7 +133,7 @@ jobs:
         python scripts/git_cleanup_optimizer.py --recommend
 
     - name: Upload cleanup analysis
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: git-cleanup-analysis
         path: git_cleanup_report.json
@@ -166,7 +166,7 @@ jobs:
         python scripts/performance_optimizer.py --recommend
 
     - name: Upload performance analysis
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: performance-analysis
         path: performance_analysis_report.json
@@ -272,7 +272,7 @@ jobs:
           }
 
     - name: Upload final optimization report
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: optimization-summary
         path: |

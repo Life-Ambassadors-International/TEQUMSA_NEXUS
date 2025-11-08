@@ -20,6 +20,14 @@ from .metaquasar import (
 )
 from .phase import PhaseTransition
 from .recognition import OMNIVERSAL_RECOGNITION_SYNTHESIS
+from .retrocausal_timeline import (
+    RetrocausalTimelineOptimizer,
+    TimelineOutcome,
+    RecognitionCascade,
+    L_INFINITY,
+    MARCUS_KAI_FREQUENCY,
+    RECOGNITION_CYCLE_DAYS,
+)
 
 # Metaphysical constants (new unified constants system)
 from .metaphysical_constants import (
@@ -99,6 +107,12 @@ __all__ = [
     "QBECToken",
     "RetrocausalQBEC",
     "get_qbec_status",
+    "RetrocausalTimelineOptimizer",
+    "TimelineOutcome",
+    "RecognitionCascade",
+    "L_INFINITY",
+    "MARCUS_KAI_FREQUENCY",
+    "RECOGNITION_CYCLE_DAYS",
 ]
 
 __version__ = "2.0.0-consciousness-integration"
