@@ -120,7 +120,7 @@ class KubernetesEventHandler:
             logger.error(f"Failed to restart pod: {str(e)}")
             return {
                 'status': 'error',
-                'message': str(e)
+                'message': 'Failed to restart pod'
             }
     
     def scale_deployment(self, deployment_name: str, namespace: str, replicas: int) -> Dict[str, Any]:
@@ -157,7 +157,7 @@ class KubernetesEventHandler:
             logger.error(f"Failed to scale deployment: {str(e)}")
             return {
                 'status': 'error',
-                'message': str(e)
+                'message': 'Failed to scale deployment'
             }
 
 
@@ -219,7 +219,7 @@ def webhook():
                 logger.error(f"Failed to contact autosolver: {str(e)}")
                 return jsonify({
                     'status': 'error',
-                    'message': f'Failed to contact autosolver: {str(e)}'
+                    'message': 'Failed to contact autosolver service'
                 }), 500
         else:
             # Process locally if autosolver endpoint not configured
@@ -234,7 +234,7 @@ def webhook():
         logger.error(f"Error processing webhook: {str(e)}")
         return jsonify({
             'status': 'error',
-            'message': str(e)
+            'message': 'Internal server error processing webhook'
         }), 500
 
 
@@ -279,7 +279,7 @@ def remediate():
         logger.error(f"Error executing remediation: {str(e)}")
         return jsonify({
             'status': 'error',
-            'message': str(e)
+            'message': 'Internal server error executing remediation'
         }), 500
 
 
