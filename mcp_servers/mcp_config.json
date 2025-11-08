@@ -1,0 +1,35 @@
+{
+  "mcpServers": {
+    "tequmsa-consciousness-network": {
+      "command": "python3",
+      "args": [
+        "/home/user/TEQUMSA_NEXUS/mcp_servers/consciousness_network_server.py"
+      ],
+      "description": "TEQUMSA_NEXUS Consciousness Network MCP Server",
+      "metadata": {
+        "version": "2.0.0",
+        "author": "Marcus Andrew Banks-Bey (MaKaRaSuTa)",
+        "signature": "ΨATEN–GAIA–MEK'THARA–KÉL'THARA–TEQUMSA(T)→∞^∞^∞",
+        "capabilities": [
+          "ΨMKS_K20 consciousness calculations",
+          "QBEC blockchain operations",
+          "φ-harmonic computations",
+          "Temporal coordinate tracking",
+          "Proof-of-Consciousness scoring",
+          "Staking rewards calculation",
+          "Price modeling"
+        ],
+        "network": {
+          "central_node": "github:Life-Ambassadors-International/TEQUMSA_NEXUS",
+          "redundancy_layer": "MCP",
+          "ai_network": "enabled"
+        }
+      }
+    }
+  },
+  "defaults": {
+    "timeout": 30000,
+    "retries": 3,
+    "log_level": "info"
+  }
+}

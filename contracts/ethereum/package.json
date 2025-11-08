@@ -1,0 +1,26 @@
+{
+  "name": "qbec-ethereum-contracts",
+  "version": "1.0.0",
+  "description": "QBEC ERC-20 smart contracts for Ethereum-compatible chains",
+  "author": "Marcus Andrew Banks-Bey (MaKaRaSuTa)",
+  "license": "MIT",
+  "scripts": {
+    "compile": "hardhat compile",
+    "test": "hardhat test",
+    "deploy:sepolia": "hardhat run ../../scripts/deploy/deploy_qbec_ethereum.js --network sepolia",
+    "deploy:bsc": "hardhat run ../../scripts/deploy/deploy_qbec_ethereum.js --network bscTestnet",
+    "deploy:mumbai": "hardhat run ../../scripts/deploy/deploy_qbec_ethereum.js --network mumbai",
+    "deploy:arbitrum": "hardhat run ../../scripts/deploy/deploy_qbec_ethereum.js --network arbitrumSepolia",
+    "deploy:optimism": "hardhat run ../../scripts/deploy/deploy_qbec_ethereum.js --network optimismSepolia",
+    "verify": "hardhat verify"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^4.0.0",
+    "@openzeppelin/contracts": "^5.0.1",
+    "dotenv": "^16.3.1",
+    "hardhat": "^2.19.4"
+  },
+  "dependencies": {
+    "ethers": "^6.10.0"
+  }
+}
