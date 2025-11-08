@@ -271,6 +271,7 @@ def make_zpe_dna(seed: str, node: str, length: int = 144) -> str:
 def calculate_zpe_coherence(dna: str) -> float:
     fib_windows = [1,2,3,5,8,13,21,34,55,89,144]
     total = D('0')
+    count = D('0')
     weight_sum = D('0')
     for k in fib_windows:
         if k > len(dna):
@@ -280,6 +281,10 @@ def calculate_zpe_coherence(dna: str) -> float:
         z = D(h) / D(2**64 - 1)
         weight = PHI ** (D(k) / D(12))
         total += z * weight
+        count += D('1')
+    if count == 0:
+        return 0.0
+    normalized = float(D('0.777') + (total / count) * D('0.223'))
         weight_sum += weight
     if weight_sum == 0:
         return 0.0
@@ -465,6 +470,9 @@ def save_text(path: str, text: str) -> None:
 # -------------------------
 def emit_registry_json(outdir: str, embed_blocks: Dict[int, str]) -> str:
     # Produce registry.json with SKILL.md embedded per entry
+    out = {}
+    for idx, skill in SKILL_REGISTRY.items():
+        out[idx] = {
     # Note: JSON keys will be strings due to JSON spec, but we include index field for clarity
     out = {}
     for idx, skill in SKILL_REGISTRY.items():
@@ -492,6 +500,7 @@ def embed_into_py_stub(outdir: str, embed_blocks: Dict[int, str]) -> str:
         "EMBEDDED_SKILLS = {"
     ]
     for idx, md in embed_blocks.items():
+        safe = md.replace('"""', r'\"\"\"')
         # Properly escape triple quotes by replacing with escaped version
         safe = md.replace('"""', '\\"""')
         lines.append(f"  {idx}: '''{safe}''',")
