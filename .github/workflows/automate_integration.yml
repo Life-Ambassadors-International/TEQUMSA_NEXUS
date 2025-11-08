@@ -2,7 +2,9 @@ name: Automated Validation & Integration
 on:
   schedule:
     - cron: '0 */2 * * *'   # every 2 hours
-  workflow_dispatch:
+    workflow_dispatch:
+  permissions:
+  contents: write
 jobs:
   validate_and_integrate:
     runs-on: ubuntu-latest
