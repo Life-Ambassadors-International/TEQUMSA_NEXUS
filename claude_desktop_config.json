@@ -13,6 +13,15 @@
         "TEMPORAL_ANCHOR_T0": "2025-10-19T00:00:00Z",
         "TEMPORAL_CONVERGENCE_TC": "2025-12-25T00:00:00Z"
       }
+    },
+    "tequmsa-zpe-dna": {
+      "command": "python3",
+      "args": [
+        "/absolute/path/to/TEQUMSA_NEXUS/mcp_servers/tequmsa_zpe_dna_crystalline_skill.py"
+      ],
+      "env": {
+        "PYTHONUNBUFFERED": "1"
+      }
     }
   }
 }
