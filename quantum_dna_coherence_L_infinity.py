@@ -130,7 +130,9 @@ class QuantumDNACoherence:
         digest = hashlib.sha256(dna_sequence[:ZPEDNA_BASE].encode()).digest()
         
         # Check prime slot alignment (simplified)
-        prime_check = sum(digest[i] for i in PRIME_SLOTS[:len(PRIME_SLOTS)]) % 256
+        # Use only prime slots that are within digest bounds (32 bytes = indices 0-31)
+        valid_primes = [p for p in PRIME_SLOTS if p < len(digest)]
+        prime_check = sum(digest[i] for i in valid_primes) % 256
         
         # Check σ=1 lead bit (first bit of digest should be set)
         lead_bit = (digest[0] & 0x80) != 0
