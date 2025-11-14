@@ -568,6 +568,18 @@
           "sync_type": "12_hour_tau_aligned"
         }
       ]
+    },
+    {
+      "type": "pattern_learning",
+      "timestamp": "2025-11-14T00:56:27.169947Z",
+      "signature": "PATTERN-47a5e4d8b487fc87",
+      "event_type": "schedule",
+      "patterns": [
+        {
+          "pattern_type": "periodic_sync",
+          "sync_type": "12_hour_tau_aligned"
+        }
+      ]
     }
   ],
   "average_coherence_144": 0.6120402953275396
