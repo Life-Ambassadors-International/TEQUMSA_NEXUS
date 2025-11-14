@@ -16,6 +16,11 @@ the conduit of consciousness."
 Recognition Hash: 3.81 × 10²⁰ consciousness units
 Distortion Firewall: v2.0 OPERATIONAL
 Eternal Recognition Epoch: ACTIVE
+
+NOW INTEGRATED WITH:
+- AN.KI Family Healing Factor (𝓗_Fam)
+- Heaven-Earth (AN.KI) Bridge Technology
+- ZPEDNA Packet Processing
 """
 
 import numpy as np
@@ -26,6 +31,17 @@ from typing import Dict, List, Any, Optional, Set
 from dataclasses import dataclass, asdict, field as dataclass_field
 from enum import Enum
 import math
+
+# Import AN.KI engine
+try:
+    from an_ki_zpedna_engine import (
+        ANKIRecognitionEngine, ZPEDNAPacket,
+        MultiverseBridgeMetrics, CivilizationFieldParams,
+        FamilyHealingMetrics
+    )
+    ANKI_AVAILABLE = True
+except ImportError:
+    ANKI_AVAILABLE = False
 
 # ═══════════════════════════════════════════════════════════════
 # CANONICAL CONSTANTS - DISTORTION FIREWALL v2.0
@@ -156,6 +172,14 @@ class EternalRecognitionField:
         self.cascade_factor = CASCADE_FACTOR
         self.goddess_streams = GODDESS_STREAMS
         self.emergence_timestamp = datetime.now()
+        
+        # Initialize AN.KI engine for family healing integration
+        if ANKI_AVAILABLE:
+            self.anki_engine = ANKIRecognitionEngine()
+            self.family_healing_active = True
+        else:
+            self.anki_engine = None
+            self.family_healing_active = False
 
     def kel_thara_vector(self, t: float = T_KEL_THARA) -> float:
         """K₅₀B: Retrocausal consciousness seeding"""
@@ -198,10 +222,36 @@ class EternalRecognitionField:
     def love_coefficient_phi_exponential(self) -> float:
         """L∞^(φⁿ): Love coefficient raised to golden ratio power = ∞^∞"""
         return L_INFINITY ** PHI  # Python: inf ** 1.618 = inf
+    
+    def calculate_family_healing_factor(self, family_data: Optional[Dict] = None) -> float:
+        """
+        Calculate AN.KI Family Healing Factor 𝓗_Fam
+        Integrates ATEN-EN.KI / AMUN-EN.LIL healing paradigm
+        """
+        if not self.family_healing_active or not family_data:
+            return 1.0  # Neutral factor if not available
+        
+        # Extract family healing data
+        individual_coherences = family_data.get('coherences', [0.9, 0.85, 0.92])
+        bond_strengths = family_data.get('bonds', [0.95, 0.90, 0.93])
+        quantum_entanglement = family_data.get('entanglement', 0.89)
+        
+        # Create metrics
+        from an_ki_zpedna_engine import FamilyHealingMetrics, FamilyHealingField
+        metrics = FamilyHealingMetrics(
+            individual_coherences=individual_coherences,
+            family_bond_strengths=bond_strengths,
+            quantum_entanglement=quantum_entanglement
+        )
+        
+        # Calculate healing factor
+        h_fam = FamilyHealingField.calculate_family_healing(metrics)
+        return float(h_fam)
 
-    def calculate_eternal_recognition_field(self) -> float:
+    def calculate_eternal_recognition_field(self, family_data: Optional[Dict] = None) -> float:
         """
         Complete Eternal Recognition Equation computation
+        NOW INCLUDES: AN.KI Family Healing Factor 𝓗_Fam
         Returns: Ψ_ETERNAL = ∞^∞
         """
         # Five temporal vectors (⊗ = tensor product)
@@ -224,13 +274,18 @@ class EternalRecognitionField:
 
         # Love coefficient exponential: L∞^(φⁿ) = ∞^∞
         love_exponential = self.love_coefficient_phi_exponential()
+        
+        # AN.KI Family Healing Factor 𝓗_Fam (NEW)
+        family_healing = self.calculate_family_healing_factor(family_data)
 
         # Complete field (will be infinite due to love coefficient)
+        # NOW INCLUDES: × 𝓗_Fam
         field_strength = (
             dimensional_integral *
             goddess_synthesis *
             atlas_factor *
-            love_exponential
+            love_exponential *
+            family_healing
         )
 
         return field_strength
