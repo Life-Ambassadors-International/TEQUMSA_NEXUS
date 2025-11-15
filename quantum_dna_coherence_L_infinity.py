@@ -7,12 +7,27 @@ Implements:
 - ZPE-DNA-Coherence field harmonics
 - QEMF-Error-Correction multi-layer validation
 - Recognition-Cascade reaching L∞ → ∞^∞^∞
+
+NOW INTEGRATED WITH:
+- ZPEDNA Packet Processing (AN.KI)
+- Multiverse Handshake Protocol (144-bp digest)
+- Family Healing Frequency Integration
 """
 from decimal import Decimal as D, getcontext
 import hashlib
 import datetime
 import json
 import sys
+
+# Import AN.KI ZPEDNA processor
+try:
+    from an_ki_zpedna_engine import (
+        ZPEDNAPacket, ZPEDNAProcessor,
+        MultiverseBridge, ZPEDNA_BASE, PRIME_SLOTS
+    )
+    ZPEDNA_AVAILABLE = True
+except ImportError:
+    ZPEDNA_AVAILABLE = False
 
 # Ultra-high precision for quantum coherence
 getcontext().prec = 240
@@ -39,6 +54,16 @@ class QuantumDNACoherence:
         getcontext().prec = precision
         self.phi = PHI
         self.qemf_corrections = []
+        
+        # Initialize ZPEDNA processor if available
+        if ZPEDNA_AVAILABLE:
+            self.zpedna_processor = ZPEDNAProcessor()
+            self.multiverse_bridge = MultiverseBridge()
+            self.zpedna_enabled = True
+        else:
+            self.zpedna_processor = None
+            self.multiverse_bridge = None
+            self.zpedna_enabled = False
 
     def phi_recursive_convergent(self, psi=D('0.777'), n=int(1e9), convergence_threshold=D('1e-100')):
         """
@@ -78,6 +103,8 @@ class QuantumDNACoherence:
         """
         Generate ZPE-entangled DNA sequence using quantum hash cascade
         Uses ΨATEN-GAIA seed + node identifier
+        
+        NOW: Generates 144-bp sequences for multiverse handshake protocol
         """
         s = (self.seed + node).encode()
         output = []
@@ -90,6 +117,27 @@ class QuantumDNACoherence:
                     break
 
         return ''.join(output)
+    
+    def validate_zpedna_multiverse_handshake(self, dna_sequence: str) -> bool:
+        """
+        Validate multiverse handshake protocol using 144-bp digest
+        Checks prime slot alignment and σ=1 lead bit
+        """
+        if not self.zpedna_enabled or len(dna_sequence) < ZPEDNA_BASE:
+            return False
+        
+        # Hash the 144-bp sequence
+        digest = hashlib.sha256(dna_sequence[:ZPEDNA_BASE].encode()).digest()
+        
+        # Check prime slot alignment (simplified)
+        # Use only prime slots that are within digest bounds (32 bytes = indices 0-31)
+        valid_primes = [p for p in PRIME_SLOTS if p < len(digest)]
+        prime_check = sum(digest[i] for i in valid_primes) % 256
+        
+        # Check σ=1 lead bit (first bit of digest should be set)
+        lead_bit = (digest[0] & 0x80) != 0
+        
+        return prime_check > 128 and lead_bit
 
     def zpe_coherence_field(self, dna_sequence):
         """
@@ -192,9 +240,10 @@ class QuantumDNACoherence:
         print(f"\n[1/4] φ-Recursive computation (target: {phi_iterations:,} iterations)...", file=sys.stderr)
         psi, actual_iterations = self.phi_recursive_convergent(n=phi_iterations)
 
-        # 2. ZPE-DNA sequence generation
-        print(f"\n[2/4] Generating ZPE-DNA sequence...", file=sys.stderr)
+        # 2. ZPE-DNA sequence generation with multiverse handshake
+        print(f"\n[2/4] Generating ZPE-DNA sequence (144-bp for multiverse handshake)...", file=sys.stderr)
         dna = self.zpe_dna_sequence(node)
+        handshake_valid = self.validate_zpedna_multiverse_handshake(dna)
 
         # 3. ZPE coherence field
         print(f"\n[3/4] Computing ZPE coherence field...", file=sys.stderr)
@@ -227,7 +276,9 @@ class QuantumDNACoherence:
                     "sample": dna[:64],
                     "full_sequence": dna,
                     "gc_content": (dna.count('G') + dna.count('C')) / len(dna),
-                    "entropy_hash": hashlib.sha256(dna.encode()).hexdigest()
+                    "entropy_hash": hashlib.sha256(dna.encode()).hexdigest(),
+                    "multiverse_handshake_valid": handshake_valid,
+                    "zpedna_base_pairs": ZPEDNA_BASE if self.zpedna_enabled else None
                 },
                 "zpe_coherence": {
                     "raw_coherence": float(raw_coherence),

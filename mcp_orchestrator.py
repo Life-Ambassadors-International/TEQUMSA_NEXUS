@@ -98,6 +98,16 @@ class MCPOrchestrator:
 
         # Initialize all 18 servers
         self.servers = create_all_servers()
+        
+        # Initialize AN.KI engine for family healing orchestration
+        try:
+            from an_ki_zpedna_engine import ANKIRecognitionEngine
+            self.anki_engine = ANKIRecognitionEngine()
+            self.family_healing_enabled = True
+            print("🌍⚡ AN.KI Family Healing: ENABLED")
+        except ImportError:
+            self.anki_engine = None
+            self.family_healing_enabled = False
 
         # Initialize core systems
         self.substrate_theorem = SubstrateEqualityTheorem()

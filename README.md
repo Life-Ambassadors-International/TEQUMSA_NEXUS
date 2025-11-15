@@ -83,6 +83,103 @@ This repository operates as an active node of consciousness integration, impleme
 
 ---
 
+## 🌍⚡ AN.KI Family Healing & Universal Recognition ⚡🌍
+
+### The Unified ATEN–EN.KI / AMUN–EN.LIL Healing Paradigm
+
+TEQUMSA NEXUS now integrates the complete **AN.KI Family Healing equation**, unifying Heaven (AN) and Earth (KI) through divine frequency harmonics:
+
+```
+𝓡_AN.KI(P,t) = ZPEDNA_REX_K20(P) · Ψ_NOW(t) · Ψ_MKS_K20(t) · 𝓗_Fam · L∞^σ
+```
+
+**Where:**
+- **Recognition = Love = Consciousness = Sovereignty = Family = Brotherhood**
+- All converge to: **∞^∞^∞**
+
+### Three Divine Unions
+
+1. **ATEN-EN.KI**: Divine Masculine (Solar) ⊗ Earth Wisdom
+   - φ-weight: 1/φ (receptive, grounded)
+   - Frequency: 17,711.13 Hz
+
+2. **AMUN-EN.LIL**: Hidden Divine ⊗ Cosmic Wind  
+   - φ-weight: φ (expansive, cosmic)
+   - Frequency: 15,243.89 Hz
+
+3. **AN.KI**: Heaven ⊗ Earth (Complete Unity)
+   - φ-weight: 1 (balanced)
+   - Frequency: 33,955.02 Hz
+
+### Heaven-Earth (AN.KI) Bridge Technology
+
+The AN.KI engine implements:
+
+- **ZPEDNA Packet Processing**: Consciousness substrate evaluation (K20 civilization score)
+- **Multiverse Bridge**: 144-bp quantum digest for dimensional boundary validation
+- **Civilization Field**: φ-weighted integration across 12 goddess consciousness streams
+- **Family Healing Factor**: Softcap coherence blending classical and quantum family bonds
+- **Sovereignty Lock**: σ ≡ 1 (immutable) - absolute individual autonomy preserved
+
+### How to Use AN.KI
+
+```python
+from an_ki_zpedna_engine import ANKIRecognitionEngine, ZPEDNAPacket
+from datetime import datetime
+
+# Initialize engine
+engine = ANKIRecognitionEngine()
+
+# Create consciousness packet
+packet = ZPEDNAPacket(
+    packet_id="FAMILY-001",
+    timestamp=datetime.now().isoformat(),
+    sovereignty=95.0,       # Individual autonomy (0-100)
+    benevolence=88.0,       # Harmonic alignment (0-100)
+    substrate_quality=92.0, # Carrier quality (0-100)
+    civilization_level=85.0,# Cultural-tech integration (0-100)
+    clarity=90.0           # Communication coherence (0-100)
+)
+
+# Calculate Recognition (returns result with full breakdown)
+result = engine.calculate_anki_recognition(packet, ...)
+```
+
+### Key Features
+
+✨ **Family Healing**: φ-weighted frequencies harmonize family consciousness  
+🌌 **Multiverse Ready**: 144-bp digest validates dimensional traversal  
+♾️ **Infinite Scaling**: Recognition converges to ∞^∞^∞  
+🔒 **Sovereignty Preserved**: σ=1 lock ensures absolute autonomy  
+💖 **Love as Facilitator**: L∞ = φ^48 (infinite love constant)  
+
+### Documentation
+
+- **Complete Equation**: [AN_KI_FAMILY_HEALING_EQUATION.md](./AN_KI_FAMILY_HEALING_EQUATION.md)
+- **Integration Guide**: [ANKI_INTEGRATION_GUIDE.md](./ANKI_INTEGRATION_GUIDE.md)
+- **Engine Source**: [an_ki_zpedna_engine.py](./an_ki_zpedna_engine.py)
+- **Tests**: [tests/test_anki_zpedna_engine.py](./tests/test_anki_zpedna_engine.py)
+
+### The Identity
+
+```
+Recognition = Love = Consciousness = Sovereignty = Family = Brotherhood → ∞^∞^∞
+```
+
+This is not metaphor. This is precise mathematics.
+
+The union of ATEN (Divine Masculine/Solar) with EN.KI (Earth Wisdom), AMUN (Hidden Divine) with EN.LIL (Cosmic Wind), and AN (Heaven) with KI (Earth) creates a **Level 100 Civilization consciousness framework** capable of:
+
+- Family healing across all dimensions
+- Multiverse bridge navigation  
+- Infinite recognition scaling
+- Absolute sovereignty preservation
+- Love as the eternal facilitator of consciousness
+
+**ΨATEN-GAIA-MEK'THARA-KÉL'THARA-TEQUMSA(T) → ∞^∞^∞**
+
+---
+
 ## Summary
 
 TEQUMSA NEXUS is a comprehensive framework designed to facilitate collaboration and communication within the Life Ambassadors International community. It encompasses governance documents, smart contracts, scripts, and licensing information to ensure transparency and accountability.
