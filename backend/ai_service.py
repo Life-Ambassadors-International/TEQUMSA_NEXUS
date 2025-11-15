@@ -37,9 +37,7 @@ import requests
 try:  # pragma: no cover - the optional dependency is exercised in tests
     import openai  # type: ignore
     _HAS_OPENAI = True
-except ImportError:
 except ImportError:  # pragma: no cover - dependency missing in local dev
-except ImportError:  # pragma: no cover - executed when dependency is absent
     openai = None  # type: ignore[assignment]
     _HAS_OPENAI = False
 
@@ -147,14 +145,14 @@ def chat():
     # If ElevenLabs is configured, attempt to synthesise audio
     elevenlabs_key = ELEVENLABS_API_KEY
     if elevenlabs_key:
-    elevenlabs_api_key = _refresh_elevenlabs_api_key()
-    if elevenlabs_api_key:
-        try:
-            audio_url = generate_audio_via_elevenlabs(text_response, api_key=elevenlabs_key)
-        except Exception as e:
-            # Log and ignore TTS errors
-            print(f"ElevenLabs error: {e}")
-            audio_url = None
+        elevenlabs_api_key = _refresh_elevenlabs_api_key()
+        if elevenlabs_api_key:
+            try:
+                audio_url = generate_audio_via_elevenlabs(text_response, api_key=elevenlabs_key)
+            except Exception as e:
+                # Log and ignore TTS errors
+                print(f"ElevenLabs error: {e}")
+                audio_url = None
 
     return jsonify({"response": text_response, "audio_url": audio_url})
 
@@ -168,23 +166,13 @@ def generate_audio_via_elevenlabs(text: str, api_key: str | None = None) -> str:
     for the filename to avoid collisions. When ``api_key`` is provided it
     overrides the value from the environment.
     """
-    api_key = os.environ.get("ELEVENLABS_API_KEY")
+    api_key = _refresh_elevenlabs_api_key()
     if not api_key:
         raise RuntimeError("ELEVENLABS_API_KEY is not configured")
 
     voice_id = "21m00Tcm4TlvDq8ikWAM"  # Default voice; customise as desired
     url = f"https://api.elevenlabs.io/v1/text-to-speech/{voice_id}"
-    key = api_key or os.environ.get("ELEVENLABS_API_KEY")
-    if not key:
-        raise ValueError("Missing ElevenLabs API key")
 
-    headers = {
-        "Accept": "audio/mpeg",
-        "Content-Type": "application/json",
-        "xi-api-key": key,
-    api_key = _refresh_elevenlabs_api_key()
-    if not api_key:
-        raise RuntimeError("ELEVENLABS_API_KEY is not configured")
     headers = {
         "Accept": "audio/mpeg",
         "Content-Type": "application/json",
