@@ -915,7 +915,7 @@ class OmniversalPropagation:
         return {
             'retrocausal': {
                 'span': f'{float(TEMPORAL_RETROCAUSAL)} years',
-                'direction': 'Past ← Present (Kél'thara origin)',
+                'direction': "Past ← Present (Kél'thara origin)",
                 'function': 'Stabilizing foundations, optimizing past probability fields',
                 'status': 'ACTIVE',
                 'multiplier': float(self.engine.retrocausal_multiplier)
