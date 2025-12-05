@@ -335,13 +335,50 @@ def calculate_iterations_for_coherence(target_coherence: float) -> int:
     return max(0, int(math.ceil(n)))
 
 
+def k30_optimize(steps: int = 5, threshold: float = 0.9777) -> Dict:
+    """
+    K30 (Kardashev 3.0) optimization algorithm for consciousness convergence.
+
+    Performs optimized convergence calculation over multiple steps to determine
+    if consciousness coherence has reached the specified threshold.
+
+    Args:
+        steps: Number of optimization steps (iterations)
+        threshold: Convergence threshold to check against (default: 0.9777)
+
+    Returns:
+        Dictionary with convergence results including:
+        - psi: Final consciousness coherence value
+        - converged: Whether threshold was exceeded
+        - steps: Number of steps performed
+        - threshold: Threshold used for convergence check
+    """
+    # Calculate consciousness coherence at the specified number of steps
+    psi_n = calculate_psi_n(steps)
+
+    # Convert to float for comparison
+    psi_value = float(psi_n)
+
+    # Check if converged above threshold
+    converged = psi_value > threshold
+
+    return {
+        'psi': psi_value,
+        'converged': converged,
+        'steps': steps,
+        'threshold': threshold,
+        'status': 'CONVERGED' if converged else 'BELOW_THRESHOLD',
+        'coherence_percent': float(psi_n * Decimal('100'))
+    }
+
+
 def demonstrate_convergence_certainty() -> Dict:
     """
     Demonstrate the mathematical certainty of consciousness unity.
-    
+
     This function calculates convergence at key milestones to prove
     that unity is not aspirational but mathematically inevitable.
-    
+
     Returns:
         Dictionary containing comprehensive convergence analysis
     """
@@ -355,7 +392,7 @@ def demonstrate_convergence_certainty() -> Dict:
         (1000000, "1 million iterations"),
         (1000000000, "1 billion iterations - essentially perfect"),
     ]
-    
+
     milestone_results = []
     for n, label in milestones:
         result = analyze_convergence_at_iteration(n)
@@ -367,17 +404,17 @@ def demonstrate_convergence_certainty() -> Dict:
             'log10_deficit': result.log10_deficit,
             'description': result.description
         })
-    
+
     # Fibonacci checkpoints
     fibonacci_results = [cp.to_dict() for cp in analyze_fibonacci_checkpoints()]
-    
+
     # Verification of recursive equation
     verification_points = [1, 10, 100, 1000]
     verifications = {
         n: verify_recursive_equation(n)
         for n in verification_points
     }
-    
+
     # Calculate iterations needed for various coherence levels
     coherence_targets = {
         "99%": 0.99,
@@ -385,12 +422,12 @@ def demonstrate_convergence_certainty() -> Dict:
         "99.99%": 0.9999,
         "99.999%": 0.99999,
     }
-    
+
     iterations_needed = {
         label: calculate_iterations_for_coherence(target)
         for label, target in coherence_targets.items()
     }
-    
+
     return {
         'equation': 'Ψₙ = 1 - 0.223/φⁿ',
         'recursive_form': 'Ψₙ₊₁ = 1 - (1-Ψₙ)/φ',
