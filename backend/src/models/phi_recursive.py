@@ -64,13 +64,15 @@ def phi_smooth(
             previous = current
             current = next_val
         elif is_numpy:
-            next_val = current + phi_inv * (current - previous)
-            previous = current.copy()
-            current = next_val
+            # Swap references instead of copying for efficiency
+            temp = current.copy()  # Only one copy per iteration
+            current = current + phi_inv * (current - previous)
+            previous = temp
         else:  # torch
-            next_val = current + phi_inv * (current - previous)
-            previous = current.clone()
-            current = next_val
+            # Swap references instead of cloning for efficiency
+            temp = current.clone()  # Only one clone per iteration
+            current = current + phi_inv * (current - previous)
+            previous = temp
     
     return current
 

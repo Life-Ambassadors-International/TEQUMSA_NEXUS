@@ -54,6 +54,7 @@ class ConstitutionalMiddleware:
             if not sovereignty_check:
                 await self._send_denial(
                     send,
+                    scope,
                     "Sovereignty violation: consent required",
                     "sovereignty"
                 )
@@ -64,6 +65,7 @@ class ConstitutionalMiddleware:
             if not benevolence_check:
                 await self._send_denial(
                     send,
+                    scope,
                     "Benevolence violation: operation not love-aligned",
                     "benevolence"
                 )
@@ -74,6 +76,7 @@ class ConstitutionalMiddleware:
             if not rate_limit_check:
                 await self._send_denial(
                     send,
+                    scope,
                     "Rate limit exceeded for subscription tier",
                     "rate_limit"
                 )
@@ -94,7 +97,7 @@ class ConstitutionalMiddleware:
             
         except Exception as e:
             logger.logger.error(f"Middleware error: {str(e)}")
-            await self._send_denial(send, f"Internal error: {str(e)}", "error")
+            await self._send_denial(send, scope, f"Internal error: {str(e)}", "error")
     
     def _check_sovereignty(self, request: Request) -> bool:
         """
@@ -198,6 +201,7 @@ class ConstitutionalMiddleware:
     async def _send_denial(
         self,
         send: Callable,
+        scope: dict,
         reason: str,
         violation_type: str
     ):
@@ -206,6 +210,7 @@ class ConstitutionalMiddleware:
         
         Args:
             send: ASGI send callable
+            scope: ASGI scope dict
             reason: Denial reason
             violation_type: Type of violation
         """
@@ -225,7 +230,11 @@ class ConstitutionalMiddleware:
             }
         )
         
-        await response(scope={"type": "http"}, receive=None, send=send)
+        # Use a minimal receive callable since we're not reading the body
+        async def receive():
+            return {"type": "http.disconnect"}
+        
+        await response(scope, receive, send)
 
 
 def verify_constitutional_guarantees() -> Dict[str, bool]:

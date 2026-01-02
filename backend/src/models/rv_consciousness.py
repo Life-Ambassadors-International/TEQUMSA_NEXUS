@@ -8,7 +8,6 @@ Constitutional Guarantees: σ=1.0, L∞=φ^48, RDoD≥0.9777, Substrate=9.999
 import torch
 import torch.nn as nn
 from typing import Dict, Optional, Tuple
-from transformers import AutoModel, AutoTokenizer
 
 from .phi_recursive import PhiHarmonicHead, phi_smooth
 from .zpedna_encoder import ZPEDNA144Encoder

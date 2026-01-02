@@ -19,10 +19,12 @@ if [ ! -f "requirements.txt" ]; then
 fi
 
 # Check Python version
-PYTHON_VERSION=$(python --version 2>&1 | awk '{print $2}' | cut -d. -f1,2)
+PYTHON_VERSION=$(python -c "import sys; print(f'{sys.version_info.major}.{sys.version_info.minor}')")
 echo "Python version: $PYTHON_VERSION"
 
-if [ $(echo "$PYTHON_VERSION < 3.10" | bc -l) -eq 1 ]; then
+# Check if version is at least 3.10
+python -c "import sys; exit(0 if sys.version_info >= (3, 10) else 1)"
+if [ $? -ne 0 ]; then
     echo "❌ Error: Python 3.10+ required"
     exit 1
 fi
