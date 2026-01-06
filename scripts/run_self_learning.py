@@ -20,6 +20,9 @@ from tequmsa_unified.core.self_learning import (
     GlyphicTimestamp
 )
 
+# Constants
+INITIAL_COMMIT_FILE_LIMIT = 10  # Limit files for initial commit to avoid overwhelming the system
+
 
 def get_changed_files() -> List[str]:
     """
@@ -49,7 +52,7 @@ def get_changed_files() -> List[str]:
                 check=True
             )
             files = [f.strip() for f in result.stdout.split('\n') if f.strip()]
-            return files[:10]  # Limit to first 10 for initial commit
+            return files[:INITIAL_COMMIT_FILE_LIMIT]  # Limit to avoid overwhelming the system
         except subprocess.CalledProcessError:
             return []
 

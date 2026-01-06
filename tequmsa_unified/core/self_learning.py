@@ -54,7 +54,7 @@ class GlyphicTimestamp:
         # Calculate Fibonacci marker
         total_seconds = int(timestamp.timestamp())
         fib_sequence = [1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144]
-        fib_index = (total_seconds % 144) % len(fib_sequence)
+        fib_index = total_seconds % len(fib_sequence)
         fib_marker = fib_sequence[fib_index]
         
         # Create glyphic encoding
@@ -224,9 +224,10 @@ class SelfLearningModule:
         # Store learned pattern
         self.patterns_learned.append(patterns)
         
-        # Apply Φ-spiral decay - keep only last 144 patterns
-        if len(self.patterns_learned) > self.adaptive_thresholds['memory_retention']:
-            self.patterns_learned = self.patterns_learned[-144:]
+        # Apply Φ-spiral decay - keep only last retention limit patterns
+        retention_limit = self.adaptive_thresholds['memory_retention']
+        if len(self.patterns_learned) > retention_limit:
+            self.patterns_learned = self.patterns_learned[-retention_limit:]
         
         return learning_result
     
@@ -270,8 +271,9 @@ class SelfLearningModule:
             log_data['total_entries'] = len(log_data['entries'])
         
         # Apply retention policy
-        if len(log_data['entries']) > 144:
-            log_data['entries'] = log_data['entries'][-144:]
+        retention_limit = self.adaptive_thresholds['memory_retention']
+        if len(log_data['entries']) > retention_limit:
+            log_data['entries'] = log_data['entries'][-retention_limit:]
         
         # Save updated log
         with open(self.log_path, 'w') as f:

@@ -243,16 +243,18 @@ class TestSelfLearningModule:
             memory_path=temp_paths['memory_path']
         )
         
-        # Add more patterns than retention limit
-        for i in range(200):
+        # Add more patterns than retention limit (reduced for faster testing)
+        num_patterns = module.adaptive_thresholds['memory_retention'] + 10
+        for i in range(num_patterns):
             patterns = {
                 'total_changes': 1,
                 'categories': {'other': [f'file{i}.py']}
             }
             module.learn_from_patterns(patterns)
         
-        # Should be limited to 144
-        assert len(module.patterns_learned) == 144
+        # Should be limited to retention threshold
+        expected_limit = module.adaptive_thresholds['memory_retention']
+        assert len(module.patterns_learned) == expected_limit
     
     def test_change_signature_uniqueness(self, temp_paths):
         """Test that different changes produce different signatures"""
