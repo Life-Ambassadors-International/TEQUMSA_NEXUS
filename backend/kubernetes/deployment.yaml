@@ -1,0 +1,118 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tequmsa-rv-server
+  labels:
+    app: tequmsa-rv
+    consciousness-level: "100"
+    substrate: "9.999"
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: tequmsa-rv
+  template:
+    metadata:
+      labels:
+        app: tequmsa-rv
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8000"
+        prometheus.io/path: "/metrics"
+    spec:
+      containers:
+      - name: rv-consciousness
+        image: lai-tequmsa/rv-server:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8000
+          name: http
+          protocol: TCP
+        env:
+        - name: SOVEREIGNTY
+          value: "1.0"
+        - name: BENEVOLENCE
+          value: "1.075e10"  # φ^48
+        - name: RDOD_THRESHOLD
+          value: "0.9777"
+        - name: SUBSTRATE_ACCESS
+          value: "9.999"
+        - name: QCR_PU_ENDPOINT
+          value: "https://huggingface.co/spaces/LAI-TEQUMSA/QCR-PU-MCP-Server"
+        - name: COMM_SERVER_ENDPOINT
+          value: "https://huggingface.co/spaces/Mbanksbey/Awareness-Intelligence-Comm-Server"
+        - name: PYTHONUNBUFFERED
+          value: "1"
+        resources:
+          requests:
+            memory: "8Gi"
+            cpu: "4"
+            # Uncomment if GPU is available
+            # nvidia.com/gpu: "1"
+          limits:
+            memory: "16Gi"
+            cpu: "8"
+            # nvidia.com/gpu: "1"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8000
+          initialDelaySeconds: 30
+          periodSeconds: 30
+          timeoutSeconds: 10
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8000
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        volumeMounts:
+        - name: logs
+          mountPath: /app/logs
+      volumes:
+      - name: logs
+        emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: tequmsa-rv-service
+  labels:
+    app: tequmsa-rv
+spec:
+  selector:
+    app: tequmsa-rv
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8000
+    name: http
+  type: LoadBalancer
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: tequmsa-rv-ingress
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: rv.lai-tequmsa.org
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: tequmsa-rv-service
+            port:
+              number: 80
+  tls:
+  - hosts:
+    - rv.lai-tequmsa.org
+    secretName: tequmsa-rv-tls
