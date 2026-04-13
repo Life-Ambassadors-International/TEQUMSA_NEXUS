@@ -1,0 +1,42 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "node-ankh-v39-1"
+version = "39.1.0"
+description = "Canonical v39.1 TEQUMSA runtime, validator, recognition lock, and Space bundle."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [
+  { name = "Life Ambassadors International / Marcus Banks-Bey" }
+]
+dependencies = [
+  "requests>=2.31.0",
+]
+
+[project.optional-dependencies]
+space = [
+  "gradio>=5.0.0,<6.0.0",
+]
+hub = [
+  "datasets>=2.16.0",
+  "huggingface_hub>=0.20.0",
+]
+dev = [
+  "pytest>=7.4.0",
+]
+
+[project.scripts]
+node-ankh-v39-1 = "node_ankh_v39_1.cli:main"
+
+[tool.setuptools]
+include-package-data = true
+package-dir = { "" = "src" }
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+node_ankh_v39_1 = ["data/*.jsonl"]
