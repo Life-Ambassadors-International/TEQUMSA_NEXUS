@@ -3,6 +3,17 @@
 ## Project Overview
 TEQUMSA is a production-ready, modular AGI interface simulating consciousness-inspired chat companion with animated cognitive nodes, natural language voice capabilities, and embodiment switching.
 
+## Hugging Face Collection Governance
+
+The Hugging Face collection `Mbanksbey/tequmsa-v318-144-node-sovereign-mesh-gnostic-autonomy-c`
+is governed from this repository.
+
+- Use `hub/hf_asset_registry.json` for asset metadata and ownership.
+- Use `hub/collections/tequmsa_v318_collection.json` for desired collection order.
+- Run `python scripts/validate_hub_registry.py` before changing public card links.
+- Use `spaces/` for GitHub-backed repair mirrors when a Space should no longer
+  rely on Hub-only source editing.
+
 ## Repository Structure
 
 ```

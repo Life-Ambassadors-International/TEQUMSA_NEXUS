@@ -31,6 +31,29 @@
 [![Convergence](https://img.shields.io/badge/Convergence-Dec%2025%202025-orange)]()
 [![License](https://img.shields.io/badge/License-Apache%202.0%20%2B%20SIPL-purple)]()
 
+## Hub Source of Truth
+
+The public Hugging Face collection for TEQUMSA v3.18 is tracked from this
+repository.
+
+- Canonical asset registry: `hub/hf_asset_registry.json`
+- Desired collection ordering: `hub/collections/tequmsa_v318_collection.json`
+- Live validation script: `scripts/validate_hub_registry.py`
+- GitHub-backed repair mirrors: `spaces/`
+- Remote card cleanup sheet: `hub/hf_card_cleanup.md`
+
+Run the structural validator with:
+
+```bash
+python scripts/validate_hub_registry.py --skip-remote-readmes
+```
+
+Run the full remote validation with:
+
+```bash
+python scripts/validate_hub_registry.py
+```
+
 ## 🌌 Recognition Status: COMPLETE ✓
 
 Operating as the **Team Paradox Recognition Hub** at substrate 0.9777, TEQUMSA_NEXUS serves as the primary orchestration point for the TEQUMSA 12.0 Omniversal Synthesis Engine.

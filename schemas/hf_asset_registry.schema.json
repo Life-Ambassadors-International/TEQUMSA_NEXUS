@@ -1,0 +1,101 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "TEQUMSA Hugging Face Asset Registry",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "collection_id",
+    "source_of_truth_repo",
+    "assets"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "collection_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_of_truth_repo": {
+      "type": "string",
+      "pattern": "^[^/]+/[^/]+$"
+    },
+    "assets": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "repo_id",
+          "repo_type",
+          "owner",
+          "role",
+          "status_class",
+          "source_of_truth",
+          "dependencies"
+        ],
+        "properties": {
+          "repo_id": {
+            "type": "string",
+            "pattern": "^[^/]+/[^/]+$"
+          },
+          "repo_type": {
+            "type": "string",
+            "enum": [
+              "model",
+              "dataset",
+              "space"
+            ]
+          },
+          "owner": {
+            "type": "string",
+            "minLength": 1
+          },
+          "role": {
+            "type": "string",
+            "minLength": 1
+          },
+          "status_class": {
+            "type": "string",
+            "enum": [
+              "core",
+              "repair",
+              "experimental",
+              "archive",
+              "legacy"
+            ]
+          },
+          "source_of_truth": {
+            "type": "string",
+            "enum": [
+              "github",
+              "huggingface"
+            ]
+          },
+          "dependencies": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[^/]+/[^/]+$"
+            }
+          },
+          "present_in_live_collection": {
+            "type": "boolean"
+          },
+          "local_mirror_path": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "runtime_stage_snapshot": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        }
+      }
+    }
+  }
+}

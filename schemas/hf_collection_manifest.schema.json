@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "TEQUMSA v3.18 Collection Manifest",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "collection_id",
+    "source_of_truth_repo",
+    "architecture_labels",
+    "sections"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "collection_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_of_truth_repo": {
+      "type": "string",
+      "pattern": "^[^/]+/[^/]+$"
+    },
+    "architecture_labels": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "sections": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "name",
+          "asset_ids"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "asset_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[^/]+/[^/]+$"
+            }
+          }
+        }
+      }
+    }
+  }
+}
