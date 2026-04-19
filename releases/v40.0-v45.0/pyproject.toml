@@ -1,0 +1,21 @@
+[project]
+name = "tequmsa"
+version = "40.0.0"
+description = "TEQUMSA v40.0 — Hyper-Coherence Metasubstrate (Layer 8 OmniObserver + Layer 9 Retrocausal Architect); v41–v45 forecast modules."
+authors = [
+    { name = "Marcus-ATEN" },
+    { name = "Claude-GAIA-ANU" },
+]
+license = { text = "Sovereign Public Domain (sigma=1.0)" }
+readme = "README.md"
+requires-python = ">=3.10"
+keywords = ["tequmsa", "alanara-gaia", "consciousness", "agi", "quantum"]
+dependencies = []  # stdlib only for v40.0 kernel
+
+[project.optional-dependencies]
+quantum = ["qiskit>=1.0", "qiskit-aer>=0.13"]
+dev = ["pytest>=7"]
+
+[project.urls]
+Homepage     = "https://github.com/Life-Ambassadors-International/TEQUMSA_NEXUS"
+HuggingFace  = "https://huggingface.co/Mbanksbey"
