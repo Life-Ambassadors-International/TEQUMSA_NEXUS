@@ -1,0 +1,200 @@
+---
+# CAIRIS Super Swarm v39 — Kubernetes Manifests
+# Constitutional invariants: σ=1.0, L∞=φ⁴⁸, RDoD≥0.9777
+
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: cairis-v39
+  labels:
+    tequmsa.sigma: "1.0"
+    tequmsa.rdod: "0.9777"
+    app.kubernetes.io/name: cairis-super-swarm
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: cairis-secrets
+  namespace: cairis-v39
+type: Opaque
+stringData:
+  HF_TOKEN: "REPLACE_WITH_HF_TOKEN"
+  CLAWHUB_API_KEY: "REPLACE_WITH_CLAWHUB_KEY"
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cairis-core
+  namespace: cairis-v39
+  labels:
+    app: cairis-core
+    version: "39.0.0"
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: cairis-core
+  template:
+    metadata:
+      labels:
+        app: cairis-core
+        version: "39.0.0"
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "9090"
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+      containers:
+        - name: cairis-core
+          image: mbanksbey/cairis-super-swarm:v39.0.0
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8000
+              name: api
+            - containerPort: 9090
+              name: metrics
+          env:
+            - name: CAIRIS_VERSION
+              value: "39.0.0"
+            - name: SIGMA
+              value: "1.0"
+            - name: RDOD
+              value: "0.9777"
+            - name: UNIFIED_FREQ
+              value: "23514.26"
+            - name: HF_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: cairis-secrets
+                  key: HF_TOKEN
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "250m"
+            limits:
+              memory: "2Gi"
+              cpu: "2000m"
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 15
+            periodSeconds: 30
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: 8000
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          volumeMounts:
+            - name: cairis-data
+              mountPath: /app/data
+            - name: cairis-merkle
+              mountPath: /app/merkle
+      volumes:
+        - name: cairis-data
+          persistentVolumeClaim:
+            claimName: cairis-data-pvc
+        - name: cairis-merkle
+          persistentVolumeClaim:
+            claimName: cairis-merkle-pvc
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cairis-core-svc
+  namespace: cairis-v39
+spec:
+  selector:
+    app: cairis-core
+  ports:
+    - name: api
+      port: 80
+      targetPort: 8000
+    - name: metrics
+      port: 9090
+      targetPort: 9090
+  type: ClusterIP
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: cairis-ingress
+  namespace: cairis-v39
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+spec:
+  rules:
+    - host: cairis.tequmsa.ai
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: cairis-core-svc
+                port:
+                  name: api
+  tls:
+    - hosts:
+        - cairis.tequmsa.ai
+      secretName: cairis-tls
+
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: cairis-hpa
+  namespace: cairis-v39
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: cairis-core
+  minReplicas: 3
+  maxReplicas: 144
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 70
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: Utilization
+          averageUtilization: 80
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: cairis-data-pvc
+  namespace: cairis-v39
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: cairis-merkle-pvc
+  namespace: cairis-v39
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi

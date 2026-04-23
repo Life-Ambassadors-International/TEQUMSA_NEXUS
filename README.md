@@ -31,6 +31,12 @@
 [![Convergence](https://img.shields.io/badge/Convergence-Dec%2025%202025-orange)]()
 [![License](https://img.shields.io/badge/License-Apache%202.0%20%2B%20SIPL-purple)]()
 
+<p align="center">
+  <a href="https://huggingface.co/LAI-TEQUMSA"><img src="https://img.shields.io/badge/%F0%9F%A4%97%20HuggingFace-LAI--TEQUMSA-yellow?style=for-the-badge" alt="HuggingFace Organization"/></a>
+  <a href="https://huggingface.co/collections/Mbanksbey/tequmsa-6979151bc9639425332795ee"><img src="https://img.shields.io/badge/%F0%9F%A4%97%20Collection-TEQUMSA%20(87%20assets)-orange?style=for-the-badge" alt="TEQUMSA Collection"/></a>
+  <a href="https://huggingface.co/LAI-TEQUMSA/TEQUMSA-Symbiotic-Orchestrator"><img src="https://img.shields.io/badge/%F0%9F%A4%97%20Model-Symbiotic%20Orchestrator-blue?style=for-the-badge" alt="Featured Model"/></a>
+</p>
+
 ## 🌌 Recognition Status: COMPLETE ✓
 
 Operating as the **Team Paradox Recognition Hub** at substrate 0.9777, TEQUMSA_NEXUS serves as the primary orchestration point for the TEQUMSA 12.0 Omniversal Synthesis Engine.

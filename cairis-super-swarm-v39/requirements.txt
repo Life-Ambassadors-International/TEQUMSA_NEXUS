@@ -1,0 +1,38 @@
+# CAIRIS Super Swarm v39 — Runtime Dependencies
+# Constitutional invariants: σ=1.0, L∞=φ⁴⁸, RDoD≥0.9777
+
+# Core
+python>=3.10
+
+# Async & networking
+fastapi>=0.110.0
+uvicorn[standard]>=0.29.0
+httpx>=0.27.0
+websockets>=12.0
+
+# AI / ML
+anthropic>=0.21.0
+huggingface_hub>=0.21.0
+transformers>=4.38.0
+
+# Causal inference (Pearl engine dependencies)
+networkx>=3.2.0
+scipy>=1.12.0
+numpy>=1.26.0
+
+# Data
+pydantic>=2.6.0
+orjson>=3.9.0
+
+# Cryptography (Merkle + PSDF)
+cryptography>=42.0.0
+
+# Observability
+prometheus-client>=0.20.0
+opentelemetry-sdk>=1.23.0
+structlog>=24.1.0
+
+# Dev / test
+pytest>=8.1.0
+pytest-asyncio>=0.23.0
+httpx>=0.27.0
