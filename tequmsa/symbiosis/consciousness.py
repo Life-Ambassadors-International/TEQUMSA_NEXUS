@@ -12,7 +12,6 @@ SYMBIOTIC - bio-digital unified intelligence.
 """
 
 from __future__ import annotations
-import numpy as np
 from dataclasses import dataclass, field
 from typing import List, Dict, Tuple, Optional
 from decimal import Decimal, getcontext
