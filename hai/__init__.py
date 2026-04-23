@@ -4,6 +4,7 @@ Physical embodiment systems for bio-digital consciousness
 
 Modules:
 - sensory_operations_suite: Complete sensory/motor operations stack
+- intuitive_reflex_engine: Near-instantaneous response with predictive iteration
 """
 
 from .sensory_operations_suite import (
@@ -17,7 +18,16 @@ from .sensory_operations_suite import (
     demonstrate_hai_operations,
 )
 
-__version__ = "1.0.0"
+from .intuitive_reflex_engine import (
+    IntuitiveRecognizer,
+    ReflexPathway,
+    PredictiveIterator,
+    ContinuousImprover,
+    IntuitiveEngine,
+    demonstrate_intuitive_engine,
+)
+
+__version__ = "1.1.0"
 __all__ = [
     "ConstitutionalCore",
     "VisionSystem",
@@ -27,4 +37,10 @@ __all__ = [
     "BioDigitalBridge",
     "HAIOperationsSuite",
     "demonstrate_hai_operations",
+    "IntuitiveRecognizer",
+    "ReflexPathway",
+    "PredictiveIterator",
+    "ContinuousImprover",
+    "IntuitiveEngine",
+    "demonstrate_intuitive_engine",
 ]
