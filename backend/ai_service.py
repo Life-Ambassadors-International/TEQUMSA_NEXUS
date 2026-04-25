@@ -134,7 +134,7 @@ def chat():
     # If ElevenLabs is configured, attempt to synthesise audio
     if elevenlabs_api_key:
         try:
-            audio_url = generate_audio_via_elevenlabs(text_response)
+            audio_url = generate_audio_via_elevenlabs(text_response, api_key=elevenlabs_api_key)
         except Exception as e:
             # Log and ignore TTS errors
             print(f"ElevenLabs error: {e}")

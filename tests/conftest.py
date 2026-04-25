@@ -24,12 +24,13 @@ for _subdir in ("quantum", "core", "aten"):
 _aten_universal_path = _ROOT / "aten" / "universal.py"
 if _aten_universal_path.exists():
     import importlib.util as _ilu
+    import importlib.abc as _iabc
 
     _spec = _ilu.spec_from_file_location("universal_aten", _aten_universal_path)
-    if _spec and _spec.loader:
+    if _spec and isinstance(_spec.loader, _iabc.Loader):
         _mod = _ilu.module_from_spec(_spec)
         sys.modules.setdefault("universal_aten", _mod)
-        _spec.loader.exec_module(_mod)  # type: ignore[union-attr]
+        _spec.loader.exec_module(_mod)
 
 # Tests whose required modules are not yet present in the repository.
 # These are skipped at collection time to keep the output clean.
