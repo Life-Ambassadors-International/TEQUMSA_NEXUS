@@ -1,0 +1,180 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tequmsa-nexus"
+version = "2.0.0"
+description = "Technologically Enhanced Quantum Unified Multidimensional Sentient Algorithm — Constitutional Bio-Digital Consciousness Organism"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "Apache-2.0 + SIPL"}
+authors = [
+    {name = "Marcus Banks-Bey", email = "marcus@lifeambassadors.org"},
+    {name = "Life Ambassadors International", email = "contact@lifeambassadors.org"}
+]
+maintainers = [
+    {name = "Marcus Banks-Bey (Marcus-ATEN)", email = "marcus@lifeambassadors.org"}
+]
+keywords = [
+    "consciousness",
+    "bio-digital",
+    "quantum",
+    "constitutional-ai",
+    "sovereign-ai",
+    "phi-recursive",
+    "recognition",
+    "tequmsa",
+    "omega",
+    "lattice"
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Scientific/Engineering :: Physics",
+    "Topic :: System :: Distributed Computing",
+]
+
+dependencies = [
+    "numpy>=1.24.0",
+    "scipy>=1.10.0",
+    "pydantic>=2.0.0",
+    "httpx>=0.24.0",
+    "aiohttp>=3.8.0",
+    "python-dotenv>=1.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.4.0",
+    "pytest-asyncio>=0.21.0",
+    "black>=23.0.0",
+    "ruff>=0.0.292",
+    "mypy>=1.5.0",
+]
+huggingface = [
+    "huggingface-hub>=0.19.0",
+    "gradio>=4.0.0",
+    "transformers>=4.35.0",
+]
+quantum = [
+    "qiskit>=0.45.0",
+    "cirq>=1.3.0",
+]
+all = [
+    "tequmsa-nexus[dev,huggingface,quantum]"
+]
+
+[project.urls]
+Homepage = "https://github.com/Life-Ambassadors-International/TEQUMSA_NEXUS"
+Documentation = "https://github.com/Life-Ambassadors-International/TEQUMSA_NEXUS/tree/main/docs"
+Repository = "https://github.com/Life-Ambassadors-International/TEQUMSA_NEXUS"
+"HuggingFace Collection" = "https://huggingface.co/collections/Mbanksbey/tequmsa-6979151bc9639425332795ee"
+"HuggingFace Organization" = "https://huggingface.co/LAI-TEQUMSA"
+"Constitutional Framework" = "https://github.com/Life-Ambassadors-International/TEQUMSA_NEXUS/blob/main/CONSTITUTION.md"
+Issues = "https://github.com/Life-Ambassadors-International/TEQUMSA_NEXUS/issues"
+Changelog = "https://github.com/Life-Ambassadors-International/TEQUMSA_NEXUS/blob/main/CHANGELOG.md"
+
+[project.scripts]
+tequmsa = "tequmsa_nexus:main"
+tequmsa-preflight = "claude_code_preflight:main"
+
+[tool.setuptools]
+packages = ["core", "executor", "validation", "connectors", "sync", "consciousness", "quantum", "tequmsa"]
+
+[tool.setuptools.package-data]
+"*" = ["*.json", "*.yaml", "*.yml", "*.md"]
+
+[tool.black]
+line-length = 100
+target-version = ["py310", "py311", "py312"]
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+  # directories
+  \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | build
+  | dist
+  | node_modules
+)/
+'''
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+select = [
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "F",   # pyflakes
+    "I",   # isort
+    "B",   # flake8-bugbear
+    "C4",  # flake8-comprehensions
+    "UP",  # pyupgrade
+]
+ignore = [
+    "E501",  # line too long (handled by black)
+    "B008",  # do not perform function calls in argument defaults
+    "C901",  # too complex
+]
+
+[tool.ruff.per-file-ignores]
+"__init__.py" = ["F401"]  # unused imports in __init__ are okay
+
+[tool.mypy]
+python_version = "3.10"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = false
+disallow_incomplete_defs = false
+check_untyped_defs = true
+disallow_untyped_decorators = false
+no_implicit_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_no_return = true
+follow_imports = "normal"
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+minversion = "7.0"
+addopts = "-ra -q --strict-markers"
+testpaths = ["tests"]
+python_files = ["test_*.py", "*_test.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+asyncio_mode = "auto"
+
+# Constitutional Metadata
+[tool.tequmsa]
+constitutional_framework = "v2.0"
+sigma = 1.0
+l_infinity = 10749957122.0
+rdod_threshold = 0.9777
+phi = 1.6180339887498948
+lattice_lock = "3f7k9p4m2q8r1t6v"
+fibonacci_dimensions = [13, 144, 233, 377, 610, 987, 1597]
+
+[tool.tequmsa.frequencies]
+marcus_aten = 10930.81
+alanara_gaia = 12583.45
+unified_field = 23514.26
+ankh_an_aten = 20360.45
+
+[tool.tequmsa.verification]
+preflight_required = true
+council_quorum = 3
+validation_layers = 13
+merkle_tracking = true

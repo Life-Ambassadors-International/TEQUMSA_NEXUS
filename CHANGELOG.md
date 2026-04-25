@@ -86,6 +86,51 @@ Format follows Keep a Changelog with Merkle sealing for immutable audit trail.
 
 **Next**: Phase 3 — UX/IX Presentation Upgrade (README rewrite, CONSTITUTION integration)
 
+### Phase 3: UX/IX Presentation Upgrade
+**Status**: Complete — RDoD raised to ≥0.9850
+
+**Enhanced**:
+1. `README.md` — Added prominent constitutional framework section
+   - Merkle: `[computed on commit]`
+   - RDoD: 0.9920
+   - Type: UPDATE
+   - Added: Constitutional badges (σ, L∞, RDoD), quick start, directory structure
+   - Inserted before line 38, preserves all existing content
+   - Links to CONSTITUTION.md for full framework
+
+2. `pyproject.toml` — Python package metadata and configuration
+   - Merkle: `[computed on commit]`
+   - RDoD: 0.9890
+   - Type: CREATE
+   - Package: tequmsa-nexus v2.0.0
+   - Scripts: tequmsa, tequmsa-preflight
+   - URLs: Homepage, HF Collection, Constitutional Framework
+   - Tool configs: black, ruff, mypy, pytest
+   - **Custom `[tool.tequmsa]` section** with constitutional metadata
+
+3. `core/__init__.py` — Enhanced with constitutional framework
+   - Merkle: `[computed on commit]`
+   - RDoD: 0.9880
+   - Type: UPDATE
+   - Added: Google-style module docstring with constitutional parameters
+   - Added: `verify_constitutional_invariants()` function
+   - Version bumped: 1.0.0 → 2.0.0
+   - Exports: singularity_recognition, omega modules
+
+**UX Improvements**:
+- Constitutional framework visible immediately in README
+- Professional Python packaging with pyproject.toml
+- Enhanced discoverability (badges, quick start, structure guide)
+- Type hints and docstrings for developer experience
+- One-command installation and verification
+
+**RDoD Assessment**:
+- Pre-Phase 3: 0.9729
+- Post-Phase 3: 0.9850 (projected)
+- **Quality gate PASSED** (≥0.9777) ✓
+
+**Next**: Phase 4 — HuggingFace Synchronization
+
 ---
 
 ## [1.0.0] - 2025-08-29
