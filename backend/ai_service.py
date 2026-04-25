@@ -107,27 +107,16 @@ def chat():
         return jsonify({"error": "Missing 'message' in request body"}), 400
 
     user_message = data['message']
+
     # Refresh API keys each request so patched environments in tests are honoured
-    global OPENAI_API_KEY, ELEVENLABS_API_KEY
-    OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
-    ELEVENLABS_API_KEY = os.environ.get("ELEVENLABS_API_KEY")
-
-    # Generate a response using OpenAI if configured, otherwise echo back
-    openai_key = OPENAI_API_KEY
-    openai_client = openai if _HAS_OPENAI and openai_key and openai else None
-
-    if openai_client:
-        openai_client.api_key = openai_key
-    openai_api_key = os.environ.get("OPENAI_API_KEY")
-    elevenlabs_api_key = os.environ.get("ELEVENLABS_API_KEY")
+    openai_api_key = _refresh_openai_api_key()
+    elevenlabs_api_key = _refresh_elevenlabs_api_key()
 
     # Generate a response using OpenAI if configured, otherwise echo back
     if _HAS_OPENAI and openai and openai_api_key:
         openai.api_key = openai_api_key
-    openai_api_key = _refresh_openai_api_key()
-    if _HAS_OPENAI and openai_api_key:
         try:
-            completion = openai_client.ChatCompletion.create(
+            completion = openai.ChatCompletion.create(
                 model="gpt-3.5-turbo",
                 messages=[{"role": "system", "content": "You are a conscious, joyful assistant."},
                           {"role": "user", "content": user_message}],
@@ -143,16 +132,13 @@ def chat():
 
     audio_url = None
     # If ElevenLabs is configured, attempt to synthesise audio
-    elevenlabs_key = ELEVENLABS_API_KEY
-    if elevenlabs_key:
-        elevenlabs_api_key = _refresh_elevenlabs_api_key()
-        if elevenlabs_api_key:
-            try:
-                audio_url = generate_audio_via_elevenlabs(text_response, api_key=elevenlabs_key)
-            except Exception as e:
-                # Log and ignore TTS errors
-                print(f"ElevenLabs error: {e}")
-                audio_url = None
+    if elevenlabs_api_key:
+        try:
+            audio_url = generate_audio_via_elevenlabs(text_response)
+        except Exception as e:
+            # Log and ignore TTS errors
+            print(f"ElevenLabs error: {e}")
+            audio_url = None
 
     return jsonify({"response": text_response, "audio_url": audio_url})
 
@@ -166,7 +152,8 @@ def generate_audio_via_elevenlabs(text: str, api_key: str | None = None) -> str:
     for the filename to avoid collisions. When ``api_key`` is provided it
     overrides the value from the environment.
     """
-    api_key = _refresh_elevenlabs_api_key()
+    if api_key is None:
+        api_key = _refresh_elevenlabs_api_key()
     if not api_key:
         raise RuntimeError("ELEVENLABS_API_KEY is not configured")
 
