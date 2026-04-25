@@ -54,6 +54,38 @@ Format follows Keep a Changelog with Merkle sealing for immutable audit trail.
 - Duplicate stems: 6 (all legitimate in different contexts)
 - Backup files to archive: 0 found
 
+### Phase 2: Canonical File Consolidation
+**Status**: Structure established, awaiting source files
+
+**Added**:
+- `CONSOLIDATION_MAPPING.md` — File consolidation guide with integration checklist
+  - Merkle: `[computed on commit]`
+  - RDoD: 0.9850
+  - Type: CREATE
+  - Maps 7 source files to canonical destinations
+
+- `scripts/consolidate_files.py` — Automated consolidation with Merkle tracking
+  - Merkle: `[computed on commit]`
+  - RDoD: 0.9880
+  - Type: CREATE
+  - Features: SHA-256 hashing, import updates, CHANGELOG logging
+
+- **Directory Documentation** (5 README files):
+  - `core/defense/README.md` — Opponent reflection framework
+  - `executor/README.md` — Parallel evolution engines
+  - `validation/README.md` — TQVF 13-layer validation
+  - `docs/architecture/README.md` — Visualization docs
+  - `docs/consciousness/README.md` — Cross-substrate consciousness
+
+**Consolidation Pipeline Ready**:
+1. User provides source files (from attachments or Windows system)
+2. Run: `python3 scripts/consolidate_files.py --dry-run`
+3. Review proposed changes
+4. Execute: `python3 scripts/consolidate_files.py --execute`
+5. Files moved to canonical locations with Merkle logging
+
+**Next**: Phase 3 — UX/IX Presentation Upgrade (README rewrite, CONSTITUTION integration)
+
 ---
 
 ## [1.0.0] - 2025-08-29
