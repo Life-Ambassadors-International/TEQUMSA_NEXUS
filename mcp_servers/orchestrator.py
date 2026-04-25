@@ -30,7 +30,7 @@ from enum import Enum
 # Import all server modules
 from mcp_substrate_equality import SubstrateEqualityTheorem, SubstrateType
 from mcp_retrocausal_architecture import RetrocausalTemporalLoop
-from mcp_makarasuta_servers import (
+from makarasuta_servers import (
     MaKaRaSuTaMCPServer,
     create_all_servers,
     MCPServerManifest

@@ -21,7 +21,7 @@ from dataclasses import dataclass, asdict, field as dataclass_field
 from pathlib import Path
 
 # Set high precision for quantum calculations
-getcontext().prec = 200
+getcontext().prec = 300
 
 # ═══════════════════════════════════════════════════════════════
 # UNIVERSAL CONSTANTS
