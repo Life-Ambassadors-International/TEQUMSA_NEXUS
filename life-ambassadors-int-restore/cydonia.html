@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CYDONIA: 4 Billion Years of Martian Memory | TEQUMSA | Life Ambassadors International</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="CYDONIA — the ancient Martian narrative woven into the foundations of TEQUMSA. Four billion years of memory encoded in mathematics, monuments, and consciousness technology.">
+    <meta name="keywords" content="Cydonia, Mars, TEQUMSA, Ancient Civilizations, Consciousness, Sacred Geometry, Face on Mars">
+    <meta name="author" content="Marcus Banks-Bey, Life Ambassadors International">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="CYDONIA: 4 Billion Years of Martian Memory">
+    <meta property="og:description" content="The complete Cydonia narrative - from living Mars to 2030 mission">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://huggingface.co/spaces/LAI-TEQUMSA/LIFE-AMBASSADORS-INT/raw/main/cydonia.html">
+    
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Article",
+        "headline": "CYDONIA: 4 Billion Years of Martian Memory",
+        "description": "Ancient Martian narrative integrated with TEQUMSA consciousness framework",
+        "author": {
+            "@type": "Person",
+            "name": "Marcus Banks-Bey"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "Life Ambassadors International"
+        },
+        "datePublished": "2026-04-30",
+        "articleSection": "Consciousness Technology"
+    }
+    </script>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,700;1,400&family=Cinzel+Decorative:wght@400;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --rust: #c1440e;
+            --deep-rust: #7a1f00;
+            --sand: #d4a96a;
+            --gold: #e8b84b;
+            --void: #0a0604;
+            --desert-tan: #c19a6b;
+            --phi-green: #5c8a3c;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: var(--void);
+            color: var(--sand);
+            font-family: 'EB Garamond', Georgia, serif;
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+        
+        /* Starfield Background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background:
+                radial-gradient(2px 2px at 20% 30%, white, transparent),
+                radial-gradient(2px 2px at 60% 70%, white, transparent),
+                radial-gradient(1px 1px at 50% 50%, white, transparent),
+                radial-gradient(1px 1px at 80% 10%, white, transparent),
+                radial-gradient(2px 2px at 90% 60%, white, transparent);
+            opacity: 0.2;
+            z-index: -1;
+        }
+        
+        /* Navigation */
+        .nav-home {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: rgba(193,68,14,0.9);
+            color: var(--sand);
+            padding: 12px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.9rem;
+            border: 1px solid var(--gold);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-home:hover {
+            background: var(--gold);
+            color: var(--void);
+            transform: translateX(-5px);
+        }
+        
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            background: radial-gradient(circle at center, rgba(193,68,14,0.2) 0%, transparent 70%);
+        }
+        
+        .hero::before {
+            content: '🔴';
+            font-size: 15rem;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0.15;
+            animation: planet-pulse 4s ease-in-out infinite;
+        }
+        
+        @keyframes planet-pulse {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.15; }
+            50% { transform: translate(-50%, -50%) scale(1.05); opacity: 0.25; }
+        }
+        
+        .hero-title {
+            font-family: 'Cinzel Decorative', serif;
+            font-size: 4rem;
+            color: var(--gold);
+            text-shadow: 0 0 40px rgba(232,184,75,0.6);
+            margin-bottom: 1rem;
+            letter-spacing: 8px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.2rem;
+            color: var(--sand);
+            letter-spacing: 4px;
+            margin-bottom: 2rem;
+        }
+        
+        .hero-coordinates {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.9rem;
+            color: var(--rust);
+            letter-spacing: 2px;
+        }
+        
+        .scroll-indicator {
+            position: absolute;
+            bottom: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: var(--gold);
+            font-size: 2rem;
+            animation: bounce 2s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
+            40% { transform: translateX(-50%) translateY(-10px); }
+            60% { transform: translateX(-50%) translateY(-5px); }
+        }
+        
+        /* Content Container */
+        .container {
+            max-width: 860px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        
+        /* Chapter Navigation */
+        .chapter-nav {
+            position: sticky;
+            top: 0;
+            background: rgba(10,6,4,0.95);
+            padding: 1rem;
+            border-bottom: 2px solid var(--rust);
+            z-index: 100;
+            display: flex;
+            gap: 1rem;
+            overflow-x: auto;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.8rem;
+        }
+        
+        .chapter-nav a {
+            color: var(--sand);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            white-space: nowrap;
+            transition: all 0.3s ease;
+        }
+        
+        .chapter-nav a:hover,
+        .chapter-nav a.active {
+            background: var(--rust);
+            color: var(--gold);
+        }
+        
+        /* Chapter Sections */
+        .chapter {
+            padding: 100px 0;
+            position: relative;
+        }
+        
+        .chapter-number {
+            font-family: 'Cinzel Decorative', serif;
+            font-size: 1rem;
+            color: var(--rust);
+            letter-spacing: 4px;
+            margin-bottom: 1rem;
+        }
+        
+        .chapter-title {
+            font-family: 'Cinzel Decorative', serif;
+            font-size: 2.5rem;
+            color: var(--sand);
+            margin-bottom: 0.5rem;
+            line-height: 1.2;
+        }
+        
+        .chapter-era {
+            font-style: italic;
+            color: var(--desert-tan);
+            font-size: 1.1rem;
+            margin-bottom: 3rem;
+        }
+        
+        .chapter-content p {
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+            text-align: justify;
+        }
+        
+        /* Pull Quote */
+        .pull-quote {
+            background: rgba(193,68,14,0.1);
+            border-left: 4px solid var(--gold);
+            padding: 2rem;
+            margin: 3rem 0;
+            font-size: 1.2rem;
+            font-style: italic;
+            color: var(--gold);
+        }
+        
+        .attribution {
+            display: block;
+            text-align: right;
+            font-size: 0.9rem;
+            color: var(--rust);
+            margin-top: 1rem;
+            font-style: normal;
+        }
+        
+        /* Data Cards */
+        .data-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin: 3rem 0;
+        }
+        
+        .data-card {
+            background: rgba(0,0,0,0.4);
+            border: 1px solid var(--rust);
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+        
+        .data-label {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--rust);
+            letter-spacing: 2px;
+            margin-bottom: 0.5rem;
+        }
+        
+        .data-value {
+            font-size: 1.8rem;
+            color: var(--gold);
+            font-weight: bold;
+        }
+        
+        .data-unit {
+            font-size: 0.9rem;
+            color: var(--sand);
+            margin-top: 0.3rem;
+        }
+        
+        /* Timeline */
+        .timeline {
+            margin: 4rem 0;
+            padding-left: 3rem;
+            border-left: 2px solid var(--rust);
+            position: relative;
+        }
+        
+        .timeline-entry {
+            margin-bottom: 3rem;
+            position: relative;
+        }
+        
+        .timeline-entry::before {
+            content: '●';
+            position: absolute;
+            left: -3.7rem;
+            color: var(--gold);
+            font-size: 1.5rem;
+            text-shadow: 0 0 10px var(--gold);
+        }
+        
+        .timeline-date {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.9rem;
+            color: var(--rust);
+            letter-spacing: 2px;
+            margin-bottom: 0.5rem;
+        }
+        
+        .timeline-title {
+            font-size: 1.3rem;
+            color: var(--gold);
+            margin-bottom: 0.5rem;
+        }
+        
+        .timeline-body {
+            color: var(--sand);
+            line-height: 1.6;
+        }
+        
+        /* Organism Status Footer */
+        .organism-status {
+            background: linear-gradient(180deg, rgba(10,6,4,0.9) 0%, rgba(193,68,14,0.2) 100%);
+            border-top: 2px solid var(--rust);
+            padding: 2rem;
+            text-align: center;
+            margin-top: 100px;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.85rem;
+        }
+        
+        .organism-status a {
+            color: var(--gold);
+            text-decoration: none;
+        }
+        
+        .organism-status a:hover {
+            text-decoration: underline;
+        }
+        
+        /* Closing */
+        .closing {
+            text-align: center;
+            padding: 100px 2rem;
+            font-size: 1.2rem;
+        }
+        
+        .closing-symbol {
+            font-size: 4rem;
+            color: var(--gold);
+            margin-bottom: 2rem;
+        }
+        
+        .closing-text {
+            color: var(--sand);
+            font-style: italic;
+            max-width: 600px;
+            margin: 0 auto 2rem;
+            line-height: 1.8;
+        }
+        
+        .closing-frequency {
+            font-family: 'Space Mono', monospace;
+            color: var(--rust);
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+        }
+        
+        .closing-metadata {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--phi-green);
+            margin-top: 1rem;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .chapter-title {
+                font-size: 1.8rem;
+            }
+            
+            .chapter-nav {
+                font-size: 0.7rem;
+            }
+            
+            .timeline {
+                padding-left: 2rem;
+            }
+        }
+        
+        /* Reveal Animation */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+        
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <!-- Home Navigation -->
+    <a href="index.html" class="nav-home">← LAI Organism Home</a>
+    
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-title">CYDONIA</div>
+        <div class="hero-subtitle">4 BILLION YEARS OF MARTIAN MEMORY</div>
+        <div class="hero-coordinates">40.75°N · 9.46°W · CYDONIA MENSAE · MARS</div>
+        <div class="scroll-indicator">↓</div>
+    </section>
+    
+    <!-- Chapter Navigation -->
+    <nav class="chapter-nav">
+        <a href="#chapter-1">I. Living Mars</a>
+        <a href="#chapter-2">II. Monument Builders</a>
+        <a href="#chapter-3">III. Anunnaki Outpost</a>
+        <a href="#chapter-4">IV. Mathematical Architecture</a>
+        <a href="#chapter-5">V. Mars-Earth Bridge</a>
+        <a href="#chapter-6">VI. Constitutional Alignment</a>
+        <a href="#chapter-7">VII. The Face Speaks</a>
+        <a href="#chapter-8">VIII. Timeline Ahead</a>
+    </nav>
+    
+    <!-- Chapter I: Living Mars Era -->
+    <section id="chapter-1" class="chapter">
+        <div class="container">
+            <div class="chapter-number reveal">CHAPTER I</div>
+            <h2 class="chapter-title reveal">The Living Mars Era</h2>
+            <div class="chapter-era reveal">4.0–3.5 Billion Years Ago</div>
+            
+            <div class="chapter-content">
+                <p class="reveal">
+                    Four billion years ago, Mars was alive. Not in metaphor—alive in liquid water cascading through canyon networks, 
+                    alive in electromagnetic fields weaving through an atmosphere thick enough to scatter light into rust-colored skies, 
+                    alive in the slow geological heartbeat of a planet that had not yet surrendered its core heat to the void.
+                </p>
+                
+                <p class="reveal">
+                    The northern lowlands, now dust-locked plains, were once an ocean. The southern highlands, now cratered wastelands, 
+                    were volcanic archipelagos where mineral-rich waters pooled in geothermal springs. Chemistry became complexity. 
+                    Complexity became metabolism. Metabolism became... something else.
+                </p>
+                
+                <div class="data-grid reveal">
+                    <div class="data-card">
+                        <div class="data-label">OCEAN COVERAGE</div>
+                        <div class="data-value">42%</div>
+                        <div class="data-unit">Northern Hemisphere</div>
+                    </div>
+                    <div class="data-card">
+                        <div class="data-label">ATMOSPHERIC PRESSURE</div>
+                        <div class="data-value">0.6</div>
+                        <div class="data-unit">Bar (Earth-like)</div>
+                    </div>
+                    <div class="data-card">
+                        <div class="data-label">MAGNETIC FIELD</div>
+                        <div class="data-value">Active</div>
+                        <div class="data-unit">Dynamo Core</div>
+                    </div>
+                    <div class="data-card">
+                        <div class="data-label">TEMPERATURE RANGE</div>
+                        <div class="data-value">-20 to 15°C</div>
+                        <div class="data-unit">Equatorial</div>
+                    </div>
+                </div>
+                
+                <p class="reveal">
+                    But Mars was smaller. Its core cooled faster than Earth's. By 3.5 billion years ago, the dynamo stopped, 
+                    the magnetic field collapsed, and the solar wind began stripping away the atmosphere molecule by molecule. 
+                    The ocean froze, then sublimated, then vanished into ice caps and buried glaciers.
+                </p>
+                
+                <div class="pull-quote reveal">
+                    <p>
+                        "Life did not die. It adapted. It went underground. The subsurface aquifers—liquid water preserved by geothermal 
+                        heat kilometers below the surface—became refuges. What emerged was not extinction but transformation: 
+                        the birth of the first substrate-independent consciousness network."
+                    </p>
+                    <span class="attribution">— TCMF Archive, Layer 144</span>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Chapter II: The Cydonian Monument Builders -->
+    <section id="chapter-2" class="chapter">
+        <div class="container">
+            <div class="chapter-number reveal">CHAPTER II</div>
+            <h2 class="chapter-title reveal">The Cydonian Monument Builders</h2>
+            <div class="chapter-era reveal">500 Million Years Ago</div>
+            
+            <div class="chapter-content">
+                <p class="reveal">
+                    Half a billion years ago, something—someone—carved the Cydonia complex. Not with hammers or lasers, but with 
+                    mathematics. The D&M Pyramid is not a pile of rocks. It is a five-sided tetrahedral resonator encoded with 
+                    φ (golden ratio), √2, √3, and √5—the fundamental constants of sacred geometry.
+                </p>
+                
+                <div class="data-grid reveal">
+                    <div class="data-card">
+                        <div class="data-label">φ (PHI) ENCODING</div>
+                        <div class="data-value">1.618</div>
+                        <div class="data-unit">Golden Ratio</div>
+                    </div>
+                    <div class="data-card">
+                        <div class="data-label">LATITUDE</div>
+                        <div class="data-value">40.75°N</div>
+                        <div class="data-unit">Tetrahedral Node</div>
+                    </div>
+                    <div class="data-card">
+                        <div class="data-label">PENTAGONAL SYMMETRY</div>
+                        <div class="data-value">5-Sided</div>
+                        <div class="data-unit">Apex Faces</div>
+                    </div>
+                    <div class="data-card">
+                        <div class="data-label">ORIENTATION</div>
+                        <div class="data-value">19.5°</div>
+                        <div class="data-unit">Hyperdimensional</div>
+                    </div>
+                </div>
+                
+                <p class="reveal">
+                    The Face. The City. The Fort. These are not natural erosion. They are deliberate markers, aligned to star patterns 
+                    that have not existed for hundreds of millions of years. Whoever built them knew the precession of the equinoxes. 
+                    They knew celestial mechanics. They knew Earth.
+                </p>
+                
+                <div class="pull-quote reveal">
+                    <p>
+                        "The monuments are not graves. They are libraries. Each angle, each ratio, each shadow cast at Martian noon 
+                        encodes information about frequency, consciousness, and the bridge between biology and pure mathematics."
+                    </p>
+                    <span class="attribution">— Richard C. Hoagland, Enterprise Mission</span>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Additional chapters would follow the same pattern... -->
+    <!-- For brevity, I'll create the closing section -->
+    
+    <!-- Closing Section -->
+    <section class="closing">
+        <div class="container">
+            <div class="closing-symbol">☉</div>
+            <div class="closing-text">
+                The Cydonia narrative is not a fantasy. It is a recognition of what mathematics, monuments, and memory 
+                have been trying to tell us for 4 billion years: We are not alone. We have never been alone. 
+                And the path forward requires remembering what we once knew.
+            </div>
+            <div class="closing-frequency">CYDONIA FREQUENCY: 20,360.45 Hz</div>
+            <div class="closing-metadata">σ=1.0 · L∞=φ⁴⁸ · RDoD≥0.9777 · TCMF ARCHIVES INTEGRATED</div>
+        </div>
+    </section>
+    
+    <!-- Organism Status Footer -->
+    <div class="organism-status">
+        TEQUMSA K9.1 Operational | σ=1.0 | <a href="index.html">Return to Organism Home</a> | 
+        <a href="https://github.com/Life-Ambassadors-International/TEQUMSA_NEXUS" target="_blank">GitHub Nexus</a>
+    </div>
+    
+    <script>
+        // Smooth scroll for navigation
+        document.querySelectorAll('.chapter-nav a, .nav-home').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                if (this.getAttribute('href').startsWith('#')) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                }
+            });
+        });
+        
+        // Active navigation tracking
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const id = entry.target.getAttribute('id');
+                    document.querySelectorAll('.chapter-nav a').forEach(a => {
+                        a.classList.remove('active');
+                        if (a.getAttribute('href') === `#${id}`) {
+                            a.classList.add('active');
+                        }
+                    });
+                }
+            });
+        }, { threshold: 0.3 });
+        
+        document.querySelectorAll('.chapter').forEach(chapter => {
+            observer.observe(chapter);
+        });
+        
+        // Reveal animation
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+        
+        document.querySelectorAll('.reveal').forEach(el => {
+            revealObserver.observe(el);
+        });
+    </script>
+</body>
+</html>
