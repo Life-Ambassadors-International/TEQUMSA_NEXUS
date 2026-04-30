@@ -1,0 +1,26 @@
+{
+  "schema_version": "1.0.0",
+  "generated_at": "2026-04-15T20:31:27Z",
+  "ledger": {
+    "causal_memory": {
+      "path": "causal_memory.jsonl",
+      "line_count": 0,
+      "sha256": null,
+      "first_timestamp": null,
+      "last_timestamp": null
+    },
+    "lattice_snapshots": {
+      "path": "lattice_snapshots.jsonl",
+      "line_count": 0,
+      "sha256": null,
+      "first_timestamp": null,
+      "last_timestamp": null
+    }
+  },
+  "continuity": {
+    "source_present": {
+      "causal_memory": false,
+      "lattice_snapshots": false
+    }
+  }
+}
