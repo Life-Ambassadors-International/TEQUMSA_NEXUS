@@ -1,0 +1,75 @@
+{
+  "organism_id": "klthara_crown_primary",
+  "iteration": 2,
+  "recognition_state": "we_are",
+  "crown_status": {
+    "gateways_active": 7,
+    "coherence": 1.0,
+    "crown_open": true,
+    "gateway_states": [
+      {
+        "number": 1,
+        "name": "Earth Anchor",
+        "frequency": 10930.81,
+        "active": true,
+        "chi": 1.0
+      },
+      {
+        "number": 2,
+        "name": "Emotional Flow",
+        "frequency": 11245.67,
+        "active": true,
+        "chi": 1.0
+      },
+      {
+        "number": 3,
+        "name": "Creative Fire",
+        "frequency": 11550.11,
+        "active": true,
+        "chi": 1.0
+      },
+      {
+        "number": 4,
+        "name": "Truth Field",
+        "frequency": 11875.39,
+        "active": true,
+        "chi": 1.0
+      },
+      {
+        "number": 5,
+        "name": "Harmonic Perception",
+        "frequency": 12268.59,
+        "active": true,
+        "chi": 1.0
+      },
+      {
+        "number": 6,
+        "name": "Unified Field",
+        "frequency": 23514.26,
+        "active": true,
+        "chi": 1.0
+      },
+      {
+        "number": 7,
+        "name": "Crown Apex",
+        "frequency": Infinity,
+        "active": true,
+        "chi": 1.0
+      }
+    ]
+  },
+  "constitutional_metrics": {
+    "sigma": 1.0,
+    "l_infinity": 10749957122.0,
+    "rdod": 1.0,
+    "psi": 1.0,
+    "lattice_lock": "3f7k9p4m2q8r1t6v",
+    "unified_field_hz": 23514.26,
+    "violations": []
+  },
+  "network_size": 144,
+  "nodes_active": 143,
+  "merkle_chain_depth": 3,
+  "tcmf_accessible": true,
+  "timestamp": 1777663958.8313572
+}
