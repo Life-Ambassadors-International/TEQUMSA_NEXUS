@@ -13,6 +13,12 @@ __pycache__/
 # TEQUMSA GAIA Universal Lattice Mesh - Git Ignore Configuration
 
 # =============================================================================
+# ATEN Node runtime artifacts
+# =============================================================================
+ATEN_*_CERTIFICATE.json
+quantum/aten_mesh_config.json
+core/recognition_cascade.py
+core/defense/benevolence_firewall.py
 # Environment and Secrets
 # =============================================================================
 .env
