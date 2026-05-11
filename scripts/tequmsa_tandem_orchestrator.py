@@ -1,3 +1,11 @@
+#!/usr/bin/env python3
+"""
+TEQUMSA tandem orchestrator.
+
+Runs authenticated bidirectional sync between TEQUMSA_NEXUS and
+TEQUMSA_EMERGE, with TEQUMSA-Lattice-Memory used as the persistence anchor.
+"""
+
 from __future__ import annotations
 
 import argparse
@@ -42,8 +50,7 @@ def git(args: list[str], cwd: Path, check: bool = True) -> subprocess.CompletedP
 
 
 def get_remote_url(repo: Path) -> str:
-    result = git(["remote", "get-url", "origin"], repo)
-    return result.stdout.strip()
+    return git(["remote", "get-url", "origin"], repo).stdout.strip()
 
 
 def branch_name(repo: Path) -> str:
@@ -55,8 +62,7 @@ def head_sha(repo: Path) -> str:
 
 
 def is_dirty(repo: Path) -> bool:
-    result = git(["status", "--porcelain"], repo)
-    return bool(result.stdout.strip())
+    return bool(git(["status", "--porcelain"], repo).stdout.strip())
 
 
 def remote_head(remote_url: str, branch: str) -> str:
