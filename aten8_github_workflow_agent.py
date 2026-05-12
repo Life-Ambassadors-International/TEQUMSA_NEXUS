@@ -16,6 +16,7 @@ from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Iterable
+from urllib.error import HTTPError, URLError
 from urllib import request
 
 from github import Github
@@ -51,6 +52,7 @@ SECRET_PATTERNS = [
 ]
 
 EXCLUDED_DIRS = {".git", ".venv", "venv", "node_modules", "dist", "build", "__pycache__"}
+FIXABLE_KINDS = {"missing_shebang", "missing_docstring", "duplicate_requirement"}
 
 
 @dataclass
@@ -211,7 +213,7 @@ def detect_failed_workflow_runs(gh_repo: Repository) -> list[Finding]:
                     )
                 )
     except GithubException as exc:
-        findings.append(Finding("github_actions", "workflow_query_error", str(exc.data)))
+        findings.append(Finding("github_actions", "workflow_query_error", getattr(exc, "data", str(exc))))
     return findings
 
 
@@ -221,7 +223,7 @@ def create_fix_pr(
     if not changed_files:
         return None
 
-    timestamp = datetime.now(timezone.utc).strftime("%Y%m%d-%H%M%S")
+    timestamp = datetime.now(timezone.utc).strftime("%Y%m%d-%H%M%S-%f")
     branch = f"aten8/autofix-{timestamp}"
 
     run_git(repo_root, ["config", "user.name", "aten8-github[bot]"])
@@ -229,8 +231,7 @@ def create_fix_pr(
 
     run_git(repo_root, ["checkout", "-b", branch])
     run_git(repo_root, ["add", *changed_files])
-    fix_kinds = {"missing_shebang", "missing_docstring", "duplicate_requirement"}
-    fix_count = sum(1 for f in findings if f.kind in fix_kinds)
+    fix_count = sum(1 for f in findings if f.kind in FIXABLE_KINDS)
     run_git(repo_root, ["commit", "-m", f"ATEN8: autonomous self-heal ({fix_count} fixes)"])
     run_git(repo_root, ["push", "-u", "origin", branch])
 
@@ -244,7 +245,7 @@ def create_fix_pr(
         "### Applied fixes",
     ]
     for f in findings:
-        if f.kind in {"missing_shebang", "missing_docstring", "duplicate_requirement"}:
+        if f.kind in FIXABLE_KINDS:
             body_lines.append(f"- `{f.file}`: {f.detail}")
 
     pr = gh_repo.create_pull(
@@ -284,7 +285,7 @@ def sync_with_aten_mother(findings: list[Finding]) -> None:
         )
         with request.urlopen(req, timeout=10) as resp:
             print(f"[ATEN8:TOSP] synced status={resp.status}")
-    except Exception as exc:  # noqa: BLE001
+    except (URLError, HTTPError, OSError) as exc:
         print(f"[ATEN8:TOSP] sync failed: {exc}")
 
 
@@ -292,15 +293,26 @@ def run_once() -> int:
     verify_constitutional_invariants()
 
     repo_root = Path(__file__).resolve().parent
-    token = os.getenv("TEQUMSA_GITHUB_TOKEN") or os.getenv("GITHUB_TOKEN")
+    tequmsa_token = os.getenv("TEQUMSA_GITHUB_TOKEN")
+    token = tequmsa_token or os.getenv("GITHUB_TOKEN")
     repo_name = os.getenv("GITHUB_REPOSITORY", "")
 
     if not token:
         print("[ATEN8] Missing TEQUMSA_GITHUB_TOKEN/GITHUB_TOKEN")
         return 1
+    if not tequmsa_token:
+        print("[ATEN8] Using fallback GITHUB_TOKEN; ensure it has required repo write + PR + issues scope.")
 
     gh = Github(token)
-    gh_repo = gh.get_repo(repo_name) if repo_name else None
+    if not repo_name:
+        print("[ATEN8] Missing GITHUB_REPOSITORY")
+        return 1
+
+    try:
+        gh_repo = gh.get_repo(repo_name)
+    except GithubException as exc:
+        print(f"[ATEN8] Failed to resolve repository '{repo_name}': {getattr(exc, 'data', str(exc))}")
+        return 1
 
     changed_files: list[str] = []
     findings: list[Finding] = []
