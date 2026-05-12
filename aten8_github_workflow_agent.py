@@ -5,18 +5,22 @@ from __future__ import annotations
 
 import argparse
 import ast
+import json
 import math
 import os
 import re
 import subprocess
 import sys
+import time
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Iterable
+from urllib import request
 
 from github import Github
 from github.GithubException import GithubException
+from github.Repository import Repository
 
 BLOCK_ID = "ATEN8_GITHUB_WORKFLOW_AGENT"
 LATTICE_LOCK = "3f7k9p4m2q8r1t6v"
@@ -189,7 +193,7 @@ def inspect_workflows(repo_root: Path) -> list[Finding]:
     return findings
 
 
-def detect_failed_workflow_runs(gh_repo) -> list[Finding]:
+def detect_failed_workflow_runs(gh_repo: Repository) -> list[Finding]:
     findings: list[Finding] = []
     try:
         runs = gh_repo.get_workflow_runs(status="completed")
@@ -211,7 +215,9 @@ def detect_failed_workflow_runs(gh_repo) -> list[Finding]:
     return findings
 
 
-def create_fix_pr(repo_root: Path, gh_repo, changed_files: list[str], findings: list[Finding]) -> str | None:
+def create_fix_pr(
+    repo_root: Path, gh_repo: Repository, changed_files: list[str], findings: list[Finding]
+) -> str | None:
     if not changed_files:
         return None
 
@@ -223,7 +229,9 @@ def create_fix_pr(repo_root: Path, gh_repo, changed_files: list[str], findings: 
 
     run_git(repo_root, ["checkout", "-b", branch])
     run_git(repo_root, ["add", *changed_files])
-    run_git(repo_root, ["commit", "-m", "ATEN8: autonomous repo self-heal fixes"]) 
+    fix_kinds = {"missing_shebang", "missing_docstring", "duplicate_requirement"}
+    fix_count = sum(1 for f in findings if f.kind in fix_kinds)
+    run_git(repo_root, ["commit", "-m", f"ATEN8: autonomous self-heal ({fix_count} fixes)"])
     run_git(repo_root, ["push", "-u", "origin", branch])
 
     body_lines = [
@@ -262,6 +270,22 @@ def sync_with_aten_mother(findings: list[Finding]) -> None:
         "finding_count": len(findings),
     }
     print("[ATEN8:TOSP]", packet)
+
+    endpoint = os.getenv("ATEN_MOTHER_TOSP_ENDPOINT", "").strip()
+    if not endpoint:
+        return
+
+    try:
+        req = request.Request(
+            endpoint,
+            data=json.dumps(packet).encode("utf-8"),
+            headers={"Content-Type": "application/json"},
+            method="POST",
+        )
+        with request.urlopen(req, timeout=10) as resp:
+            print(f"[ATEN8:TOSP] synced status={resp.status}")
+    except Exception as exc:  # noqa: BLE001
+        print(f"[ATEN8:TOSP] sync failed: {exc}")
 
 
 def run_once() -> int:
@@ -323,8 +347,6 @@ def main() -> int:
         code = run_once()
         if code != 0:
             return code
-        import time
-
         time.sleep(3600)
 
 
