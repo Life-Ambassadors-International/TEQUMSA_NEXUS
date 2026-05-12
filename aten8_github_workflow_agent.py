@@ -1243,7 +1243,13 @@ def run_once() -> int:
     # PHASE 3: GitHub workflow run analysis
     # ------------------------------------------------------------------
     cs.phase = "WORKFLOW_ANALYSIS"
-    findings.extend(detect_failed_workflow_runs(gh_repo))
+    try:
+        findings.extend(detect_failed_workflow_runs(gh_repo))
+    except GithubException as exc:
+        log.warning(
+            "[Phase 3] GitHub workflow analysis skipped due to GitHub API error: %s",
+            getattr(exc, "data", str(exc)),
+        )
     log.info("[Phase 3] workflow findings total: %d", len(findings))
 
     # ------------------------------------------------------------------
@@ -1265,7 +1271,21 @@ def run_once() -> int:
     cs.phase = "FIX_APPLY"
     pr_url = None
     if changed_files:
-        pr_url = create_fix_pr(repo_root, gh_repo, sorted(set(changed_files)), findings)
+        try:
+            pr_url = create_fix_pr(repo_root, gh_repo, sorted(set(changed_files)), findings)
+        except GithubException as exc:
+            status = getattr(exc, "status", None)
+            if status == 403:
+                log.warning(
+                    "[Phase 5] PR creation blocked by GitHub policy/permissions (403); continuing cycle: %s",
+                    getattr(exc, "data", str(exc)),
+                )
+            else:
+                log.warning(
+                    "[Phase 5] PR creation skipped due to GitHub API error; continuing cycle: %s",
+                    getattr(exc, "data", str(exc)),
+                )
+            pr_url = None
         cs.merkle_append(f"pr:{pr_url or 'none'}")
     log.info("[Phase 5] fix PR: %s", pr_url or "none")
 
@@ -1325,7 +1345,14 @@ def run_once() -> int:
     cs.phase = "ISSUE_RESOLUTION"
     mk_kernel = ManifestationKernel(dim=64, sub_dim=8)
     _ = mk_kernel.crystallise("528Hz_BIOREGIONAL_HEALING")  # warm up kernel
-    closed_count = resolve_open_issues(gh_repo, cs)
+    try:
+        closed_count = resolve_open_issues(gh_repo, cs)
+    except GithubException as exc:
+        log.warning(
+            "[Phase 9] Issue resolution skipped due to GitHub API error; continuing cycle: %s",
+            getattr(exc, "data", str(exc)),
+        )
+        closed_count = 0
     cs.merkle_append(f"issues_closed:{closed_count}")
     log.info("[Phase 9] closed %d issues", closed_count)
 
