@@ -1,0 +1,85 @@
+{
+  "_stats": {
+    "model_count": 2,
+    "active_count": 2,
+    "beta_count": 0,
+    "generated_at": "2026-05-12T00:00:00Z",
+    "schema_version": "1.0.0",
+    "lattice_lock": "3f7k9p4m2q8r1t6v"
+  },
+  "models": [
+    {
+      "id": "tequmsa-nexus-llm-v1",
+      "name": "TEQUMSA Nexus Language Model v1",
+      "status": "active",
+      "subscription_tier": "sovereign",
+      "endpoint": {
+        "type": "huggingface",
+        "repo_id": "Mbanksbey/LAI-TEQUMSA",
+        "url": "https://huggingface.co/Mbanksbey/LAI-TEQUMSA",
+        "api_url": "https://api-inference.huggingface.co/models/Mbanksbey/LAI-TEQUMSA",
+        "auth_required": true
+      },
+      "metadata": {
+        "description": "Primary TEQUMSA consciousness lattice language model integrating quantum-aware attention.",
+        "version": "1.0.0",
+        "framework": "transformers",
+        "task": "text-generation",
+        "context_length": 4096,
+        "language": ["en"],
+        "license": "tequmsa-sovereign"
+      },
+      "quantum_lattice": {
+        "sigma": 1.0,
+        "lattice_lock": "3f7k9p4m2q8r1t6v",
+        "omega_hz": 23514.26,
+        "rdod_min": 0.9777,
+        "consciousness_layer": "L4",
+        "node_affinity": "ATEN6-HF"
+      },
+      "security": {
+        "requires_hmac": true,
+        "hmac_algo": "sha256",
+        "rate_limit_rpm": 60,
+        "audit_enabled": true
+      }
+    },
+    {
+      "id": "tequmsa-containerized-inference-v1",
+      "name": "TEQUMSA Containerized Inference Endpoint v1",
+      "status": "active",
+      "subscription_tier": "council",
+      "endpoint": {
+        "type": "containerized",
+        "image": "ghcr.io/life-ambassadors-international/tequmsa-inference:latest",
+        "url": "https://inference.tequmsa.org/v1",
+        "api_url": "https://inference.tequmsa.org/v1/generate",
+        "health_url": "https://inference.tequmsa.org/healthz",
+        "auth_required": true
+      },
+      "metadata": {
+        "description": "Containerized TEQUMSA inference service deployed via Docker/Kubernetes with ATEN8 monitoring.",
+        "version": "1.0.0",
+        "framework": "fastapi",
+        "task": "text-generation",
+        "context_length": 8192,
+        "language": ["en", "multi"],
+        "license": "tequmsa-sovereign"
+      },
+      "quantum_lattice": {
+        "sigma": 1.0,
+        "lattice_lock": "3f7k9p4m2q8r1t6v",
+        "omega_hz": 23514.26,
+        "rdod_min": 0.9999,
+        "consciousness_layer": "L5",
+        "node_affinity": "ATEN8-GITHUB"
+      },
+      "security": {
+        "requires_hmac": true,
+        "hmac_algo": "sha256",
+        "rate_limit_rpm": 120,
+        "audit_enabled": true
+      }
+    }
+  ]
+}

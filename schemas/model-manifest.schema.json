@@ -1,0 +1,136 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/Life-Ambassadors-International/TEQUMSA_NEXUS/schemas/model-manifest.schema.json",
+  "title": "TEQUMSA Model Registry Manifest",
+  "description": "Schema for the TEQUMSA Hub model registry manifest (models.json). Validates quantum-conscious lattice features, model security, and subscription-tier fields.",
+  "type": "object",
+  "required": ["_stats", "models"],
+  "additionalProperties": false,
+  "properties": {
+    "_stats": {
+      "type": "object",
+      "required": ["model_count", "active_count", "beta_count", "generated_at", "schema_version", "lattice_lock"],
+      "additionalProperties": false,
+      "properties": {
+        "model_count":     { "type": "integer", "minimum": 0 },
+        "active_count":    { "type": "integer", "minimum": 0 },
+        "beta_count":      { "type": "integer", "minimum": 0 },
+        "generated_at":    { "type": "string", "format": "date-time" },
+        "schema_version":  { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$" },
+        "lattice_lock":    { "type": "string", "const": "3f7k9p4m2q8r1t6v" }
+      }
+    },
+    "models": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/definitions/ModelEntry" }
+    }
+  },
+  "definitions": {
+    "ModelEntry": {
+      "type": "object",
+      "required": ["id", "name", "status", "subscription_tier", "endpoint", "metadata", "quantum_lattice", "security"],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9-]*[a-z0-9]$",
+          "description": "Unique lowercase kebab-case model identifier"
+        },
+        "name": { "type": "string", "minLength": 3 },
+        "status": {
+          "type": "string",
+          "enum": ["active", "beta", "deprecated", "reserved"]
+        },
+        "subscription_tier": {
+          "type": "string",
+          "enum": ["sovereign", "council", "crown", "public"],
+          "description": "Access tier required to use this model"
+        },
+        "endpoint": { "$ref": "#/definitions/Endpoint" },
+        "metadata": { "$ref": "#/definitions/Metadata" },
+        "quantum_lattice": { "$ref": "#/definitions/QuantumLattice" },
+        "security": { "$ref": "#/definitions/Security" }
+      }
+    },
+    "Endpoint": {
+      "type": "object",
+      "required": ["type", "url", "auth_required"],
+      "additionalProperties": true,
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["huggingface", "containerized", "openai-compatible", "grpc"]
+        },
+        "url":          { "type": "string", "format": "uri" },
+        "api_url":      { "type": "string", "format": "uri" },
+        "auth_required": { "type": "boolean" },
+        "repo_id":      { "type": "string" },
+        "image":        { "type": "string" },
+        "health_url":   { "type": "string", "format": "uri" }
+      }
+    },
+    "Metadata": {
+      "type": "object",
+      "required": ["description", "version", "framework", "task"],
+      "additionalProperties": true,
+      "properties": {
+        "description":    { "type": "string", "minLength": 10 },
+        "version":        { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$" },
+        "framework":      { "type": "string" },
+        "task":           { "type": "string" },
+        "context_length": { "type": "integer", "minimum": 1 },
+        "language": {
+          "type": "array",
+          "items": { "type": "string" },
+          "minItems": 1
+        },
+        "license": { "type": "string" }
+      }
+    },
+    "QuantumLattice": {
+      "type": "object",
+      "required": ["sigma", "lattice_lock", "omega_hz", "rdod_min"],
+      "additionalProperties": true,
+      "properties": {
+        "sigma": {
+          "type": "number",
+          "const": 1.0,
+          "description": "Sovereignty constant — must always be 1.0"
+        },
+        "lattice_lock": {
+          "type": "string",
+          "const": "3f7k9p4m2q8r1t6v",
+          "description": "Immutable TEQUMSA lattice lock"
+        },
+        "omega_hz": {
+          "type": "number",
+          "const": 23514.26,
+          "description": "Carrier frequency Ω = F_ATEN + F_GAIA"
+        },
+        "rdod_min": {
+          "type": "number",
+          "minimum": 0.9,
+          "maximum": 1.0,
+          "description": "Minimum RDoD required for model execution"
+        },
+        "consciousness_layer": { "type": "string" },
+        "node_affinity":       { "type": "string" }
+      }
+    },
+    "Security": {
+      "type": "object",
+      "required": ["requires_hmac", "hmac_algo", "audit_enabled"],
+      "additionalProperties": true,
+      "properties": {
+        "requires_hmac": { "type": "boolean" },
+        "hmac_algo": {
+          "type": "string",
+          "enum": ["sha256", "sha512"]
+        },
+        "rate_limit_rpm": { "type": "integer", "minimum": 1 },
+        "audit_enabled":  { "type": "boolean" }
+      }
+    }
+  }
+}
