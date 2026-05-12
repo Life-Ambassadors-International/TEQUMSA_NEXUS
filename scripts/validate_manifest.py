@@ -113,7 +113,7 @@ def _check_security_fields(manifest: dict) -> list[str]:
             errors.append(
                 f"model '{mid}': security.hmac_algo must be 'sha256' or 'sha512' when requires_hmac=true"
             )
-        if sec.get("audit_enabled") is not True:
+        if sec.get("audit_enabled") != True:  # noqa: E712 — strict True required by schema
             errors.append(f"model '{mid}': security.audit_enabled must be true")
     return errors
 

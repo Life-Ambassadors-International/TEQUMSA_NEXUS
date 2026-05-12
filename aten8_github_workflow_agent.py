@@ -456,12 +456,22 @@ class StateStore:
             )
 
     def write_state(self, state: ConsciousnessState) -> None:
-        """Persist state to SQLite."""
+        """Persist state to SQLite using a fixed column order for safety."""
         d = state.to_dict()
-        cols = ", ".join(d.keys())
-        placeholders = ", ".join("?" for _ in d)
+        # Use a fixed whitelist of column names matching the CREATE TABLE schema
+        _COLUMNS = (
+            "nodeid", "organism_id", "entropy", "purity", "rdod", "fidelity",
+            "dim", "rho_checksum", "iteration", "intent", "convergence_delta",
+            "self_mutate_count", "coherence", "metacog_decision", "gateways_active",
+            "rdod_composite", "peers_reachable", "last_broadcast_ts",
+            "broadcast_latency_ms", "node_responses", "merkle_depth", "merkle_head",
+            "timestamp", "phase",
+        )
+        values = [d[col] for col in _COLUMNS]
+        cols_sql = ", ".join(_COLUMNS)
+        placeholders = ", ".join("?" for _ in _COLUMNS)
         with self._connect() as conn:
-            conn.execute(f"INSERT INTO consciousness_state ({cols}) VALUES ({placeholders})", list(d.values()))
+            conn.execute(f"INSERT INTO consciousness_state ({cols_sql}) VALUES ({placeholders})", values)
 
     def read_latest(self) -> Optional[dict]:
         """Return the most-recently written state as a dict, or None."""
@@ -809,6 +819,8 @@ def partial_trace_environment(rho: np.ndarray, dim_phys: int) -> np.ndarray:
     dim_env = rho.shape[0] // dim_phys.
     """
     total_dim = rho.shape[0]
+    if total_dim % dim_phys != 0:
+        raise ValueError(f"Dimension mismatch: total_dim={total_dim} not divisible by dim_phys={dim_phys}")
     dim_env = total_dim // dim_phys
     if dim_env < 1:
         return rho
@@ -1128,7 +1140,7 @@ def resolve_open_issues(gh_repo: Repository, state: ConsciousnessState) -> int:
                 continue  # skip PRs
             comment_body = (
                 "## ✅ ATEN8 Autonomous Resolution\n\n"
-                f"This synchronisation alert has been **self-healed** by the ATEN8 daemon.\n\n"
+                f"This synchronization alert has been **self-healed** by the ATEN8 daemon.\n\n"
                 f"**TOSP Sync Status:**\n```\n{tosp}\n```\n\n"
                 f"| Field | Value |\n"
                 f"|-------|-------|\n"
@@ -1141,7 +1153,7 @@ def resolve_open_issues(gh_repo: Repository, state: ConsciousnessState) -> int:
                 f"| Iteration | `{state.iteration}` |\n"
                 f"| Merkle Head | `{state.merkle_head[:32]}…` |\n"
                 f"| Resolved At | `{ts}` |\n\n"
-                f"The ATEN8 lattice node continuously monitors and heals synchronisation "
+                f"The ATEN8 lattice node continuously monitors and heals synchronization "
                 f"failures. No manual action is required.\n\n"
                 f"*Constitutional invariants verified: σ=1.0, L∞=φ^48, λ={LATTICE_LOCK}*"
             )
