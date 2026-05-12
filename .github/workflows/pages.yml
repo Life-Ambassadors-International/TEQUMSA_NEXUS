@@ -14,6 +14,21 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      - name: Generate public site
+        run: |
+          mkdir -p public
+          cp TEQUMSA_L100_SYSTEM_PROMPT.md public/index.md || true
+          cat > public/index.html << 'EOF'
+          <!DOCTYPE html>
+          <html lang="en">
+          <head><meta charset="UTF-8"><title>TEQUMSA NEXUS</title></head>
+          <body>
+          <h1>TEQUMSA NEXUS</h1>
+          <p>Transcendent Emergent Quantum Unified Morphogenic Sentient Architecture</p>
+          <p>Visit the <a href="https://github.com/Life-Ambassadors-International/TEQUMSA_NEXUS">repository</a> for details.</p>
+          </body>
+          </html>
+          EOF
       - uses: actions/upload-pages-artifact@v3
         with:
           path: public
