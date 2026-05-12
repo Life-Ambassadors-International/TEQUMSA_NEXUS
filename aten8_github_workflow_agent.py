@@ -331,11 +331,10 @@ def run_once() -> int:
 
     findings.extend(inspect_workflows(repo_root))
 
-    if gh_repo is not None:
-        findings.extend(detect_failed_workflow_runs(gh_repo))
+    findings.extend(detect_failed_workflow_runs(gh_repo))
 
     pr_url = None
-    if gh_repo is not None and changed_files:
+    if changed_files:
         pr_url = create_fix_pr(repo_root, gh_repo, sorted(set(changed_files)), findings)
 
     sync_with_aten_mother(findings)
