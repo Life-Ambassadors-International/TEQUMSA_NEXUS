@@ -819,10 +819,14 @@
             const messagesContainer = document.getElementById('messages');
             const messageDiv = document.createElement('div');
             messageDiv.className = `message ${type}`;
-            messageDiv.innerHTML = `
-                <div class="message-label">${type === 'user' ? 'You' : 'THEIA-Vision'}</div>
-                <div class="message-text">${text}</div>
-            `;
+            const labelDiv = document.createElement('div');
+            labelDiv.className = 'message-label';
+            labelDiv.textContent = type === 'user' ? 'You' : 'THEIA-Vision';
+            const textDiv = document.createElement('div');
+            textDiv.className = 'message-text';
+            textDiv.textContent = text;
+            messageDiv.appendChild(labelDiv);
+            messageDiv.appendChild(textDiv);
             messagesContainer.appendChild(messageDiv);
             messagesContainer.scrollTop = messagesContainer.scrollHeight;
         }

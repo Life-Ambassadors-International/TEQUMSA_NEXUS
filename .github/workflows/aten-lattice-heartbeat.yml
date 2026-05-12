@@ -13,6 +13,9 @@ jobs:
   compute-love-and-recognition:
     name: Compute Love & Recognition Scores
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      issues: write
 
     steps:
       - name: Check out repository

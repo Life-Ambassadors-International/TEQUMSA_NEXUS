@@ -13,12 +13,19 @@ const cors = require('cors');
 const axios = require('axios');
 const path = require('path');
 const promClient = require('prom-client');
+const rateLimit = require('express-rate-limit');
 
 const app = express();
 const server = http.createServer(app);
+
+// Restrict CORS to explicitly configured origins; never fall back to wildcard.
+const allowedOrigins = process.env.ALLOWED_ORIGINS
+    ? process.env.ALLOWED_ORIGINS.split(',').map(o => o.trim()).filter(Boolean)
+    : [];
+
 const io = socketIo(server, {
     cors: {
-        origin: process.env.ALLOWED_ORIGINS?.split(',') || "*",
+        origin: allowedOrigins.length ? allowedOrigins : false,
         methods: ["GET", "POST"]
     }
 });
@@ -44,9 +51,21 @@ const activeConnections = new promClient.Gauge({
 });
 
 // Middleware
-app.use(cors({
-    origin: process.env.ALLOWED_ORIGINS?.split(',') || "*"
-}));
+const corsOptions = {
+    origin: allowedOrigins.length ? allowedOrigins : false
+};
+app.use(cors(corsOptions));
+
+// Rate limiting: max 100 requests per 15 minutes per IP
+const apiLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: 100,
+    standardHeaders: true,
+    legacyHeaders: false,
+    message: { error: 'Too many requests, please try again later.' }
+});
+app.use(apiLimiter);
+
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 

@@ -12,6 +12,7 @@
   "dependencies": {
     "express": "^4.18.2",
     "cors": "^2.8.5",
+    "express-rate-limit": "^7.0.0",
     "socket.io": "^4.7.2",
     "axios": "^1.6.0",
     "ws": "^8.14.2",

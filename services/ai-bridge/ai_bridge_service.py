@@ -175,7 +175,7 @@ def generate_with_openai(prompt, model="gpt-3.5-turbo", max_tokens=1000):
     except Exception as e:
         AI_INTERACTIONS.labels(provider='openai', model=model, result='error').inc()
         logger.error(f"OpenAI generation error: {e}")
-        return None, str(e)
+        return None, "AI generation failed"
 
 def generate_with_anthropic(prompt, model="claude-3-haiku-20240307", max_tokens=1000):
     """Generate response using Anthropic Claude"""
@@ -202,7 +202,7 @@ def generate_with_anthropic(prompt, model="claude-3-haiku-20240307", max_tokens=
     except Exception as e:
         AI_INTERACTIONS.labels(provider='anthropic', model=model, result='error').inc()
         logger.error(f"Anthropic generation error: {e}")
-        return None, str(e)
+        return None, "AI generation failed"
 
 @app.route('/health', methods=['GET'])
 def health_check():

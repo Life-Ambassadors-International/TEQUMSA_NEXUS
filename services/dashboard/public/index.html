@@ -481,10 +481,13 @@
             entry.className = 'log-entry';
             
             const timestamp = new Date().toLocaleTimeString();
-            entry.innerHTML = `
-                <div>${message}</div>
-                <div class="timestamp">${timestamp}</div>
-            `;
+            const msgDiv = document.createElement('div');
+            msgDiv.textContent = message;
+            const tsDiv = document.createElement('div');
+            tsDiv.className = 'timestamp';
+            tsDiv.textContent = timestamp;
+            entry.appendChild(msgDiv);
+            entry.appendChild(tsDiv);
             
             if (type === 'error') {
                 entry.style.borderLeftColor = '#f44336';

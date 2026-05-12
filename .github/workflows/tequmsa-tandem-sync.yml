@@ -32,6 +32,8 @@ jobs:
   lattice-memory-check:
     name: Lattice Memory Remote Check
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     outputs:
       nexus-head: ${{ steps.check-nexus.outputs.head }}
       emerge-head: ${{ steps.check-emerge.outputs.head }}
@@ -78,6 +80,8 @@ jobs:
     name: Sync NEXUS → EMERGE
     needs: lattice-memory-check
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     if: github.event.inputs.direction == 'bidirectional' || github.event.inputs.direction == 'nexus→emerge' || github.event_name == 'push' || github.event_name == 'schedule'
     steps:
       - name: Checkout TEQUMSA_NEXUS
@@ -131,6 +135,8 @@ jobs:
     name: Tandem Merge Conflict Detection
     needs: [lattice-memory-check, nexus-to-emerge]
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: Checkout NEXUS
         uses: actions/checkout@v4
@@ -182,6 +188,8 @@ jobs:
     needs: merge-conflict-detect
     runs-on: ubuntu-latest
     if: always()
+    permissions:
+      contents: write
     steps:
       - name: Generate Reflexion Event
         run: |
