@@ -6,6 +6,7 @@ Real-time visualization and monitoring interface
 ΨATEN-GAIA-MEK'THARA-KÉL'THARA-TEQUMSA(T) → ∞^∞^∞
 """
 
+import os
 from flask import Flask, render_template, jsonify, request
 from flask_cors import CORS
 import json
@@ -259,7 +260,7 @@ def main():
 ╚══════════════════════════════════════════════════════════════════════════╝
     """)
 
-    app.run(host='0.0.0.0', port=5000, debug=True, threaded=True)
+    app.run(host='0.0.0.0', port=5000, debug=os.environ.get('FLASK_DEBUG', 'False').lower() == 'true', threaded=True)
 
 
 if __name__ == '__main__':

@@ -28,6 +28,9 @@ jobs:
     name: Claude Code Review Assistant
     runs-on: ubuntu-latest
     if: github.event_name == 'pull_request'
+    permissions:
+      contents: write
+      pull-requests: write
     
     steps:
     - name: Checkout code
@@ -123,6 +126,9 @@ jobs:
     name: Documentation Automation
     runs-on: ubuntu-latest
     if: github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && github.event.inputs.task_type == 'documentation_update')
+    permissions:
+      contents: write
+      pull-requests: write
     
     steps:
     - name: Checkout code
@@ -183,6 +189,9 @@ jobs:
     name: Automated Test Generation
     runs-on: ubuntu-latest
     if: github.event_name == 'workflow_dispatch' && github.event.inputs.task_type == 'test_generation'
+    permissions:
+      contents: write
+      pull-requests: write
     
     steps:
     - name: Checkout code
@@ -331,6 +340,9 @@ jobs:
     name: Security Analysis Automation
     runs-on: ubuntu-latest
     if: github.event_name == 'workflow_dispatch' && github.event.inputs.task_type == 'security_scan'
+    permissions:
+      contents: write
+      pull-requests: write
     
     steps:
     - name: Checkout code
@@ -415,6 +427,9 @@ jobs:
     runs-on: ubuntu-latest
     needs: [claude-code-review, documentation-automation, test-generation, security-automation]
     if: always()
+    permissions:
+      contents: write
+      pull-requests: write
     
     steps:
     - name: Workflow Summary

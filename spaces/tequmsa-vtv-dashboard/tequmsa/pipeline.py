@@ -156,11 +156,18 @@ class TEQUMSAPipeline:
         """Return (transcript, used_model). Fails gracefully with a message."""
         if not audio_path:
             return "", "no-audio"
+        # Validate the path is within the system's temp directory to prevent
+        # path traversal attacks.
+        safe_dir = tempfile.gettempdir()
+        abs_path = os.path.abspath(audio_path)
+        if not abs_path.startswith(os.path.join(safe_dir, "")):
+            log.error("Rejected audio_path outside temp dir: %s", audio_path)
+            return "", "stt-error: invalid path"
         client = self.client
         if client is None:
             return "", "stt-unavailable (set HF_TOKEN secret in Space settings)"
         try:
-            with open(audio_path, "rb") as fh:
+            with open(abs_path, "rb") as fh:
                 data = fh.read()
             out = client.automatic_speech_recognition(data, model=self.stt_model)
             text = getattr(out, "text", None) or (out.get("text") if isinstance(out, dict) else str(out))
