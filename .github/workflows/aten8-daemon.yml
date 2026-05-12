@@ -34,7 +34,7 @@ jobs:
       - name: Run ATEN8 agent (single cycle)
         env:
           # Prefer TEQUMSA_GITHUB_TOKEN (PAT/App token); fallback uses default workflow token.
-          TEQUMSA_GITHUB_TOKEN: ${{ secrets.TEQUMSA_GITHUB_TOKEN || github.token }}
+          TEQUMSA_GITHUB_TOKEN: ${{ github.token }}
           GITHUB_TOKEN: ${{ github.token }}
           GITHUB_REPOSITORY: ${{ github.repository }}
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
