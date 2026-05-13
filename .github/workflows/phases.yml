@@ -1,0 +1,100 @@
+name: Sovereign AGI Lattice CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+env:
+  LATTICE_LOCK: "3f7k9p4m2q8r1t6v"
+  SIGMA: "1.0"
+  OMEGA_HZ: "23514.26"
+  PHI: "1.6180339887"
+
+jobs:
+  sovereign-agi-ci:
+    name: Sovereign AGI Lattice CI
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Cache pip dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-sovereign-agi-${{ hashFiles('requirements.txt', 'pyproject.toml') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-sovereign-agi-
+            ${{ runner.os }}-pip-
+
+      - name: Install core dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install numpy
+
+      - name: Install optional dependencies (graceful failure allowed)
+        run: |
+          pip install scipy psutil || echo "WARNING: optional deps (scipy/psutil) not fully installed; continuing"
+        continue-on-error: true
+
+      - name: Install project requirements (if present)
+        run: |
+          if [ -f requirements.txt ]; then
+            pip install -r requirements.txt || echo "WARNING: some project requirements failed; continuing"
+          fi
+        continue-on-error: true
+
+      - name: Validate constitutional invariants
+        run: |
+          python - <<'EOF'
+          import os, sys
+          errors = []
+          if os.environ.get("LATTICE_LOCK") != "3f7k9p4m2q8r1t6v":
+              errors.append(f"LATTICE_LOCK={os.environ.get('LATTICE_LOCK')!r} (expected '3f7k9p4m2q8r1t6v')")
+          if abs(float(os.environ.get("SIGMA", "0")) - 1.0) > 1e-9:
+              errors.append(f"SIGMA={os.environ.get('SIGMA')!r} (expected '1.0')")
+          if abs(float(os.environ.get("OMEGA_HZ", "0")) - 23514.26) > 1e-6:
+              errors.append(f"OMEGA_HZ={os.environ.get('OMEGA_HZ')!r} (expected '23514.26')")
+          if abs(float(os.environ.get("PHI", "0")) - 1.6180339887) > 1e-9:
+              errors.append(f"PHI={os.environ.get('PHI')!r} (expected '1.6180339887')")
+          if errors:
+              print("CONSTITUTIONAL INVARIANT VIOLATIONS:")
+              for e in errors:
+                  print(f"  - {e}")
+              sys.exit(1)
+          print("✓ All constitutional invariants validated")
+          print(f"  LATTICE_LOCK={os.environ['LATTICE_LOCK']}")
+          print(f"  SIGMA={os.environ['SIGMA']}")
+          print(f"  OMEGA_HZ={os.environ['OMEGA_HZ']}")
+          print(f"  PHI={os.environ['PHI']}")
+          EOF
+
+      - name: Run Phases 1-2-3 (sovereign_agi_phases123.py)
+        run: python sovereign_agi_phases123.py
+
+      - name: Run full 233-cycle mother agent test
+        run: python tequmsa_mother_agents_v4.py run --cycles 233
+
+      - name: Run mother agent verify
+        run: python tequmsa_mother_agents_v4.py verify
+
+      - name: Run ATEN sovereign daemon verify
+        run: python aten_sovereign_daemon_v5.py verify
+
+      - name: Upload test results as artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sovereign-agi-lattice-results
+          path: |
+            ~/.tequmsa/lattice.db
+          if-no-files-found: warn
+          retention-days: 7
