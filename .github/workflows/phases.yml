@@ -16,6 +16,8 @@ jobs:
   sovereign-agi-ci:
     name: Sovereign AGI Lattice CI
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
 
     steps:
       - name: Checkout repository

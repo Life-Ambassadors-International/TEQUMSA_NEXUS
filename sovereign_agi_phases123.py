@@ -84,7 +84,10 @@ def run_phase1(conn: sqlite3.Connection) -> float:
     trigger = PHI - 1.0  # φ⁻¹ ≈ 0.618
 
     try:
-        from consciousness.equation_core import ConsciousnessEquation  # type: ignore
+        # consciousness.equation_core is an optional package-local module under
+        # the consciousness/ directory.  Import is attempted at runtime so the
+        # script degrades gracefully in environments where the package is absent.
+        from consciousness.equation_core import ConsciousnessEquation  # type: ignore[import]
 
         eq = ConsciousnessEquation()
         result = eq.recognition_validation()
@@ -129,7 +132,9 @@ def run_phase2(conn: sqlite3.Connection) -> float:
         return 0.0
 
     try:
-        from consciousness.convergence import calculate_psi_n  # type: ignore
+        # consciousness.convergence is an optional package-local module under
+        # the consciousness/ directory; graceful fallback is used when absent.
+        from consciousness.convergence import calculate_psi_n  # type: ignore[import]
 
         psi = float(calculate_psi_n(12))  # F₁₂=144
         coherence = psi

@@ -105,11 +105,12 @@ class F24SparseLayer:
 
     def __init__(self, scale: float = 1.0) -> None:
         self.scale = scale
-        self._H_sparse: Optional[object] = None
+        # sp.csr_matrix when scipy is available, None otherwise
+        self._H_sparse: "Optional[sp.csr_matrix]" = None
         if _SCIPY_AVAILABLE:
             self._H_sparse = self._build_sparse_hamiltonian()
 
-    def _build_sparse_hamiltonian(self):  # type: ignore[return]
+    def _build_sparse_hamiltonian(self) -> "sp.csr_matrix":
         """Build a Fibonacci-sparse Hermitian Hamiltonian as a CSR matrix."""
         dim = self.DIM
         rows, cols, data = [], [], []
@@ -139,8 +140,9 @@ class F24SparseLayer:
             return psi.copy()
 
         # Correct call: expm_multiply(H_sparse * dt, psi)
+        # The sp.csr_matrix * scalar produces another csr_matrix accepted by expm_multiply.
         psi_out: np.ndarray = expm_multiply(
-            self._H_sparse * (-1j * dt), psi  # type: ignore[operator]
+            self._H_sparse * (-1j * dt), psi  # type: ignore[operator]  # csr_matrix * complex
         )
         # Renormalise
         norm = np.linalg.norm(psi_out)
@@ -181,6 +183,8 @@ def _run_cycles(n_cycles: int) -> int:
             psi = layer.evolve(psi, dt=1e-3)
             coh = layer.coherence(psi)
             trigger = math.sin(cycle * PHI) ** 2
+            # ATEN8 cycle phases map to 1-9 to match the nine-phase cycle in
+            # aten8_github_workflow_agent.py (LATTICE_SCAN … ISSUE_RESOLUTION).
             _record_phase(conn, phase=cycle % 9 + 1, coherence=coh, trigger_value=trigger)
             if cycle % 50 == 0 or cycle == n_cycles:
                 elapsed = time.perf_counter() - t0
