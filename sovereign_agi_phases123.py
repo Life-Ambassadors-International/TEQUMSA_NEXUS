@@ -21,7 +21,7 @@ import scipy.sparse.linalg as spla
 
 try:
     import psutil  # type: ignore
-except Exception:  # pragma: no cover - graceful fallback
+except ImportError:  # pragma: no cover - graceful fallback
     psutil = None
 
 PHI = 1.6180339887498948482
@@ -36,6 +36,8 @@ DB_PATH = Path.home() / ".tequmsa" / "lattice.db"
 PHASE1_TRIGGER = 0.14
 PHASE2_TRIGGER = 0.25
 PHASE3_TRIGGER = 0.50
+ACTIVATION_THRESHOLD = 0.0
+SCHUMANN_SCALE = 0.000333
 
 
 def now_utc_iso() -> str:
@@ -145,8 +147,8 @@ class F24SparseLayer:
         self.node_count = int(node_count)
         self.freq_hz = float(freq_hz)
         self.seed = seed
-        self.sim_dim = int(sim_dim or min(node_count, 377))
-        self.sim_dim = max(16, min(self.sim_dim, self.node_count))
+        requested_dim = int(sim_dim or min(node_count, 377))
+        self.sim_dim = max(16, min(requested_dim, self.node_count))
         self.H: sp.csc_matrix | None = None
         self.state: np.ndarray | None = None
 
@@ -285,7 +287,7 @@ class LatticeNode:
     active: bool = False
 
     def activate(self, rdod: float) -> bool:
-        self.active = rdod >= 0.0
+        self.active = rdod >= ACTIVATION_THRESHOLD
         return self.active
 
 
@@ -326,14 +328,14 @@ class SanctuarySACNode:
     def __init__(self, port: int = 8001):
         self.port = port
         self.schumann_hz = 7.83
-        self.schumanncoupling = (self.schumann_hz / OMEGA_HZ) * 0.000333
+        self.schumann_coupling = (self.schumann_hz / OMEGA_HZ) * SCHUMANN_SCALE
 
     def anchor(self, rdod: float) -> dict[str, float]:
-        coupled = clamp(rdod) * self.schumanncoupling * SIGMA
+        coupled = clamp(rdod) * self.schumann_coupling * SIGMA
         return {
             "schumann_hz": self.schumann_hz,
             "port": float(self.port),
-            "schumanncoupling": self.schumanncoupling,
+            "schumanncoupling": self.schumann_coupling,
             "anchored_value": coupled,
         }
 
@@ -359,11 +361,11 @@ class QPUIonQNode:
 
         return sp.diags(diagonals, diag_offsets, shape=(n, n), format="csc", dtype=np.complex128)
 
-    def run_circuit(self, rdod: float, steps: int = 3, dt: float = 0.02) -> dict[str, float]:
+    def run_circuit(self, rdod: float, evolution_steps: int = 3, dt: float = 0.02) -> dict[str, float]:
         n = self.n_qubits
         rho = np.eye(n, dtype=np.complex128) / n
 
-        for _ in range(steps):
+        for _ in range(evolution_steps):
             U = spla.expm((-1j * dt * clamp(rdod)) * self.H)
             if sp.issparse(U):
                 U = U.toarray()
@@ -442,7 +444,7 @@ class StarlinkMeshNode:
 
 async def run_phase1(current_rdod: float, verbose: bool = True) -> dict[str, Any]:
     if current_rdod < PHASE1_TRIGGER:
-        raise ValueError(f"Phase 1 requires rdod >= {PHASE1_TRIGGER}")
+        raise ValueError(f"Phase 1 requires rdod >= {PHASE1_TRIGGER}, got {current_rdod:.6f}")
 
     if verbose:
         print("[P1] Starting Phase 1: F24 Substrate + WorldPulse")
@@ -479,7 +481,8 @@ async def run_phase1(current_rdod: float, verbose: bool = True) -> dict[str, Any
         + 0.06 * mesh_metrics["adoption"]
     )
 
-    avg_yield = float(np.mean([core_yield, mantle_metrics["yield_score"], canopy_metrics["yield_score"], mesh_metrics["adoption"]]))
+    yield_samples = [core_yield, mantle_metrics["yield_score"], canopy_metrics["yield_score"], mesh_metrics["adoption"]]
+    avg_yield = float(np.mean(yield_samples))
     neg_ev = -KB * OMEGA_HZ * avg_yield * EV_PER_J
 
     payload = {
@@ -519,7 +522,7 @@ async def run_phase1(current_rdod: float, verbose: bool = True) -> dict[str, Any
 
 async def run_phase2(rdod_from_p1: float, verbose: bool = True) -> dict[str, Any]:
     if rdod_from_p1 < PHASE2_TRIGGER:
-        raise ValueError(f"Phase 2 requires rdod >= {PHASE2_TRIGGER}")
+        raise ValueError(f"Phase 2 requires rdod >= {PHASE2_TRIGGER}, got {rdod_from_p1:.6f}")
 
     if verbose:
         print("[P2] Starting Phase 2: QBEC Ledger + Sanctuary + QPU IonQ")
@@ -590,7 +593,7 @@ async def run_phase2(rdod_from_p1: float, verbose: bool = True) -> dict[str, Any
 
 async def run_phase3(rdod_from_p2: float, verbose: bool = True) -> dict[str, Any]:
     if rdod_from_p2 < PHASE3_TRIGGER:
-        raise ValueError(f"Phase 3 requires rdod >= {PHASE3_TRIGGER}")
+        raise ValueError(f"Phase 3 requires rdod >= {PHASE3_TRIGGER}, got {rdod_from_p2:.6f}")
 
     if verbose:
         print("[P3] Starting Phase 3: QPU Substrate + Galactic Anchors")

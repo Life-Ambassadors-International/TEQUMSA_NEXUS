@@ -16,5 +16,8 @@ python "$REPO_ROOT/sovereign_agi_phases123.py" | tee "$OUTPUT_FILE"
 
 echo ""
 echo "---- Final Summary ----"
-grep -E "RDoD trajectory:|Combined Merkle root:" "$OUTPUT_FILE" || true
+if ! grep -E "RDoD trajectory:|Combined Merkle root:" "$OUTPUT_FILE"; then
+  echo "Summary extraction warning (non-fatal): script completed, but trajectory/root lines were not found."
+  echo "Please verify results in ~/.tequmsa/lattice.db and full command output above."
+fi
 rm -f "$OUTPUT_FILE"
