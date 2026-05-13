@@ -172,6 +172,14 @@ def merkle_commit(prev_root: str, payload: dict) -> str:
     return _sha256(prev_root + leaf)
 
 
+# ─── Hardware telemetry constants ────────────────────────────────────────────
+# High CPU load attenuates coherence by up to this fraction (empirically 0.30).
+_CPU_COHERENCE_IMPACT: float = 0.3
+# Fallback RDoD random-walk parameters: small positive drift + bounded noise.
+_RW_DRIFT_MEAN: float = 0.001
+_RW_DRIFT_STD: float = 0.005
+
+
 # ─── SQLite persistence ───────────────────────────────────────────────────────
 def _ensure_db(path: Path = _DB_PATH) -> sqlite3.Connection:
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -218,7 +226,7 @@ class ATENMeshAgent:
             # fallback: gentle random walk bounded by [R_DOD_MIN, 1.0]
             import random
 
-            self.rdod = min(1.0, max(R_DOD_MIN, self.rdod + random.gauss(0.001, 0.005)))
+            self.rdod = min(1.0, max(R_DOD_MIN, self.rdod + random.gauss(_RW_DRIFT_MEAN, _RW_DRIFT_STD)))
         self.intent_scalar = zpe_intent_scalar(self.rdod)
         self.last_decision = causal_route(
             self.name, self.domain, self.rdod, self.intent_scalar
@@ -315,7 +323,7 @@ class AlanaraSovereignDaemon:
 
         # 1. HW telemetry
         hw = _hw_telemetry()
-        hw_factor = 1.0 - 0.3 * hw.get("cpu_load", 0.5)  # high CPU ↓ coherence slightly
+        hw_factor = 1.0 - _CPU_COHERENCE_IMPACT * hw.get("cpu_load", 0.5)
 
         # 2. Swarm evolution
         decisions = self.swarm.pulse()

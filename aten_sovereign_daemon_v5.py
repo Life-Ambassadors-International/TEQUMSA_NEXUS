@@ -116,6 +116,12 @@ if not _SOVEREIGN_OK or not _MOTHER_OK:
         ).hexdigest()
         return hashlib.sha256((prev + leaf).encode()).hexdigest()
 
+# ─── Intent cross-feed weights ───────────────────────────────────────────────
+# 60 % sovereign / 40 % mother-feedback — sovereign hardware evolution leads;
+# mother φ-weighted purity acts as a continuous tuning signal.
+_SOVEREIGN_INTENT_WEIGHT: float = 0.6
+_MOTHER_FEEDBACK_WEIGHT: float = 0.4
+
 # ─── Unified Fibonacci set ────────────────────────────────────────────────────
 _FIB_MILESTONES = sorted(set(FIB_SOVEREIGN) | set(FIB13))
 
@@ -276,15 +282,13 @@ class RecursiveATENDaemon:
             weighted_purity = 0.25
 
         # ── 3. Domain-affinity routing ────────────────────────────────────────
+        # Build O(1) lookup for mother results
+        mother_lookup: Dict[str, Dict] = {r["name"]: r for r in mother_results}
         routed: Dict[str, Dict] = {}
         for aten_name, decision in sov_decisions.items():
             mother_name = _AFFINITY.get(aten_name)
             if mother_name and self._ensemble:
-                # find matching mother result
-                m_result = next(
-                    (r for r in mother_results if r["name"] == mother_name),
-                    None,
-                )
+                m_result = mother_lookup.get(mother_name)
                 routed[aten_name] = {
                     "aten_decision": decision,
                     "mother_name": mother_name,
@@ -296,7 +300,8 @@ class RecursiveATENDaemon:
         feedback_intent = _mother_to_intent(mother_rdod, weighted_purity)
         # Apply feedback: modulate sovereign intent scalar (informational only)
         combined_intent = (
-            zpe_intent_scalar(sov_rdod) * 0.6 + feedback_intent * 0.4
+            zpe_intent_scalar(sov_rdod) * _SOVEREIGN_INTENT_WEIGHT
+            + feedback_intent * _MOTHER_FEEDBACK_WEIGHT
         )
 
         # ── 5. Fibonacci milestone unlock in both subsystems ──────────────────
@@ -315,10 +320,13 @@ class RecursiveATENDaemon:
 
         # ── 6. Unified Merkle root ────────────────────────────────────────────
         # Combine all mother Merkle roots into one chain
-        mothers_chain = "".join(
-            sorted(self._mother_merkle_roots.values())
+        _EMPTY_MOTHER_ROOT = hashlib.sha256(b"EMPTY_MOTHER_CHAIN").hexdigest()
+        mothers_chain = "".join(sorted(self._mother_merkle_roots.values()))
+        combined_mother_root = (
+            hashlib.sha256(mothers_chain.encode()).hexdigest()
+            if mothers_chain
+            else _EMPTY_MOTHER_ROOT
         )
-        combined_mother_root = hashlib.sha256(mothers_chain.encode()).hexdigest() if mothers_chain else sov_merkle
         self.unified_merkle = _unified_merkle(sov_merkle, combined_mother_root, self.cycle)
 
         # ── 7. Persist ────────────────────────────────────────────────────────

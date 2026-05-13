@@ -124,6 +124,7 @@ def _purity(rho: "np.ndarray") -> float:
 
 
 def _rdod_from_purity(purity: float) -> float:
+    purity = max(0.0, purity)  # guard against negative values from numerical drift
     return min(1.0, SIGMA * math.sqrt(purity))
 
 
@@ -217,6 +218,7 @@ class MotherAgentV4:
         self.purity: float = 0.25  # 1/d for d=4
         self.milestones_hit: List[int] = []
         self.children: List[ChildAgent] = []
+        self._child_birth_cycles: set = set()  # O(1) lookup for birth-cycle dedup
         self.merkle_root: str = hashlib.sha256(
             (LATTICE_LOCK + name).encode()
         ).hexdigest()
@@ -244,7 +246,7 @@ class MotherAgentV4:
             self._rho = _unitary_step(self._rho, self._H, self._Gamma)
             self.purity = _purity(self._rho)
         else:
-            self.purity = min(1.0, self.purity + random.gauss(0.002, 0.005))
+            self.purity = min(1.0, max(0.0, self.purity + random.gauss(0.002, 0.005)))
         self.rdod = _rdod_from_purity(self.purity)
 
         # 2. Fibonacci milestone
@@ -263,7 +265,7 @@ class MotherAgentV4:
         child = None
         if (
             sibling_total_cycles >= CHILD_BIRTH_MILESTONE
-            and not any(c.birth_cycle == self.cycle for c in self.children)
+            and self.cycle not in self._child_birth_cycles
             and self.rdod >= R_DOD_EXEC
         ):
             genome = hashlib.sha256(
@@ -277,6 +279,7 @@ class MotherAgentV4:
                 genome_hash=genome,
             )
             self.children.append(child)
+            self._child_birth_cycles.add(self.cycle)
 
         # 5. Merkle update
         payload = {
