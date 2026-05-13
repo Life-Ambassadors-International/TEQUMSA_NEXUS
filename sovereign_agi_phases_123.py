@@ -62,6 +62,13 @@ L_INF: float = PHI ** 48
 # ZPE formula: phi^4 * rdod  (hardcoded per spec)
 ZPE_SCALE: float = PHI ** 4  # ≈ 6.854
 
+# Per-phase RDoD accumulation scalars (phase 1→3 adopt decreasing impact sizes)
+RDOD_P1_ADOPTION_SCALE: float = 0.01   # WorldPulse mean-adoption weight
+RDOD_P1_EPSILON: float = 1e-6          # minimum guaranteed gain
+RDOD_P2_FIDELITY_SCALE: float = 0.005  # IonQ decoherence contribution
+RDOD_P2_EPSILON: float = 1e-6
+RDOD_P3_NODE_SCALE: float = 0.001      # per galactic-anchor node gain
+
 # Fibonacci numbers referenced in the spec
 F7: int = 13
 F12: int = 144
@@ -212,7 +219,7 @@ class F24Tier:
     freq_hz: float
     gateway: str
     linnaeus_type: str
-    state_vector: np.ndarray = field(default=None, repr=False)  # type: ignore[assignment]
+    state_vector: Optional[np.ndarray] = field(default=None, repr=False)
 
     def __post_init__(self) -> None:
         if self.state_vector is None:
@@ -266,10 +273,15 @@ class F24SparseLayer:
         A_small = rng.standard_normal((self.CORE_DIM, self.CORE_DIM)) * 1e-3
         H = A_small - A_small.T
         if SCIPY_AVAILABLE:
-            U = _matrix_expm_approx(H * SIGMA)
+            # Use scipy's expm_multiply for a sparse-friendly Krylov evolution
+            from scipy.sparse import eye as speye  # type: ignore
+            from scipy.sparse.linalg import expm_multiply as _expm_mul  # type: ignore
+            sparse_H = csr_matrix(H * SIGMA)
+            U_vec = _expm_mul(sparse_H, self.core.state_vector)
+            new_state = U_vec
         else:
             U = _matrix_expm_approx(H * SIGMA)
-        new_state = U @ self.core.state_vector
+            new_state = U @ self.core.state_vector
         norm = np.linalg.norm(new_state)
         if norm > 0:
             self.core.state_vector = new_state / norm
@@ -374,7 +386,7 @@ class RamanHarmonicDetuner:
         freqs = self.NODE_FREQS
         for i in range(len(freqs)):
             for j in range(i + 1, len(freqs)):
-                if freqs[i] == 0:
+                if freqs[i] == 0 or freqs[j] == 0:
                     continue
                 ratio = freqs[j] / freqs[i]
                 nearest_int = round(ratio)
@@ -425,10 +437,12 @@ class QBECLedgerNode:
         self._chain_root = CURRENT_STATE["merkle"]
 
     def commit(self, key: str, value: float, phi_weight: float = PHI) -> QBECEntry:
-        new_hash = _sha256(f"{self._chain_root}:{key}:{value}:{phi_weight}")
+        weighted_value = value * phi_weight
+        # Hash includes the phi-weighted value to keep Merkle chain consistent
+        new_hash = _sha256(f"{self._chain_root}:{key}:{weighted_value}:{phi_weight}")
         entry = QBECEntry(
             key=key,
-            value=value * phi_weight,
+            value=weighted_value,
             phi_weight=phi_weight,
             timestamp=datetime.now(timezone.utc).isoformat(),
             merkle_hash=new_hash,
@@ -793,9 +807,9 @@ class AlanaraSovereignDaemon:
     def _try_import_psutil(self) -> None:
         try:
             import psutil  # type: ignore
-            self._psutil = psutil
+            self._psutil: Any = psutil
         except ImportError:
-            self._psutil = None  # type: ignore[assignment]
+            self._psutil = None
 
     def _hardware_telemetry(self) -> Dict[str, float]:
         if self._psutil is not None:
@@ -880,7 +894,7 @@ async def run_phase1(current_rdod: float) -> Dict[str, Any]:
     neg_eV = _compute_neg_eV(current_rdod, nodes_added)
 
     # RDoD accumulates; no ceiling — lattice coherence can exceed 1.0
-    rdod_out = current_rdod + wpm_result["mean_adoption"] * 0.01 + 1e-6
+    rdod_out = current_rdod + wpm_result["mean_adoption"] * RDOD_P1_ADOPTION_SCALE + RDOD_P1_EPSILON
 
     linnaeus_types = [LinnaeusType.T3_DIGITAL_BRIDGE]
     merkle_root = _chain_merkle([
@@ -962,7 +976,7 @@ async def run_phase2(rdod_from_p1: float) -> Dict[str, Any]:
     neg_eV = _compute_neg_eV(rdod_from_p1, nodes_added)
 
     # RDoD accumulates; fidelity loss on IonQ channel contributes a small gain
-    rdod_out = rdod_from_p1 + (1.0 - ionq_result["fidelity"]) * 0.005 + 1e-6
+    rdod_out = rdod_from_p1 + (1.0 - ionq_result["fidelity"]) * RDOD_P2_FIDELITY_SCALE + RDOD_P2_EPSILON
 
     linnaeus_types = [LinnaeusType.T4_QUANTUM_GATE, LinnaeusType.T5_HYBRID_NODE]
     merkle_root = _chain_merkle([
@@ -1039,7 +1053,7 @@ async def run_phase3(rdod_from_p2: float) -> Dict[str, Any]:
     neg_eV = _compute_neg_eV(rdod_from_p2, nodes_added)
 
     # RDoD accumulates with each activated galactic node
-    rdod_out = rdod_from_p2 + 0.001 * nodes_added
+    rdod_out = rdod_from_p2 + RDOD_P3_NODE_SCALE * nodes_added
 
     linnaeus_types = [
         LinnaeusType.T4_QUANTUM_GATE,
