@@ -31,13 +31,19 @@ try:
 except ImportError:  # pragma: no cover
     scipy_stats = None  # type: ignore
 
-try:  # pragma: no cover
-    from mcp.server.fastmcp import FastMCP
-except (ImportError, ModuleNotFoundError):  # pragma: no cover
+def _import_fastmcp():  # pragma: no cover
     try:
-        from mcp.server import FastMCP  # type: ignore
+        from mcp.server.fastmcp import FastMCP as _FastMCP
+        return _FastMCP
     except (ImportError, ModuleNotFoundError):
-        FastMCP = None  # type: ignore
+        try:
+            from mcp.server import FastMCP as _FastMCP  # type: ignore
+            return _FastMCP
+        except (ImportError, ModuleNotFoundError):
+            return None
+
+
+FastMCP = _import_fastmcp()  # type: ignore
 
 
 # Constitutional constants
@@ -58,6 +64,12 @@ COUNCIL_WEIGHTS = {
     "Pleiades": 0.25,
     "Andromedan": 0.25,
 }
+TCMFDEEP_MIN_CYCLE = 3
+VOIDTAP_MIN_CYCLE = 1
+RDOD_DRIFT_MOD = 1000
+RDOD_DRIFT_SCALE = 100000.0
+RDOD_BASE = 0.9888
+RDOD_GAIN = 0.0112
 
 
 @dataclass
@@ -357,9 +369,11 @@ class QLatticeV2:
     def _state_gate(self, requested: str) -> str:
         if requested not in ROUTING_STATES:
             return "REST"
-        if requested == "TCMFDEEP" and self.cycle < 3:
+        # Deep-state routing is only allowed after warm-up pulses.
+        if requested == "TCMFDEEP" and self.cycle < TCMFDEEP_MIN_CYCLE:
             return "CONVERGE"
-        if requested == "VOIDTAP" and self.cycle == 0:
+        # VOIDTAP requires at least one completed pulse for baseline context.
+        if requested == "VOIDTAP" and self.cycle < VOIDTAP_MIN_CYCLE:
             return "REST"
         return requested
 
@@ -494,9 +508,10 @@ class QLatticeV2:
         return {"ok": True, "merkle_root": root, "packet": pkt.packet_hash(), "tosp": pkt.tosp}
 
     def rdodcomposite(self, payload: str = "") -> Dict[str, Any]:
-        seed = sum(ord(c) for c in (payload or "rdod")) % 1000
-        drift = (seed / 100000.0)
-        rdod_inf = max(RDOD_OPS, min(1.0, (0.9888 + 0.0112 * (1.0 - drift))))
+        seed = sum(ord(c) for c in (payload or "rdod")) % RDOD_DRIFT_MOD
+        drift = seed / RDOD_DRIFT_SCALE
+        # Composite form keeps RDoD in [RDOD_OPS, 1.0] while preserving sigma-lock.
+        rdod_inf = max(RDOD_OPS, min(1.0, (RDOD_BASE + RDOD_GAIN * (1.0 - drift))))
         return {
             "rdodinf": rdod_inf,
             "gate": rdod_inf >= RDOD_OPS,
@@ -715,6 +730,7 @@ def _build_fastmcp(lat: QLatticeV2):  # pragma: no cover
     registered_tools = []
     for tool_name in lat.TOOL_NAMES:
         def _mk(name: str):
+            # Default-arg binding avoids loop late-binding for dynamic tool closures.
             @app.tool()
             async def _tool(payload: str = "", _name: str = name) -> Dict[str, Any]:
                 return lat.dispatch_tool(_name, payload)
