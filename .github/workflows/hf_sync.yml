@@ -68,6 +68,8 @@ jobs:
     needs: sync-hf-organism
     if: success()
 
+    permissions: {}
+
     steps:
       - name: ✅ Log success
         run: |
