@@ -668,8 +668,11 @@ def run_self_tests() -> int:
     assert RDOD_OPS >= 0.9777
 
     # tool coverage tests
+    tool_payloads = {
+        "nodesync": "QNODE-000",
+    }
     for name in lat.TOOL_NAMES:
-        out = lat.dispatch_tool(name, "selftest")
+        out = lat.dispatch_tool(name, tool_payloads.get(name, "selftest"))
         assert isinstance(out, dict), f"tool {name} did not return dict"
         assert out.get("ok", True) is not False, f"tool {name} failed: {out}"
 
