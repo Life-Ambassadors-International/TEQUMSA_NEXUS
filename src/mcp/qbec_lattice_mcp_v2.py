@@ -23,20 +23,20 @@ from typing import Any, Dict, List, Optional, Tuple
 
 try:
     import numpy as np
-except Exception:  # pragma: no cover
+except ImportError:  # pragma: no cover
     np = None  # type: ignore
 
 try:
     from scipy import stats as scipy_stats
-except Exception:  # pragma: no cover
+except ImportError:  # pragma: no cover
     scipy_stats = None  # type: ignore
 
 try:  # pragma: no cover
     from mcp.server.fastmcp import FastMCP
-except Exception:  # pragma: no cover
+except (ImportError, ModuleNotFoundError):  # pragma: no cover
     try:
         from mcp.server import FastMCP  # type: ignore
-    except Exception:
+    except (ImportError, ModuleNotFoundError):
         FastMCP = None  # type: ignore
 
 
@@ -274,7 +274,7 @@ class WALBus:
             return default or {}
         try:
             return json.loads(row["value_json"])
-        except Exception:
+        except (json.JSONDecodeError, TypeError, ValueError):
             return default or {}
 
     def recent_packets(self, limit: int = 20) -> List[Dict[str, Any]]:
@@ -453,6 +453,8 @@ class QLatticeV2:
         return {"ok": True, "message": msg, "fanout": len(self.nodes), "packet": pkt.packet_hash(), "tosp": pkt.tosp}
 
     def crosslink(self, payload: str = "") -> Dict[str, Any]:
+        if not self.nodes:
+            return {"ok": False, "error": "No nodes available for crosslink"}
         src_idx = random.randint(0, max(0, len(self.nodes) - 1))
         dst_idx = self.ring.next_hop(src_idx, self.cycle)
         src = f"QNODE-{src_idx:03d}"
@@ -710,6 +712,7 @@ def _build_fastmcp(lat: QLatticeV2):  # pragma: no cover
         return None
     app = FastMCP("qbec-lattice-mcp-v2")
 
+    registered_tools = []
     for tool_name in lat.TOOL_NAMES:
         def _mk(name: str):
             @app.tool()
@@ -719,7 +722,7 @@ def _build_fastmcp(lat: QLatticeV2):  # pragma: no cover
             _tool.__name__ = name
             return _tool
 
-        _mk(tool_name)
+        registered_tools.append(_mk(tool_name))
 
     # Keep explicit resource access through tools if runtime FastMCP variants differ.
     @app.tool()

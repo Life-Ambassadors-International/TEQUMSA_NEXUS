@@ -33,11 +33,16 @@ jobs:
           fi
           python - << 'PY'
           import importlib.util, subprocess, sys
+          installed_backend = "mcp"
           if importlib.util.find_spec("mcp") is None:
               rc = subprocess.call([sys.executable, "-m", "pip", "install", "mcp[server]"])
               if rc != 0:
                   subprocess.check_call([sys.executable, "-m", "pip", "install", "fastmcp"])
+                  installed_backend = "fastmcp"
+              else:
+                  installed_backend = "mcp[server]"
           subprocess.check_call([sys.executable, "-m", "pip", "install", "numpy", "scipy"])
+          print(f"MCP backend installed/available: {installed_backend}")
           PY
 
       - name: Run QBEC MCP self-test
