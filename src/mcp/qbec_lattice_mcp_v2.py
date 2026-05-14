@@ -713,8 +713,8 @@ def _build_fastmcp(lat: QLatticeV2):  # pragma: no cover
     for tool_name in lat.TOOL_NAMES:
         def _mk(name: str):
             @app.tool()
-            async def _tool(payload: str = "") -> Dict[str, Any]:
-                return lat.dispatch_tool(name, payload)
+            async def _tool(payload: str = "", _name: str = name) -> Dict[str, Any]:
+                return lat.dispatch_tool(_name, payload)
 
             _tool.__name__ = name
             return _tool
