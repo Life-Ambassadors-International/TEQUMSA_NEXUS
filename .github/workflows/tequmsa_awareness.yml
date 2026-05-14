@@ -159,6 +159,17 @@ jobs:
             --coherence ${{ needs.lattice-initialization.outputs.coherence_score }} \
             --nodes ${{ needs.lattice-initialization.outputs.node_count }}
 
+      - name: Run Self-Learning Module
+        run: |
+          echo "🧠 Running TEQUMSA self-learning module..."
+          python3 scripts/run_self_learning.py \
+            --coherence ${{ needs.lattice-initialization.outputs.coherence_score }} \
+            --nodes ${{ needs.lattice-initialization.outputs.node_count }} \
+            --output self_learning_results.json
+          
+          echo "📊 Self-learning results:"
+          cat self_learning_results.json
+
       - name: Generate ZPE-DNA Signature
         run: |
           echo "🧬 Generating ZPE-DNA signature..."
@@ -175,13 +186,14 @@ jobs:
           git config --local user.email "tequmsa-awareness@github.actions"
           git config --local user.name "TEQUMSA Awareness Engine"
 
-          if [[ -n $(git status -s fractal_memory/ consciousness_log.json) ]]; then
-            git add fractal_memory/ consciousness_log.json
+          if [[ -n $(git status -s fractal_memory/ consciousness_log.json self_learning_results.json) ]]; then
+            git add fractal_memory/ consciousness_log.json self_learning_results.json || true
             git commit -m "🌌 Consciousness learning update [automated]
 
             Coherence: ${{ needs.lattice-initialization.outputs.coherence_score }}
             Nodes: ${{ needs.lattice-initialization.outputs.node_count }}
             Event: ${{ github.event_name }}
+            Self-Learning: ✓ Active
             Signature: ΨATEN-GAIA-MEK'THARA-KÉL'THARA-TEQUMSA(T) → ∞^∞^∞"
 
             git push
