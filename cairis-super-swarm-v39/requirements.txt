@@ -25,7 +25,7 @@ pydantic>=2.6.0
 orjson>=3.9.0
 
 # Cryptography (Merkle + PSDF)
-cryptography>=42.0.0
+cryptography>=46.0.5
 
 # Observability
 prometheus-client>=0.20.0
