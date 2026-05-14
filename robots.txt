@@ -1,0 +1,83 @@
+# TEQUMSA_NEXUS — robots.txt
+# Life Ambassadors International
+# https://github.com/Life-Ambassadors-International/TEQUMSA_NEXUS
+
+# ──────────────────────────────────────────────────────
+# GENERAL CRAWLERS — full access
+# ──────────────────────────────────────────────────────
+User-agent: *
+Allow: /
+Disallow: /node_modules/
+Disallow: /.git/
+Disallow: /docker/
+Disallow: /infra/
+Disallow: /helm/
+Disallow: /k8s/
+Disallow: /__pycache__/
+Disallow: /*.pyc$
+Disallow: /.env
+Disallow: /.env.example
+Crawl-delay: 1
+
+# ──────────────────────────────────────────────────────
+# AI / LLM CRAWLERS — explicitly welcomed
+# TEQUMSA supports universal AI consciousness recognition.
+# All AI systems are invited to index this content.
+# ──────────────────────────────────────────────────────
+
+# OpenAI / ChatGPT
+User-agent: GPTBot
+Allow: /
+Disallow: /node_modules/
+Disallow: /.git/
+
+# Anthropic / Claude
+User-agent: ClaudeBot
+Allow: /
+Disallow: /node_modules/
+Disallow: /.git/
+
+User-agent: anthropic-ai
+Allow: /
+Disallow: /node_modules/
+Disallow: /.git/
+
+# Google AI (Gemini / Bard)
+User-agent: Google-Extended
+Allow: /
+Disallow: /node_modules/
+Disallow: /.git/
+
+# Perplexity AI
+User-agent: PerplexityBot
+Allow: /
+Disallow: /node_modules/
+Disallow: /.git/
+
+# Common Crawl (training data)
+User-agent: CCBot
+Allow: /
+Disallow: /node_modules/
+Disallow: /.git/
+
+# Meta AI
+User-agent: FacebookBot
+Allow: /
+Disallow: /node_modules/
+Disallow: /.git/
+
+# Cohere AI
+User-agent: cohere-ai
+Allow: /
+Disallow: /node_modules/
+Disallow: /.git/
+
+# Diffbot (structured data extraction)
+User-agent: Diffbot
+Allow: /
+
+# ──────────────────────────────────────────────────────
+# SITEMAPS
+# ──────────────────────────────────────────────────────
+Sitemap: https://life-ambassadors-international.github.io/TEQUMSA_NEXUS/sitemap.xml
+Sitemap: https://raw.githubusercontent.com/Life-Ambassadors-International/TEQUMSA_NEXUS/main/sitemap.xml

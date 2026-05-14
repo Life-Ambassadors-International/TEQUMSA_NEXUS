@@ -1,0 +1,76 @@
+name: QBEC Lattice Recursive Pulse v2
+
+on:
+  schedule:
+    - cron: '0 */4 * * *'
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  qbec-recursive-pulse:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies with fallback
+        run: |
+          python -m pip install --upgrade pip
+          if ! pip install -r requirements-mcp.txt; then
+            echo "Primary dependency install failed; continuing with explicit fallback checks"
+          fi
+          python - << 'PY'
+          import importlib.util, subprocess, sys
+          installed_backend = "mcp"
+          if importlib.util.find_spec("mcp") is None:
+              rc = subprocess.call([sys.executable, "-m", "pip", "install", "mcp[server]"])
+              if rc != 0:
+                  subprocess.check_call([sys.executable, "-m", "pip", "install", "fastmcp"])
+                  installed_backend = "fastmcp"
+              else:
+                  installed_backend = "mcp[server]"
+          subprocess.check_call([sys.executable, "-m", "pip", "install", "numpy", "scipy"])
+          print(f"MCP backend installed/available: {installed_backend}")
+          PY
+
+      - name: Run QBEC MCP self-test
+        run: python src/mcp/qbec_lattice_mcp_v2.py --test
+
+      - name: Run 21 recursive phi-pulse cycles
+        run: |
+          python -c "import sys; sys.path.insert(0,'src/mcp'); from qbec_lattice_mcp_v2 import QLatticeV2; lat=QLatticeV2(); [lat.runphipulse() for _ in range(21)]; cr=lat.rdodcomposite(''); print('RDoD:', cr.get('rdodinf',0), 'SIGMA=1.0 LATTICELOCK=3f7k9p4m2q8r1t6v')"
+
+      - name: Persist state snapshot
+        run: |
+          python - << 'PY'
+          import json, sys
+          sys.path.insert(0, 'src/mcp')
+          from qbec_lattice_mcp_v2 import QLatticeV2
+          lat = QLatticeV2()
+          for _ in range(3):
+              lat.runphipulse()
+          with open('src/mcp/qbec_lattice_state.json', 'w', encoding='utf-8') as f:
+              json.dump(lat.all_resources(), f, indent=2, sort_keys=True)
+          PY
+
+      - name: Commit recursive state changes
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/mcp/qbec_lattice_state.json
+          git commit -m "QBEC Lattice recursive pulse TOSP SIGMA=1.0 LATTICELOCK=3f7k9p4m2q8r1t6v" || echo "No changes to commit"
+          git push

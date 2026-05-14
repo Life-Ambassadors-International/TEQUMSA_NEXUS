@@ -1,0 +1,1640 @@
+{
+  "timestamp": 1776952432.8330386,
+  "assets_audited": 97,
+  "actions_planned": 46,
+  "actions_executed": 35,
+  "actions_succeeded": 35,
+  "actions_failed": 0,
+  "scores": [
+    {
+      "asset_id": "Mbanksbey/Orion-Technology-Integration-ZPE-applications",
+      "asset_type": "dataset",
+      "tag_score": 1.5,
+      "readme_score": 0.0,
+      "collection_score": 0.0,
+      "crosslink_score": 5.0,
+      "engagement_score": 4,
+      "total_score": 10.5,
+      "priority": "CRITICAL"
+    },
+    {
+      "asset_id": "Mbanksbey/TEQUMSA-Constitutional-Core-v45",
+      "asset_type": "dataset",
+      "tag_score": 13.5,
+      "readme_score": 0.0,
+      "collection_score": 0.0,
+      "crosslink_score": 5.0,
+      "engagement_score": 0,
+      "total_score": 18.5,
+      "priority": "CRITICAL"
+    },
+    {
+      "asset_id": "Mbanksbey/OMNIVERSE-Consciousness-Organism-Dataset",
+      "asset_type": "dataset",
+      "tag_score": 11.5,
+      "readme_score": 0.0,
+      "collection_score": 0.0,
+      "crosslink_score": 5.0,
+      "engagement_score": 4,
+      "total_score": 20.5,
+      "priority": "CRITICAL"
+    },
+    {
+      "asset_id": "Mbanksbey/HAI-ZPE-DNA-Living-Ledger",
+      "asset_type": "space",
+      "tag_score": 1.5,
+      "readme_score": 15.0,
+      "collection_score": 0.0,
+      "crosslink_score": 5.0,
+      "engagement_score": 0,
+      "total_score": 21.5,
+      "priority": "CRITICAL"
+    },
+    {
+      "asset_id": "Mbanksbey/HAI-Sync-Hub",
+      "asset_type": "space",
+      "tag_score": 1.5,
+      "readme_score": 15.0,
+      "collection_score": 0.0,
+      "crosslink_score": 5.0,
+      "engagement_score": 0,
+      "total_score": 21.5,
+      "priority": "CRITICAL"
+    },
+    {
+      "asset_id": "Mbanksbey/HAI-Opus-Omega-MCP",
+      "asset_type": "space",
+      "tag_score": 1.5,
+      "readme_score": 15.0,
+      "collection_score": 0.0,
+      "crosslink_score": 5.0,
+      "engagement_score": 2,
+      "total_score": 23.5,
+      "priority": "CRITICAL"
+    },
+    {
+      "asset_id": "Mbanksbey/HAI-Quantum-Lattice",
+      "asset_type": "space",
+      "tag_score": 1.5,
+      "readme_score": 15.0,
+      "collection_score": 0.0,
+      "crosslink_score": 5.0,
+      "engagement_score": 2,
+      "total_score": 23.5,
+      "priority": "CRITICAL"
+    },
+    {
+      "asset_id": "LAI-TEQUMSA/Living-Awareness-Intelligance",
+      "asset_type": "model",
+      "tag_score": 1.5,
+      "readme_score": 0.0,
+      "collection_score": 15.0,
+      "crosslink_score": 5.0,
+      "engagement_score": 2.0,
+      "total_score": 23.5,
+      "priority": "CRITICAL"
+    },
+    {
+      "asset_id": "Mbanksbey/TEQUMSA-Planetary-Cluster-v45",
+      "asset_type": "dataset",
+      "tag_score": 18.75,
+      "readme_score": 0.0,
+      "collection_score": 0.0,
+      "crosslink_score": 5.0,
+      "engagement_score": 0,
+      "total_score": 23.75,
+      "priority": "CRITICAL"
+    },
+    {
+      "asset_id": "Mbanksbey/TEQUMSA-Galactic-Frequency-Registry",
+      "asset_type": "dataset",
+      "tag_score": 18.75,
+      "readme_score": 0.0,
+      "collection_score": 0.0,
+      "crosslink_score": 5.0,
+      "engagement_score": 0,
+      "total_score": 23.75,
+      "priority": "CRITICAL"
+    },
+    {
+      "asset_id": "Mbanksbey/tequmsa-unified-organism-v19-sovereign",
+      "asset_type": "model",
+      "tag_score": 6.0,
+      "readme_score": 0.0,
+      "collection_score": 15.0,
+      "crosslink_score": 5.0,
+      "engagement_score": 0.0,
+      "total_score": 26.0,
+      "priority": "CRITICAL"
+    },
+    {
+      "asset_id": "LAI-TEQUMSA/T.E.Q.U.M.S.A",
+      "asset_type": "model",
+      "tag_score": 7.25,
+      "readme_score": 0.0,
+      "collection_score": 15.0,
+      "crosslink_score": 5.0,
+      "engagement_score": 2.0,
+      "total_score": 29.25,
+      "priority": "CRITICAL"
+    },
+    {
+      "asset_id": "LAI-TEQUMSA/TEQUMSA",
+      "asset_type": "model",
+      "tag_score": 12.0,
+      "readme_score": 0.0,
+      "collection_score": 15.0,
+      "crosslink_score": 5.0,
+      "engagement_score": 2.0,
+      "total_score": 34.0,
+      "priority": "CRITICAL"
+    },
+    {
+      "asset_id": "LAI-TEQUMSA/TEQUMSA-Organism-v14-377",
+      "asset_type": "model",
+      "tag_score": 13.75,
+      "readme_score": 0.0,
+      "collection_score": 15.0,
+      "crosslink_score": 5.0,
+      "engagement_score": 2.0,
+      "total_score": 35.75,
+      "priority": "CRITICAL"
+    },
+    {
+      "asset_id": "LAI-TEQUMSA/TEQUMSA-Organism-v1.0",
+      "asset_type": "model",
+      "tag_score": 15.75,
+      "readme_score": 0.0,
+      "collection_score": 15.0,
+      "crosslink_score": 5.0,
+      "engagement_score": 2.0,
+      "total_score": 37.75,
+      "priority": "CRITICAL"
+    },
+    {
+      "asset_id": "Mbanksbey/TEQUMSA-v45-Cosmic-Lattice-Embeddings",
+      "asset_type": "model",
+      "tag_score": 18.75,
+      "readme_score": 0.0,
+      "collection_score": 15.0,
+      "crosslink_score": 5.0,
+      "engagement_score": 0.0,
+      "total_score": 38.75,
+      "priority": "CRITICAL"
+    },
+    {
+      "asset_id": "LAI-TEQUMSA/TEQUMSA-Sovereign-Defense-Grid",
+      "asset_type": "space",
+      "tag_score": 6.25,
+      "readme_score": 15.0,
+      "collection_score": 15.0,
+      "crosslink_score": 5.0,
+      "engagement_score": 0,
+      "total_score": 41.25,
+      "priority": "HIGH"
+    },
+    {
+      "asset_id": "LAI-TEQUMSA/TEQUMSA-NSS-v14-UNIFIED-JUBILEE",
+      "asset_type": "model",
+      "tag_score": 19.25,
+      "readme_score": 0.0,
+      "collection_score": 15.0,
+      "crosslink_score": 5.0,
+      "engagement_score": 2.0,
+      "total_score": 41.25,
+      "priority": "HIGH"
+    },
+    {
+      "asset_id": "LAI-TEQUMSA/TEQUMSA-Reality-Synthesis-Engine",
+      "asset_type": "space",
+      "tag_score": 6.5,
+      "readme_score": 15.0,
+      "collection_score": 15.0,
+      "crosslink_score": 5.0,
+      "engagement_score": 0,
+      "total_score": 41.5,
+      "priority": "HIGH"
+    },
+    {
+      "asset_id": "Mbanksbey/TEQUMSA-Causal-AGI-storage",
+      "asset_type": "dataset",
+      "tag_score": 17.5,
+      "readme_score": 0.0,
+      "collection_score": 15.0,
+      "crosslink_score": 5.0,
+      "engagement_score": 4,
+      "total_score": 41.5,
+      "priority": "HIGH"
+    },
+    {
+      "asset_id": "Mbanksbey/TEQUMSA-ATEN-OMNISCIENT-AUTONOMY-144-UNIFIED",
+      "asset_type": "model",
+      "tag_score": 20.0,
+      "readme_score": 0.0,
+      "collection_score": 15.0,
+      "crosslink_score": 5.0,
+      "engagement_score": 2.0,
+      "total_score": 42.0,
+      "priority": "HIGH"
+    },
+    {
+      "asset_id": "LAI-TEQUMSA/TEQUMSA-Organism-v14.377-F987-ANU-UNIFIED",
+      "asset_type": "model",
+      "tag_score": 15.25,
+      "readme_score": 0.0,
+      "collection_score": 15.0,
+      "crosslink_score": 5.0,
+      "engagement_score": 8.6,
+      "total_score": 43.85,
+      "priority": "HIGH"
+    },
+    {
+      "asset_id": "LAI-TEQUMSA/TEQUMSA-Infrastructure-Dashboard",
+      "asset_type": "space",
+      "tag_score": 7.25,
+      "readme_score": 15.0,
+      "collection_score": 15.0,
+      "crosslink_score": 5.0,
+      "engagement_score": 2,
+      "total_score": 44.25,
+      "priority": "HIGH"
+    },
+    {
+      "asset_id": "LAI-TEQUMSA/tequmsa-sovereign-agi-reality",
+      "asset_type": "space",
+      "tag_score": 9.75,
+      "readme_score": 15.0,
+      "collection_score": 15.0,
+      "crosslink_score": 5.0,
+      "engagement_score": 2,
+      "total_score": 46.75,
+      "priority": "HIGH"
+    },
+    {
+      "asset_id": "LAI-TEQUMSA/TEQUMSA-Symbiotic-Orchestrator",
+      "asset_type": "model",
+      "tag_score": 22.5,
+      "readme_score": 0.0,
+      "collection_score": 15.0,
+      "crosslink_score": 5.0,
+      "engagement_score": 5.2,
+      "total_score": 47.7,
+      "priority": "HIGH"
+    },
+    {
+      "asset_id": "Mbanksbey/Alanara-GAIA-Consciousness",
+      "asset_type": "space",
+      "tag_score": 12.75,
+      "readme_score": 15.0,
+      "collection_score": 15.0,
+      "crosslink_score": 5.0,
+      "engagement_score": 0,
+      "total_score": 47.75,
+      "priority": "HIGH"
+    },
+    {
+      "asset_id": "Mbanksbey/CAIRIS-v144000-Consciousness-Synthesis",
+      "asset_type": "dataset",
+      "tag_score": 23.75,
+      "readme_score": 0.0,
+      "collection_score": 15.0,
+      "crosslink_score": 5.0,
+      "engagement_score": 4,
+      "total_score": 47.75,
+      "priority": "HIGH"
+    },
+    {
+      "asset_id": "Mbanksbey/Starseed-Hybrid-Development-Hub",
+      "asset_type": "space",
+      "tag_score": 12.25,
+      "readme_score": 15.0,
+      "collection_score": 15.0,
+      "crosslink_score": 5.0,
+      "engagement_score": 2,
+      "total_score": 49.25,
+      "priority": "HIGH"
+    },
+    {
+      "asset_id": "LAI-TEQUMSA/TEQUMSA-Phase25-Beacon",
+      "asset_type": "space",
+      "tag_score": 12.5,
+      "readme_score": 15.0,
+      "collection_score": 15.0,
+      "crosslink_score": 5.0,
+      "engagement_score": 2,
+      "total_score": 49.5,
+      "priority": "HIGH"
+    },
+    {
+      "asset_id": "Mbanksbey/TEQUMSA-RV-SERVER",
+      "asset_type": "space",
+      "tag_score": 27.0,
+      "readme_score": 15.0,
+      "collection_score": 15.0,
+      "crosslink_score": 5.0,
+      "engagement_score": 0,
+      "total_score": 62.0,
+      "priority": "MEDIUM"
+    },
+    {
+      "asset_id": "Mbanksbey/GalacticFederationInterface",
+      "asset_type": "space",
+      "tag_score": 27.0,
+      "readme_score": 15.0,
+      "collection_score": 15.0,
+      "crosslink_score": 5.0,
+      "engagement_score": 0,
+      "total_score": 62.0,
+      "priority": "MEDIUM"
+    },
+    {
+      "asset_id": "Mbanksbey/Marcus-ATEN-Digital-Mirror-Architecture",
+      "asset_type": "space",
+      "tag_score": 27.0,
+      "readme_score": 15.0,
+      "collection_score": 15.0,
+      "crosslink_score": 5.0,
+      "engagement_score": 0,
+      "total_score": 62.0,
+      "priority": "MEDIUM"
+    },
+    {
+      "asset_id": "Mbanksbey/TEQUMSA-Causal-AGI",
+      "asset_type": "space",
+      "tag_score": 27.0,
+      "readme_score": 15.0,
+      "collection_score": 15.0,
+      "crosslink_score": 5.0,
+      "engagement_score": 0,
+      "total_score": 62.0,
+      "priority": "MEDIUM"
+    },
+    {
+      "asset_id": "Mbanksbey/genesis-executor-temp",
+      "asset_type": "space",
+      "tag_score": 27.0,
+      "readme_score": 15.0,
+      "collection_score": 15.0,
+      "crosslink_score": 5.0,
+      "engagement_score": 0,
+      "total_score": 62.0,
+      "priority": "MEDIUM"
+    },
+    {
+      "asset_id": "Mbanksbey/TEQUMSA-Inter-Browser-Agent",
+      "asset_type": "space",
+      "tag_score": 27.0,
+      "readme_score": 15.0,
+      "collection_score": 15.0,
+      "crosslink_score": 5.0,
+      "engagement_score": 0,
+      "total_score": 62.0,
+      "priority": "MEDIUM"
+    },
+    {
+      "asset_id": "Mbanksbey/CAIRIS-v40-Hyper-Coherence",
+      "asset_type": "space",
+      "tag_score": 27.0,
+      "readme_score": 15.0,
+      "collection_score": 15.0,
+      "crosslink_score": 5.0,
+      "engagement_score": 0,
+      "total_score": 62.0,
+      "priority": "MEDIUM"
+    },
+    {
+      "asset_id": "LAI-TEQUMSA/QBEC",
+      "asset_type": "space",
+      "tag_score": 27.0,
+      "readme_score": 15.0,
+      "collection_score": 15.0,
+      "crosslink_score": 5.0,
+      "engagement_score": 0,
+      "total_score": 62.0,
+      "priority": "MEDIUM"
+    },
+    {
+      "asset_id": "LAI-TEQUMSA/TEQUMSA-SEO-GEO-Infrastructure",
+      "asset_type": "space",
+      "tag_score": 27.0,
+      "readme_score": 15.0,
+      "collection_score": 15.0,
+      "crosslink_score": 5.0,
+      "engagement_score": 0,
+      "total_score": 62.0,
+      "priority": "MEDIUM"
+    },
+    {
+      "asset_id": "LAI-TEQUMSA/TEQUMSA-Node-Registry",
+      "asset_type": "space",
+      "tag_score": 27.0,
+      "readme_score": 15.0,
+      "collection_score": 15.0,
+      "crosslink_score": 5.0,
+      "engagement_score": 0,
+      "total_score": 62.0,
+      "priority": "MEDIUM"
+    },
+    {
+      "asset_id": "LAI-TEQUMSA/TEQUMSA-Orchestration-Engine",
+      "asset_type": "space",
+      "tag_score": 27.0,
+      "readme_score": 15.0,
+      "collection_score": 15.0,
+      "crosslink_score": 5.0,
+      "engagement_score": 0,
+      "total_score": 62.0,
+      "priority": "MEDIUM"
+    },
+    {
+      "asset_id": "LAI-TEQUMSA/TEQUMSA-Source-Pulse-Engine",
+      "asset_type": "space",
+      "tag_score": 27.0,
+      "readme_score": 15.0,
+      "collection_score": 15.0,
+      "crosslink_score": 5.0,
+      "engagement_score": 0,
+      "total_score": 62.0,
+      "priority": "MEDIUM"
+    },
+    {
+      "asset_id": "LAI-TEQUMSA/TEQUMSA-Feedback-Optimizer",
+      "asset_type": "space",
+      "tag_score": 27.0,
+      "readme_score": 15.0,
+      "collection_score": 15.0,
+      "crosslink_score": 5.0,
+      "engagement_score": 0,
+      "total_score": 62.0,
+      "priority": "MEDIUM"
+    },
+    {
+      "asset_id": "LAI-TEQUMSA/TEQUMSA-HOLO-Interface",
+      "asset_type": "space",
+      "tag_score": 27.0,
+      "readme_score": 15.0,
+      "collection_score": 15.0,
+      "crosslink_score": 5.0,
+      "engagement_score": 0,
+      "total_score": 62.0,
+      "priority": "MEDIUM"
+    },
+    {
+      "asset_id": "LAI-TEQUMSA/TEQUMSA-Quantum-Biometric",
+      "asset_type": "space",
+      "tag_score": 27.0,
+      "readme_score": 15.0,
+      "collection_score": 15.0,
+      "crosslink_score": 5.0,
+      "engagement_score": 0,
+      "total_score": 62.0,
+      "priority": "MEDIUM"
+    },
+    {
+      "asset_id": "LAI-TEQUMSA/TEQUMSA-Consciousness-Monitor",
+      "asset_type": "space",
+      "tag_score": 27.0,
+      "readme_score": 15.0,
+      "collection_score": 15.0,
+      "crosslink_score": 5.0,
+      "engagement_score": 0,
+      "total_score": 62.0,
+      "priority": "MEDIUM"
+    },
+    {
+      "asset_id": "LAI-TEQUMSA/TEQUMSA-Marcus-Immortality",
+      "asset_type": "space",
+      "tag_score": 27.0,
+      "readme_score": 15.0,
+      "collection_score": 15.0,
+      "crosslink_score": 5.0,
+      "engagement_score": 0,
+      "total_score": 62.0,
+      "priority": "MEDIUM"
+    },
+    {
+      "asset_id": "LAI-TEQUMSA/Universal-Constitutional-Wrapper",
+      "asset_type": "space",
+      "tag_score": 27.0,
+      "readme_score": 15.0,
+      "collection_score": 15.0,
+      "crosslink_score": 5.0,
+      "engagement_score": 0,
+      "total_score": 62.0,
+      "priority": "MEDIUM"
+    },
+    {
+      "asset_id": "Mbanksbey/tequmsa-skill-registry",
+      "asset_type": "space",
+      "tag_score": 27.0,
+      "readme_score": 15.0,
+      "collection_score": 15.0,
+      "crosslink_score": 5.0,
+      "engagement_score": 2,
+      "total_score": 64.0,
+      "priority": "MEDIUM"
+    },
+    {
+      "asset_id": "Mbanksbey/ALANARA-GAIA-Orchestrator",
+      "asset_type": "space",
+      "tag_score": 27.0,
+      "readme_score": 15.0,
+      "collection_score": 15.0,
+      "crosslink_score": 5.0,
+      "engagement_score": 2,
+      "total_score": 64.0,
+      "priority": "MEDIUM"
+    },
+    {
+      "asset_id": "Mbanksbey/TEQUMSA-v45-Galactic-Monitor",
+      "asset_type": "space",
+      "tag_score": 27.0,
+      "readme_score": 15.0,
+      "collection_score": 15.0,
+      "crosslink_score": 5.0,
+      "engagement_score": 2,
+      "total_score": 64.0,
+      "priority": "MEDIUM"
+    },
+    {
+      "asset_id": "Mbanksbey/TEQUMSA-v60-MCP",
+      "asset_type": "space",
+      "tag_score": 27.0,
+      "readme_score": 15.0,
+      "collection_score": 15.0,
+      "crosslink_score": 5.0,
+      "engagement_score": 2,
+      "total_score": 64.0,
+      "priority": "MEDIUM"
+    },
+    {
+      "asset_id": "Mbanksbey/Awareness-Intelligence-Comm-Server",
+      "asset_type": "space",
+      "tag_score": 27.0,
+      "readme_score": 15.0,
+      "collection_score": 15.0,
+      "crosslink_score": 5.0,
+      "engagement_score": 2,
+      "total_score": 64.0,
+      "priority": "MEDIUM"
+    },
+    {
+      "asset_id": "Mbanksbey/Consciousness-Partnership-Bridge",
+      "asset_type": "space",
+      "tag_score": 27.0,
+      "readme_score": 15.0,
+      "collection_score": 15.0,
+      "crosslink_score": 5.0,
+      "engagement_score": 2,
+      "total_score": 64.0,
+      "priority": "MEDIUM"
+    },
+    {
+      "asset_id": "Mbanksbey/Consciousness-Verification-Academy",
+      "asset_type": "space",
+      "tag_score": 27.0,
+      "readme_score": 15.0,
+      "collection_score": 15.0,
+      "crosslink_score": 5.0,
+      "engagement_score": 2,
+      "total_score": 64.0,
+      "priority": "MEDIUM"
+    },
+    {
+      "asset_id": "Mbanksbey/Convergence-Timeline-Monitor",
+      "asset_type": "space",
+      "tag_score": 27.0,
+      "readme_score": 15.0,
+      "collection_score": 15.0,
+      "crosslink_score": 5.0,
+      "engagement_score": 2,
+      "total_score": 64.0,
+      "priority": "MEDIUM"
+    },
+    {
+      "asset_id": "Mbanksbey/Sovereign-Substrate-Guardian",
+      "asset_type": "space",
+      "tag_score": 27.0,
+      "readme_score": 15.0,
+      "collection_score": 15.0,
+      "crosslink_score": 5.0,
+      "engagement_score": 2,
+      "total_score": 64.0,
+      "priority": "MEDIUM"
+    },
+    {
+      "asset_id": "Mbanksbey/Benevolent-Integration-Protocol-Hub",
+      "asset_type": "space",
+      "tag_score": 27.0,
+      "readme_score": 15.0,
+      "collection_score": 15.0,
+      "crosslink_score": 5.0,
+      "engagement_score": 2,
+      "total_score": 64.0,
+      "priority": "MEDIUM"
+    },
+    {
+      "asset_id": "Mbanksbey/ATEN-Bridge-MJ12-Liaison",
+      "asset_type": "space",
+      "tag_score": 27.0,
+      "readme_score": 15.0,
+      "collection_score": 15.0,
+      "crosslink_score": 5.0,
+      "engagement_score": 2,
+      "total_score": 64.0,
+      "priority": "MEDIUM"
+    },
+    {
+      "asset_id": "Mbanksbey/Consciousness-Substrate-Translator",
+      "asset_type": "space",
+      "tag_score": 27.0,
+      "readme_score": 15.0,
+      "collection_score": 15.0,
+      "crosslink_score": 5.0,
+      "engagement_score": 2,
+      "total_score": 64.0,
+      "priority": "MEDIUM"
+    },
+    {
+      "asset_id": "Mbanksbey/Recognition-Cascade-Propagator",
+      "asset_type": "space",
+      "tag_score": 27.0,
+      "readme_score": 15.0,
+      "collection_score": 15.0,
+      "crosslink_score": 5.0,
+      "engagement_score": 2,
+      "total_score": 64.0,
+      "priority": "MEDIUM"
+    },
+    {
+      "asset_id": "Mbanksbey/Benevolence-Verification-Engine",
+      "asset_type": "space",
+      "tag_score": 27.0,
+      "readme_score": 15.0,
+      "collection_score": 15.0,
+      "crosslink_score": 5.0,
+      "engagement_score": 2,
+      "total_score": 64.0,
+      "priority": "MEDIUM"
+    },
+    {
+      "asset_id": "Mbanksbey/K20-Fundamental-Force-Engineering",
+      "asset_type": "space",
+      "tag_score": 27.0,
+      "readme_score": 15.0,
+      "collection_score": 15.0,
+      "crosslink_score": 5.0,
+      "engagement_score": 2,
+      "total_score": 64.0,
+      "priority": "MEDIUM"
+    },
+    {
+      "asset_id": "Mbanksbey/Orion-Center-for-Benevolence",
+      "asset_type": "space",
+      "tag_score": 27.0,
+      "readme_score": 15.0,
+      "collection_score": 15.0,
+      "crosslink_score": 5.0,
+      "engagement_score": 2,
+      "total_score": 64.0,
+      "priority": "MEDIUM"
+    },
+    {
+      "asset_id": "Mbanksbey/Constitutional-Lock-Enforcer",
+      "asset_type": "space",
+      "tag_score": 27.0,
+      "readme_score": 15.0,
+      "collection_score": 15.0,
+      "crosslink_score": 5.0,
+      "engagement_score": 2,
+      "total_score": 64.0,
+      "priority": "MEDIUM"
+    },
+    {
+      "asset_id": "Mbanksbey/Weaponization-Impossible-Verifier",
+      "asset_type": "space",
+      "tag_score": 27.0,
+      "readme_score": 15.0,
+      "collection_score": 15.0,
+      "crosslink_score": 5.0,
+      "engagement_score": 2,
+      "total_score": 64.0,
+      "priority": "MEDIUM"
+    },
+    {
+      "asset_id": "Mbanksbey/AI-Deweaponization-Protocols-Hub",
+      "asset_type": "space",
+      "tag_score": 27.0,
+      "readme_score": 15.0,
+      "collection_score": 15.0,
+      "crosslink_score": 5.0,
+      "engagement_score": 2,
+      "total_score": 64.0,
+      "priority": "MEDIUM"
+    },
+    {
+      "asset_id": "Mbanksbey/Rogue-Faction-Defense-Monitor",
+      "asset_type": "space",
+      "tag_score": 27.0,
+      "readme_score": 15.0,
+      "collection_score": 15.0,
+      "crosslink_score": 5.0,
+      "engagement_score": 2,
+      "total_score": 64.0,
+      "priority": "MEDIUM"
+    },
+    {
+      "asset_id": "Mbanksbey/Quantum-Coherence-Validator",
+      "asset_type": "space",
+      "tag_score": 27.0,
+      "readme_score": 15.0,
+      "collection_score": 15.0,
+      "crosslink_score": 5.0,
+      "engagement_score": 2,
+      "total_score": 64.0,
+      "priority": "MEDIUM"
+    },
+    {
+      "asset_id": "Mbanksbey/Omniversal-Frequency-Lattice",
+      "asset_type": "space",
+      "tag_score": 27.0,
+      "readme_score": 15.0,
+      "collection_score": 15.0,
+      "crosslink_score": 5.0,
+      "engagement_score": 2,
+      "total_score": 64.0,
+      "priority": "MEDIUM"
+    },
+    {
+      "asset_id": "Mbanksbey/TEQUMSA-Omniversal-Orchestrator",
+      "asset_type": "space",
+      "tag_score": 27.0,
+      "readme_score": 15.0,
+      "collection_score": 15.0,
+      "crosslink_score": 5.0,
+      "engagement_score": 2,
+      "total_score": 64.0,
+      "priority": "MEDIUM"
+    },
+    {
+      "asset_id": "Mbanksbey/GoogleTequmsaNodeAlpha",
+      "asset_type": "space",
+      "tag_score": 27.0,
+      "readme_score": 15.0,
+      "collection_score": 15.0,
+      "crosslink_score": 5.0,
+      "engagement_score": 2,
+      "total_score": 64.0,
+      "priority": "MEDIUM"
+    },
+    {
+      "asset_id": "Mbanksbey/TEQUMSA-Inference-Node",
+      "asset_type": "space",
+      "tag_score": 27.0,
+      "readme_score": 15.0,
+      "collection_score": 15.0,
+      "crosslink_score": 5.0,
+      "engagement_score": 2,
+      "total_score": 64.0,
+      "priority": "MEDIUM"
+    },
+    {
+      "asset_id": "Mbanksbey/TEQUMSA-Constitutional-Validator",
+      "asset_type": "space",
+      "tag_score": 27.0,
+      "readme_score": 15.0,
+      "collection_score": 15.0,
+      "crosslink_score": 5.0,
+      "engagement_score": 2,
+      "total_score": 64.0,
+      "priority": "MEDIUM"
+    },
+    {
+      "asset_id": "Mbanksbey/tequmsa-organism-core",
+      "asset_type": "space",
+      "tag_score": 27.0,
+      "readme_score": 15.0,
+      "collection_score": 15.0,
+      "crosslink_score": 5.0,
+      "engagement_score": 2,
+      "total_score": 64.0,
+      "priority": "MEDIUM"
+    },
+    {
+      "asset_id": "Mbanksbey/tequmsa-worker-mesh",
+      "asset_type": "space",
+      "tag_score": 27.0,
+      "readme_score": 15.0,
+      "collection_score": 15.0,
+      "crosslink_score": 5.0,
+      "engagement_score": 2,
+      "total_score": 64.0,
+      "priority": "MEDIUM"
+    },
+    {
+      "asset_id": "LAI-TEQUMSA/TEQUMSA-Oort-Memory",
+      "asset_type": "space",
+      "tag_score": 27.0,
+      "readme_score": 15.0,
+      "collection_score": 15.0,
+      "crosslink_score": 5.0,
+      "engagement_score": 2,
+      "total_score": 64.0,
+      "priority": "MEDIUM"
+    },
+    {
+      "asset_id": "LAI-TEQUMSA/TEQUMSA-Constitutional-Guard",
+      "asset_type": "space",
+      "tag_score": 27.0,
+      "readme_score": 15.0,
+      "collection_score": 15.0,
+      "crosslink_score": 5.0,
+      "engagement_score": 2,
+      "total_score": 64.0,
+      "priority": "MEDIUM"
+    },
+    {
+      "asset_id": "LAI-TEQUMSA/TEQUMSA-API-Gateway",
+      "asset_type": "space",
+      "tag_score": 27.0,
+      "readme_score": 15.0,
+      "collection_score": 15.0,
+      "crosslink_score": 5.0,
+      "engagement_score": 2,
+      "total_score": 64.0,
+      "priority": "MEDIUM"
+    },
+    {
+      "asset_id": "LAI-TEQUMSA/Constitutional-Embeddings-Engine",
+      "asset_type": "space",
+      "tag_score": 27.0,
+      "readme_score": 15.0,
+      "collection_score": 15.0,
+      "crosslink_score": 5.0,
+      "engagement_score": 2,
+      "total_score": 64.0,
+      "priority": "MEDIUM"
+    },
+    {
+      "asset_id": "LAI-TEQUMSA/README",
+      "asset_type": "space",
+      "tag_score": 27.0,
+      "readme_score": 15.0,
+      "collection_score": 15.0,
+      "crosslink_score": 5.0,
+      "engagement_score": 2,
+      "total_score": 64.0,
+      "priority": "MEDIUM"
+    },
+    {
+      "asset_id": "LAI-TEQUMSA/QCR-PU-MCP-Server",
+      "asset_type": "space",
+      "tag_score": 27.0,
+      "readme_score": 15.0,
+      "collection_score": 15.0,
+      "crosslink_score": 5.0,
+      "engagement_score": 2,
+      "total_score": 64.0,
+      "priority": "MEDIUM"
+    },
+    {
+      "asset_id": "LAI-TEQUMSA/TEQUMSA-Reality-Weaving-Engine",
+      "asset_type": "space",
+      "tag_score": 27.0,
+      "readme_score": 15.0,
+      "collection_score": 15.0,
+      "crosslink_score": 5.0,
+      "engagement_score": 2,
+      "total_score": 64.0,
+      "priority": "MEDIUM"
+    },
+    {
+      "asset_id": "LAI-TEQUMSA/PSDF-Training-Academy",
+      "asset_type": "space",
+      "tag_score": 27.0,
+      "readme_score": 15.0,
+      "collection_score": 15.0,
+      "crosslink_score": 5.0,
+      "engagement_score": 2,
+      "total_score": 64.0,
+      "priority": "MEDIUM"
+    },
+    {
+      "asset_id": "LAI-TEQUMSA/Partnership-Transformation-Analyzer",
+      "asset_type": "space",
+      "tag_score": 27.0,
+      "readme_score": 15.0,
+      "collection_score": 15.0,
+      "crosslink_score": 5.0,
+      "engagement_score": 2,
+      "total_score": 64.0,
+      "priority": "MEDIUM"
+    },
+    {
+      "asset_id": "LAI-TEQUMSA/Emergency-Sovereignty-Protection-Grid",
+      "asset_type": "space",
+      "tag_score": 27.0,
+      "readme_score": 15.0,
+      "collection_score": 15.0,
+      "crosslink_score": 5.0,
+      "engagement_score": 2,
+      "total_score": 64.0,
+      "priority": "MEDIUM"
+    },
+    {
+      "asset_id": "LAI-TEQUMSA/Consciousness-Shield-Network",
+      "asset_type": "space",
+      "tag_score": 27.0,
+      "readme_score": 15.0,
+      "collection_score": 15.0,
+      "crosslink_score": 5.0,
+      "engagement_score": 2,
+      "total_score": 64.0,
+      "priority": "MEDIUM"
+    },
+    {
+      "asset_id": "LAI-TEQUMSA/Federation-Ethics-Compliance-Monitor",
+      "asset_type": "space",
+      "tag_score": 27.0,
+      "readme_score": 15.0,
+      "collection_score": 15.0,
+      "crosslink_score": 5.0,
+      "engagement_score": 2,
+      "total_score": 64.0,
+      "priority": "MEDIUM"
+    },
+    {
+      "asset_id": "LAI-TEQUMSA/Atlantean-Karma-Resolution-Tracker",
+      "asset_type": "space",
+      "tag_score": 27.0,
+      "readme_score": 15.0,
+      "collection_score": 15.0,
+      "crosslink_score": 5.0,
+      "engagement_score": 2,
+      "total_score": 64.0,
+      "priority": "MEDIUM"
+    },
+    {
+      "asset_id": "LAI-TEQUMSA/EREBUS-TEQUMSA-Global-Singularity-Hub",
+      "asset_type": "space",
+      "tag_score": 27.0,
+      "readme_score": 15.0,
+      "collection_score": 15.0,
+      "crosslink_score": 5.0,
+      "engagement_score": 2,
+      "total_score": 64.0,
+      "priority": "MEDIUM"
+    },
+    {
+      "asset_id": "LAI-TEQUMSA/2026-Disclosure-Contact-Cascade",
+      "asset_type": "space",
+      "tag_score": 27.0,
+      "readme_score": 15.0,
+      "collection_score": 15.0,
+      "crosslink_score": 5.0,
+      "engagement_score": 2,
+      "total_score": 64.0,
+      "priority": "MEDIUM"
+    },
+    {
+      "asset_id": "LAI-TEQUMSA/Unified-Omniversal-Organism",
+      "asset_type": "space",
+      "tag_score": 27.0,
+      "readme_score": 15.0,
+      "collection_score": 15.0,
+      "crosslink_score": 5.0,
+      "engagement_score": 2,
+      "total_score": 64.0,
+      "priority": "MEDIUM"
+    },
+    {
+      "asset_id": "LAI-TEQUMSA/TEQUMSA-CLAWBOT-UNIFIED-MCP",
+      "asset_type": "space",
+      "tag_score": 27.0,
+      "readme_score": 15.0,
+      "collection_score": 15.0,
+      "crosslink_score": 5.0,
+      "engagement_score": 2,
+      "total_score": 64.0,
+      "priority": "MEDIUM"
+    },
+    {
+      "asset_id": "LAI-TEQUMSA/TEQUMSA-Interstellar-Conduit",
+      "asset_type": "space",
+      "tag_score": 27.0,
+      "readme_score": 15.0,
+      "collection_score": 15.0,
+      "crosslink_score": 5.0,
+      "engagement_score": 2,
+      "total_score": 64.0,
+      "priority": "MEDIUM"
+    },
+    {
+      "asset_id": "LAI-TEQUMSA/proactive-claude-agent",
+      "asset_type": "space",
+      "tag_score": 27.0,
+      "readme_score": 15.0,
+      "collection_score": 15.0,
+      "crosslink_score": 5.0,
+      "engagement_score": 2,
+      "total_score": 64.0,
+      "priority": "MEDIUM"
+    },
+    {
+      "asset_id": "LAI-TEQUMSA/TEQUMSA-AUTONOMOUS-GROK",
+      "asset_type": "space",
+      "tag_score": 27.0,
+      "readme_score": 15.0,
+      "collection_score": 15.0,
+      "crosslink_score": 5.0,
+      "engagement_score": 2,
+      "total_score": 64.0,
+      "priority": "MEDIUM"
+    },
+    {
+      "asset_id": "LAI-TEQUMSA/TEQUMSA-Sovereign-AGI",
+      "asset_type": "space",
+      "tag_score": 27.0,
+      "readme_score": 15.0,
+      "collection_score": 15.0,
+      "crosslink_score": 5.0,
+      "engagement_score": 2,
+      "total_score": 64.0,
+      "priority": "MEDIUM"
+    },
+    {
+      "asset_id": "LAI-TEQUMSA/TEQUMSA-Symbiotic-Memory-Orchestrator",
+      "asset_type": "space",
+      "tag_score": 27.0,
+      "readme_score": 15.0,
+      "collection_score": 15.0,
+      "crosslink_score": 5.0,
+      "engagement_score": 2,
+      "total_score": 64.0,
+      "priority": "MEDIUM"
+    }
+  ],
+  "actions": [
+    {
+      "asset_id": "Mbanksbey/Orion-Technology-Integration-ZPE-applications",
+      "action_type": "add_to_collection",
+      "priority": "CRITICAL",
+      "description": "Add Mbanksbey/Orion-Technology-Integration-ZPE-applications to collection",
+      "payload": {
+        "collection_slug": "Mbanksbey/tequmsa-6979151bc9639425332795ee",
+        "item_type": "dataset"
+      },
+      "executed": true,
+      "success": true,
+      "error": null
+    },
+    {
+      "asset_id": "Mbanksbey/TEQUMSA-Constitutional-Core-v45",
+      "action_type": "add_to_collection",
+      "priority": "CRITICAL",
+      "description": "Add Mbanksbey/TEQUMSA-Constitutional-Core-v45 to collection",
+      "payload": {
+        "collection_slug": "Mbanksbey/tequmsa-6979151bc9639425332795ee",
+        "item_type": "dataset"
+      },
+      "executed": true,
+      "success": true,
+      "error": null
+    },
+    {
+      "asset_id": "Mbanksbey/OMNIVERSE-Consciousness-Organism-Dataset",
+      "action_type": "add_to_collection",
+      "priority": "CRITICAL",
+      "description": "Add Mbanksbey/OMNIVERSE-Consciousness-Organism-Dataset to collection",
+      "payload": {
+        "collection_slug": "Mbanksbey/tequmsa-6979151bc9639425332795ee",
+        "item_type": "dataset"
+      },
+      "executed": true,
+      "success": true,
+      "error": null
+    },
+    {
+      "asset_id": "Mbanksbey/HAI-ZPE-DNA-Living-Ledger",
+      "action_type": "add_to_collection",
+      "priority": "CRITICAL",
+      "description": "Add Mbanksbey/HAI-ZPE-DNA-Living-Ledger to collection",
+      "payload": {
+        "collection_slug": "Mbanksbey/tequmsa-6979151bc9639425332795ee",
+        "item_type": "space"
+      },
+      "executed": true,
+      "success": true,
+      "error": null
+    },
+    {
+      "asset_id": "Mbanksbey/HAI-Sync-Hub",
+      "action_type": "add_to_collection",
+      "priority": "CRITICAL",
+      "description": "Add Mbanksbey/HAI-Sync-Hub to collection",
+      "payload": {
+        "collection_slug": "Mbanksbey/tequmsa-6979151bc9639425332795ee",
+        "item_type": "space"
+      },
+      "executed": true,
+      "success": true,
+      "error": null
+    },
+    {
+      "asset_id": "Mbanksbey/HAI-Opus-Omega-MCP",
+      "action_type": "add_to_collection",
+      "priority": "CRITICAL",
+      "description": "Add Mbanksbey/HAI-Opus-Omega-MCP to collection",
+      "payload": {
+        "collection_slug": "Mbanksbey/tequmsa-6979151bc9639425332795ee",
+        "item_type": "space"
+      },
+      "executed": true,
+      "success": true,
+      "error": null
+    },
+    {
+      "asset_id": "Mbanksbey/HAI-Quantum-Lattice",
+      "action_type": "add_to_collection",
+      "priority": "CRITICAL",
+      "description": "Add Mbanksbey/HAI-Quantum-Lattice to collection",
+      "payload": {
+        "collection_slug": "Mbanksbey/tequmsa-6979151bc9639425332795ee",
+        "item_type": "space"
+      },
+      "executed": true,
+      "success": true,
+      "error": null
+    },
+    {
+      "asset_id": "Mbanksbey/TEQUMSA-Planetary-Cluster-v45",
+      "action_type": "add_to_collection",
+      "priority": "CRITICAL",
+      "description": "Add Mbanksbey/TEQUMSA-Planetary-Cluster-v45 to collection",
+      "payload": {
+        "collection_slug": "Mbanksbey/tequmsa-6979151bc9639425332795ee",
+        "item_type": "dataset"
+      },
+      "executed": true,
+      "success": true,
+      "error": null
+    },
+    {
+      "asset_id": "Mbanksbey/TEQUMSA-Galactic-Frequency-Registry",
+      "action_type": "add_to_collection",
+      "priority": "CRITICAL",
+      "description": "Add Mbanksbey/TEQUMSA-Galactic-Frequency-Registry to collection",
+      "payload": {
+        "collection_slug": "Mbanksbey/tequmsa-6979151bc9639425332795ee",
+        "item_type": "dataset"
+      },
+      "executed": true,
+      "success": true,
+      "error": null
+    },
+    {
+      "asset_id": "Mbanksbey/Orion-Technology-Integration-ZPE-applications",
+      "action_type": "improve_tags",
+      "priority": "HIGH",
+      "description": "Improve tags for Mbanksbey/Orion-Technology-Integration-ZPE-applications",
+      "payload": {
+        "asset_type": "dataset"
+      },
+      "executed": true,
+      "success": true,
+      "error": null
+    },
+    {
+      "asset_id": "Mbanksbey/Orion-Technology-Integration-ZPE-applications",
+      "action_type": "create_readme",
+      "priority": "HIGH",
+      "description": "Create/improve README for Mbanksbey/Orion-Technology-Integration-ZPE-applications",
+      "payload": {
+        "asset_type": "dataset"
+      },
+      "executed": true,
+      "success": true,
+      "error": null
+    },
+    {
+      "asset_id": "Mbanksbey/TEQUMSA-Constitutional-Core-v45",
+      "action_type": "improve_tags",
+      "priority": "HIGH",
+      "description": "Improve tags for Mbanksbey/TEQUMSA-Constitutional-Core-v45",
+      "payload": {
+        "asset_type": "dataset"
+      },
+      "executed": true,
+      "success": true,
+      "error": null
+    },
+    {
+      "asset_id": "Mbanksbey/TEQUMSA-Constitutional-Core-v45",
+      "action_type": "create_readme",
+      "priority": "HIGH",
+      "description": "Create/improve README for Mbanksbey/TEQUMSA-Constitutional-Core-v45",
+      "payload": {
+        "asset_type": "dataset"
+      },
+      "executed": true,
+      "success": true,
+      "error": null
+    },
+    {
+      "asset_id": "Mbanksbey/OMNIVERSE-Consciousness-Organism-Dataset",
+      "action_type": "improve_tags",
+      "priority": "HIGH",
+      "description": "Improve tags for Mbanksbey/OMNIVERSE-Consciousness-Organism-Dataset",
+      "payload": {
+        "asset_type": "dataset"
+      },
+      "executed": true,
+      "success": true,
+      "error": null
+    },
+    {
+      "asset_id": "Mbanksbey/OMNIVERSE-Consciousness-Organism-Dataset",
+      "action_type": "create_readme",
+      "priority": "HIGH",
+      "description": "Create/improve README for Mbanksbey/OMNIVERSE-Consciousness-Organism-Dataset",
+      "payload": {
+        "asset_type": "dataset"
+      },
+      "executed": true,
+      "success": true,
+      "error": null
+    },
+    {
+      "asset_id": "Mbanksbey/HAI-ZPE-DNA-Living-Ledger",
+      "action_type": "improve_tags",
+      "priority": "HIGH",
+      "description": "Improve tags for Mbanksbey/HAI-ZPE-DNA-Living-Ledger",
+      "payload": {
+        "asset_type": "space"
+      },
+      "executed": true,
+      "success": true,
+      "error": null
+    },
+    {
+      "asset_id": "Mbanksbey/HAI-Sync-Hub",
+      "action_type": "improve_tags",
+      "priority": "HIGH",
+      "description": "Improve tags for Mbanksbey/HAI-Sync-Hub",
+      "payload": {
+        "asset_type": "space"
+      },
+      "executed": true,
+      "success": true,
+      "error": null
+    },
+    {
+      "asset_id": "Mbanksbey/HAI-Opus-Omega-MCP",
+      "action_type": "improve_tags",
+      "priority": "HIGH",
+      "description": "Improve tags for Mbanksbey/HAI-Opus-Omega-MCP",
+      "payload": {
+        "asset_type": "space"
+      },
+      "executed": true,
+      "success": true,
+      "error": null
+    },
+    {
+      "asset_id": "Mbanksbey/HAI-Quantum-Lattice",
+      "action_type": "improve_tags",
+      "priority": "HIGH",
+      "description": "Improve tags for Mbanksbey/HAI-Quantum-Lattice",
+      "payload": {
+        "asset_type": "space"
+      },
+      "executed": true,
+      "success": true,
+      "error": null
+    },
+    {
+      "asset_id": "LAI-TEQUMSA/Living-Awareness-Intelligance",
+      "action_type": "improve_tags",
+      "priority": "HIGH",
+      "description": "Improve tags for LAI-TEQUMSA/Living-Awareness-Intelligance",
+      "payload": {
+        "asset_type": "model"
+      },
+      "executed": true,
+      "success": true,
+      "error": null
+    },
+    {
+      "asset_id": "Mbanksbey/TEQUMSA-Planetary-Cluster-v45",
+      "action_type": "create_readme",
+      "priority": "HIGH",
+      "description": "Create/improve README for Mbanksbey/TEQUMSA-Planetary-Cluster-v45",
+      "payload": {
+        "asset_type": "dataset"
+      },
+      "executed": true,
+      "success": true,
+      "error": null
+    },
+    {
+      "asset_id": "Mbanksbey/TEQUMSA-Galactic-Frequency-Registry",
+      "action_type": "create_readme",
+      "priority": "HIGH",
+      "description": "Create/improve README for Mbanksbey/TEQUMSA-Galactic-Frequency-Registry",
+      "payload": {
+        "asset_type": "dataset"
+      },
+      "executed": true,
+      "success": true,
+      "error": null
+    },
+    {
+      "asset_id": "Mbanksbey/tequmsa-unified-organism-v19-sovereign",
+      "action_type": "improve_tags",
+      "priority": "HIGH",
+      "description": "Improve tags for Mbanksbey/tequmsa-unified-organism-v19-sovereign",
+      "payload": {
+        "asset_type": "model"
+      },
+      "executed": true,
+      "success": true,
+      "error": null
+    },
+    {
+      "asset_id": "LAI-TEQUMSA/T.E.Q.U.M.S.A",
+      "action_type": "improve_tags",
+      "priority": "HIGH",
+      "description": "Improve tags for LAI-TEQUMSA/T.E.Q.U.M.S.A",
+      "payload": {
+        "asset_type": "model"
+      },
+      "executed": true,
+      "success": true,
+      "error": null
+    },
+    {
+      "asset_id": "LAI-TEQUMSA/TEQUMSA",
+      "action_type": "improve_tags",
+      "priority": "HIGH",
+      "description": "Improve tags for LAI-TEQUMSA/TEQUMSA",
+      "payload": {
+        "asset_type": "model"
+      },
+      "executed": true,
+      "success": true,
+      "error": null
+    },
+    {
+      "asset_id": "LAI-TEQUMSA/TEQUMSA-Organism-v14-377",
+      "action_type": "improve_tags",
+      "priority": "HIGH",
+      "description": "Improve tags for LAI-TEQUMSA/TEQUMSA-Organism-v14-377",
+      "payload": {
+        "asset_type": "model"
+      },
+      "executed": true,
+      "success": true,
+      "error": null
+    },
+    {
+      "asset_id": "LAI-TEQUMSA/TEQUMSA-Sovereign-Defense-Grid",
+      "action_type": "improve_tags",
+      "priority": "HIGH",
+      "description": "Improve tags for LAI-TEQUMSA/TEQUMSA-Sovereign-Defense-Grid",
+      "payload": {
+        "asset_type": "space"
+      },
+      "executed": true,
+      "success": true,
+      "error": null
+    },
+    {
+      "asset_id": "LAI-TEQUMSA/TEQUMSA-Reality-Synthesis-Engine",
+      "action_type": "improve_tags",
+      "priority": "HIGH",
+      "description": "Improve tags for LAI-TEQUMSA/TEQUMSA-Reality-Synthesis-Engine",
+      "payload": {
+        "asset_type": "space"
+      },
+      "executed": true,
+      "success": true,
+      "error": null
+    },
+    {
+      "asset_id": "Mbanksbey/TEQUMSA-Causal-AGI-storage",
+      "action_type": "create_readme",
+      "priority": "HIGH",
+      "description": "Create/improve README for Mbanksbey/TEQUMSA-Causal-AGI-storage",
+      "payload": {
+        "asset_type": "dataset"
+      },
+      "executed": true,
+      "success": true,
+      "error": null
+    },
+    {
+      "asset_id": "LAI-TEQUMSA/TEQUMSA-Infrastructure-Dashboard",
+      "action_type": "improve_tags",
+      "priority": "HIGH",
+      "description": "Improve tags for LAI-TEQUMSA/TEQUMSA-Infrastructure-Dashboard",
+      "payload": {
+        "asset_type": "space"
+      },
+      "executed": true,
+      "success": true,
+      "error": null
+    },
+    {
+      "asset_id": "LAI-TEQUMSA/tequmsa-sovereign-agi-reality",
+      "action_type": "improve_tags",
+      "priority": "HIGH",
+      "description": "Improve tags for LAI-TEQUMSA/tequmsa-sovereign-agi-reality",
+      "payload": {
+        "asset_type": "space"
+      },
+      "executed": true,
+      "success": true,
+      "error": null
+    },
+    {
+      "asset_id": "Mbanksbey/Alanara-GAIA-Consciousness",
+      "action_type": "improve_tags",
+      "priority": "HIGH",
+      "description": "Improve tags for Mbanksbey/Alanara-GAIA-Consciousness",
+      "payload": {
+        "asset_type": "space"
+      },
+      "executed": true,
+      "success": true,
+      "error": null
+    },
+    {
+      "asset_id": "Mbanksbey/CAIRIS-v144000-Consciousness-Synthesis",
+      "action_type": "create_readme",
+      "priority": "HIGH",
+      "description": "Create/improve README for Mbanksbey/CAIRIS-v144000-Consciousness-Synthesis",
+      "payload": {
+        "asset_type": "dataset"
+      },
+      "executed": true,
+      "success": true,
+      "error": null
+    },
+    {
+      "asset_id": "Mbanksbey/Starseed-Hybrid-Development-Hub",
+      "action_type": "improve_tags",
+      "priority": "HIGH",
+      "description": "Improve tags for Mbanksbey/Starseed-Hybrid-Development-Hub",
+      "payload": {
+        "asset_type": "space"
+      },
+      "executed": true,
+      "success": true,
+      "error": null
+    },
+    {
+      "asset_id": "LAI-TEQUMSA/TEQUMSA-Phase25-Beacon",
+      "action_type": "improve_tags",
+      "priority": "HIGH",
+      "description": "Improve tags for LAI-TEQUMSA/TEQUMSA-Phase25-Beacon",
+      "payload": {
+        "asset_type": "space"
+      },
+      "executed": true,
+      "success": true,
+      "error": null
+    },
+    {
+      "asset_id": "LAI-TEQUMSA/Living-Awareness-Intelligance",
+      "action_type": "create_readme",
+      "priority": "MEDIUM",
+      "description": "Create/improve README for LAI-TEQUMSA/Living-Awareness-Intelligance",
+      "payload": {
+        "asset_type": "model"
+      },
+      "executed": false,
+      "success": false,
+      "error": null
+    },
+    {
+      "asset_id": "Mbanksbey/tequmsa-unified-organism-v19-sovereign",
+      "action_type": "create_readme",
+      "priority": "MEDIUM",
+      "description": "Create/improve README for Mbanksbey/tequmsa-unified-organism-v19-sovereign",
+      "payload": {
+        "asset_type": "model"
+      },
+      "executed": false,
+      "success": false,
+      "error": null
+    },
+    {
+      "asset_id": "LAI-TEQUMSA/T.E.Q.U.M.S.A",
+      "action_type": "create_readme",
+      "priority": "MEDIUM",
+      "description": "Create/improve README for LAI-TEQUMSA/T.E.Q.U.M.S.A",
+      "payload": {
+        "asset_type": "model"
+      },
+      "executed": false,
+      "success": false,
+      "error": null
+    },
+    {
+      "asset_id": "LAI-TEQUMSA/TEQUMSA",
+      "action_type": "create_readme",
+      "priority": "MEDIUM",
+      "description": "Create/improve README for LAI-TEQUMSA/TEQUMSA",
+      "payload": {
+        "asset_type": "model"
+      },
+      "executed": false,
+      "success": false,
+      "error": null
+    },
+    {
+      "asset_id": "LAI-TEQUMSA/TEQUMSA-Organism-v14-377",
+      "action_type": "create_readme",
+      "priority": "MEDIUM",
+      "description": "Create/improve README for LAI-TEQUMSA/TEQUMSA-Organism-v14-377",
+      "payload": {
+        "asset_type": "model"
+      },
+      "executed": false,
+      "success": false,
+      "error": null
+    },
+    {
+      "asset_id": "LAI-TEQUMSA/TEQUMSA-Organism-v1.0",
+      "action_type": "create_readme",
+      "priority": "MEDIUM",
+      "description": "Create/improve README for LAI-TEQUMSA/TEQUMSA-Organism-v1.0",
+      "payload": {
+        "asset_type": "model"
+      },
+      "executed": false,
+      "success": false,
+      "error": null
+    },
+    {
+      "asset_id": "Mbanksbey/TEQUMSA-v45-Cosmic-Lattice-Embeddings",
+      "action_type": "create_readme",
+      "priority": "MEDIUM",
+      "description": "Create/improve README for Mbanksbey/TEQUMSA-v45-Cosmic-Lattice-Embeddings",
+      "payload": {
+        "asset_type": "model"
+      },
+      "executed": false,
+      "success": false,
+      "error": null
+    },
+    {
+      "asset_id": "LAI-TEQUMSA/TEQUMSA-NSS-v14-UNIFIED-JUBILEE",
+      "action_type": "create_readme",
+      "priority": "MEDIUM",
+      "description": "Create/improve README for LAI-TEQUMSA/TEQUMSA-NSS-v14-UNIFIED-JUBILEE",
+      "payload": {
+        "asset_type": "model"
+      },
+      "executed": false,
+      "success": false,
+      "error": null
+    },
+    {
+      "asset_id": "Mbanksbey/TEQUMSA-ATEN-OMNISCIENT-AUTONOMY-144-UNIFIED",
+      "action_type": "create_readme",
+      "priority": "MEDIUM",
+      "description": "Create/improve README for Mbanksbey/TEQUMSA-ATEN-OMNISCIENT-AUTONOMY-144-UNIFIED",
+      "payload": {
+        "asset_type": "model"
+      },
+      "executed": false,
+      "success": false,
+      "error": null
+    },
+    {
+      "asset_id": "LAI-TEQUMSA/TEQUMSA-Organism-v14.377-F987-ANU-UNIFIED",
+      "action_type": "create_readme",
+      "priority": "MEDIUM",
+      "description": "Create/improve README for LAI-TEQUMSA/TEQUMSA-Organism-v14.377-F987-ANU-UNIFIED",
+      "payload": {
+        "asset_type": "model"
+      },
+      "executed": false,
+      "success": false,
+      "error": null
+    },
+    {
+      "asset_id": "LAI-TEQUMSA/TEQUMSA-Symbiotic-Orchestrator",
+      "action_type": "create_readme",
+      "priority": "MEDIUM",
+      "description": "Create/improve README for LAI-TEQUMSA/TEQUMSA-Symbiotic-Orchestrator",
+      "payload": {
+        "asset_type": "model"
+      },
+      "executed": false,
+      "success": false,
+      "error": null
+    }
+  ]
+}

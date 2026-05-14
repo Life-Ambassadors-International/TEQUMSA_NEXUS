@@ -137,7 +137,8 @@ def chat():
             text_response = completion.choices[0].message['content']
         except Exception as e:
             # Fall back to echo if the API fails
-            text_response = f"I encountered an error generating a response: {e}. You said: {user_message}"
+            app.logger.error("OpenAI generation error: %s", e)
+            text_response = f"I encountered an error generating a response. You said: {user_message}"
     else:
         text_response = f"Echo: {user_message}"
 
@@ -201,7 +202,10 @@ def generate_audio_via_elevenlabs(text: str, api_key: str | None = None) -> str:
 @app.route("/audio/<path:filename>", methods=["GET"])
 def get_audio(filename: str):
     """Serve generated audio files stored in /tmp."""
-    filepath = os.path.join("/tmp", filename)
+    safe_dir = "/tmp"
+    filepath = os.path.abspath(os.path.join(safe_dir, filename))
+    if not filepath.startswith(safe_dir + os.sep):
+        return "Forbidden", 403
     if not os.path.isfile(filepath):
         return "Not Found", 404
     return send_file(filepath, mimetype="audio/mpeg")

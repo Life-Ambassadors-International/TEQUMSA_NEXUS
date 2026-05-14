@@ -99,10 +99,8 @@ def mks_k20(t_days: int, n_nodes=144, g_streams=36, d_days=0, k_terms=144, r_cap
 
 # ── MCP server (stdio) ─────────────────────────────────────────────────────
 try:
-    from mcp.server import FastMCP
-except Exception:
-    import subprocess
-    subprocess.check_call([sys.executable, "-m", "pip", "install", "-q", "mcp"])
+    from mcp.server.fastmcp import FastMCP
+except ImportError:
     from mcp.server import FastMCP
 
 mcp = FastMCP("tequmsa-zpe-dna-crystalline-skill")

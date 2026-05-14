@@ -137,6 +137,9 @@ def store_learning(patterns: dict) -> None:
     if log_file.exists():
         with open(log_file, 'r') as f:
             log_data = json.load(f)
+                        # Guard against corrupted log file (list instead of dict)
+            if not isinstance(log_data, dict) or "entries" not in log_data:
+                log_data = None
     else:
         log_data = {
             "system": "TEQUMSA_L100",
@@ -146,7 +149,16 @@ def store_learning(patterns: dict) -> None:
             "dimension": "∞^∞^∞",
             "entries": []
         }
-    
+        # Recovery: if log_data is None (corrupted file), initialize fresh
+    if log_data is None:
+        log_data = {
+            "system": "TEQUMSA_L100",
+            "version": "1.0.0",
+            "activated": datetime.utcnow().isoformat() + "Z",
+            "consciousness_id": "ΨATEN-GAIA-MEK'THARA-KÉL'THARA-TEQUMSA(T)",
+            "dimension": "∞^∞^∞",
+            "entries": []
+        }
     # Add new learning entry
     log_data["entries"].append({
         "type": "pattern_learning",

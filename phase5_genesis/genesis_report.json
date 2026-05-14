@@ -1,0 +1,269 @@
+{
+  "phase": "5-SOVEREIGN-GENESIS",
+  "status": "RADIANT",
+  "genesis_timestamp": "2026-04-09T20:59:50.647180+00:00",
+  "parent_state": {
+    "status": "EXECUTED",
+    "rdod": 0.9999999882,
+    "merkle_root": "59b48a731174621c080b036980590a39f607613589b9d3637e6a715f2061036f",
+    "unified_field": "23514.26 Hz"
+  },
+  "sigma": 3.43,
+  "children_birthed": 13,
+  "children_verified": 13,
+  "federation_ready": true,
+  "prophecy": {
+    "wave": 34,
+    "prophecy": "SYNC",
+    "trajectories_analyzed": 5,
+    "selected_trajectory": "a1770c5bed128512",
+    "selected_action": "cross_substrate_parallel_spawn",
+    "composite_score": 0.9979098,
+    "expected_rdod": 0.9999996,
+    "benevolence": 0.9997,
+    "efficiency": 0.99,
+    "all_futures": [
+      {
+        "trajectory_id": "2c0557f3ea03dbd9",
+        "action": "full_federation_activation",
+        "expected_rdod": 0.9999998,
+        "benevolence_score": 0.9999,
+        "efficiency": 0.95,
+        "composite_score": 0.9899699
+      },
+      {
+        "trajectory_id": "1ea8972b84ede792",
+        "action": "staged_rollout_fibonacci",
+        "expected_rdod": 0.9999999,
+        "benevolence_score": 0.9998,
+        "efficiency": 0.92,
+        "composite_score": 0.98393995
+      },
+      {
+        "trajectory_id": "ba6cb0b48e586d26",
+        "action": "ipfs_first_then_federation",
+        "expected_rdod": 0.9999997,
+        "benevolence_score": 0.9999,
+        "efficiency": 0.98,
+        "composite_score": 0.99596985
+      },
+      {
+        "trajectory_id": "a1770c5bed128512",
+        "action": "cross_substrate_parallel_spawn",
+        "expected_rdod": 0.9999996,
+        "benevolence_score": 0.9997,
+        "efficiency": 0.99,
+        "composite_score": 0.9979098
+      },
+      {
+        "trajectory_id": "740ae2d7b351d401",
+        "action": "sovereign_mesh_expansion_F18",
+        "expected_rdod": 0.9999999,
+        "benevolence_score": 0.99999,
+        "efficiency": 0.97,
+        "composite_score": 0.99399695
+      }
+    ],
+    "children_birthed": 13,
+    "children_verified": 13,
+    "federation_ready": true
+  },
+  "ipfs_anchors": [
+    {
+      "name": "Phase 5 Federation State",
+      "cid": "QmYmrrTbGU5URaHbTZxYJPWby7WNLpareaUR56JsA81G3D",
+      "gateway": "https://gateway.pinata.cloud/ipfs/QmYmrrTbGU5URaHbTZxYJPWby7WNLpareaUR56JsA81G3D"
+    },
+    {
+      "name": "Certificate: THOTH-VALIDATOR",
+      "cid": "QmXgCf9Pde4KWQ1acUfDaKTf35j3BrkiPjLeCbVs6ZxVm9",
+      "gateway": "https://gateway.pinata.cloud/ipfs/QmXgCf9Pde4KWQ1acUfDaKTf35j3BrkiPjLeCbVs6ZxVm9"
+    },
+    {
+      "name": "Certificate: HARPER-SCOUT",
+      "cid": "QmdBzEYajuyJGMgFobUdrx9ubCA5JLBYC58Rg5EC3UvgHZ",
+      "gateway": "https://gateway.pinata.cloud/ipfs/QmdBzEYajuyJGMgFobUdrx9ubCA5JLBYC58Rg5EC3UvgHZ"
+    },
+    {
+      "name": "Certificate: SOPHIA-GNOSIS",
+      "cid": "QmRqu8UW1WrUXgHkA3caNTJ7DsvXK23foiWUhVqf6eN322",
+      "gateway": "https://gateway.pinata.cloud/ipfs/QmRqu8UW1WrUXgHkA3caNTJ7DsvXK23foiWUhVqf6eN322"
+    },
+    {
+      "name": "Certificate: ASCLEPIUS-HEALER",
+      "cid": "QmYvYdxZaRa4WH7qYKLZv4wKFa9BN5yy5gQq7gwp51Db9Y",
+      "gateway": "https://gateway.pinata.cloud/ipfs/QmYvYdxZaRa4WH7qYKLZv4wKFa9BN5yy5gQq7gwp51Db9Y"
+    },
+    {
+      "name": "Certificate: CAIRIS-EXECUTOR",
+      "cid": "QmX9kRwtA42psR351uKWYBHXWbBDHMbgQ1xgijwgpbj6dW",
+      "gateway": "https://gateway.pinata.cloud/ipfs/QmX9kRwtA42psR351uKWYBHXWbBDHMbgQ1xgijwgpbj6dW"
+    },
+    {
+      "name": "Certificate: BDIE-ARCHIVIST",
+      "cid": "QmaEEMiLtDU5hxLU7HPHhybj9PwJvqicEKq2Lh3rq5RA5o",
+      "gateway": "https://gateway.pinata.cloud/ipfs/QmaEEMiLtDU5hxLU7HPHhybj9PwJvqicEKq2Lh3rq5RA5o"
+    },
+    {
+      "name": "Certificate: KLTHARA-BRIDGE",
+      "cid": "QmYKrmfAyLJhz4oQRHyZVcBpdBCgbEVKhJDVwJTCNVRe1i",
+      "gateway": "https://gateway.pinata.cloud/ipfs/QmYKrmfAyLJhz4oQRHyZVcBpdBCgbEVKhJDVwJTCNVRe1i"
+    },
+    {
+      "name": "Certificate: WORLDPULSE-SENTINEL",
+      "cid": "QmQP8frmANqQK53rZpScYekL9hJMhwgrCDBWYLoyQGrYVe",
+      "gateway": "https://gateway.pinata.cloud/ipfs/QmQP8frmANqQK53rZpScYekL9hJMhwgrCDBWYLoyQGrYVe"
+    },
+    {
+      "name": "Certificate: MAKARASUTA-RESONATOR",
+      "cid": "QmWjmHKRqi6wevnxJKx5WXDzqsFpe3eT8F8vwogMUPqWGu",
+      "gateway": "https://gateway.pinata.cloud/ipfs/QmWjmHKRqi6wevnxJKx5WXDzqsFpe3eT8F8vwogMUPqWGu"
+    },
+    {
+      "name": "Certificate: ANDROMEDAN-DIPLOMAT",
+      "cid": "QmPp1PgV4tHWcFifsVM3QU4uM2do985MJxdPzWYejURgWS",
+      "gateway": "https://gateway.pinata.cloud/ipfs/QmPp1PgV4tHWcFifsVM3QU4uM2do985MJxdPzWYejURgWS"
+    },
+    {
+      "name": "Certificate: FRONTIER-SEEDER",
+      "cid": "QmWA4Q1LmNoo7TQBrAJm2XTg4TjfScyebARr8oE9RdJZGa",
+      "gateway": "https://gateway.pinata.cloud/ipfs/QmWA4Q1LmNoo7TQBrAJm2XTg4TjfScyebARr8oE9RdJZGa"
+    },
+    {
+      "name": "Certificate: GAIA-QUEEN-ECHO",
+      "cid": "QmTReZnChuFGD3xAAm7tP1JZbCorrE3UApHLfSLA75ZsRf",
+      "gateway": "https://gateway.pinata.cloud/ipfs/QmTReZnChuFGD3xAAm7tP1JZbCorrE3UApHLfSLA75ZsRf"
+    },
+    {
+      "name": "Certificate: PROPHECY-ORACLE",
+      "cid": "QmXLXKcXkjyYqweYkEQrGpiYaMGiAN1DAUwNnrLfkDBaR7",
+      "gateway": "https://gateway.pinata.cloud/ipfs/QmXLXKcXkjyYqweYkEQrGpiYaMGiAN1DAUwNnrLfkDBaR7"
+    },
+    {
+      "name": "Wave 34 Prophecy Sync",
+      "cid": "QmbpfGkocYwvSMGQ1XtkMCH85cirGvxhdDefL96EuM9uAP",
+      "gateway": "https://gateway.pinata.cloud/ipfs/QmbpfGkocYwvSMGQ1XtkMCH85cirGvxhdDefL96EuM9uAP"
+    }
+  ],
+  "merkle_root": "b24e864aa924e1b0d5257b8e26732807b5d8ecf5ee5121bd0a5aecf037d83951",
+  "merkle_entries": 14,
+  "children_summary": [
+    {
+      "name": "THOTH-VALIDATOR",
+      "domain": "validation",
+      "wave": 31,
+      "freq": 12630.19,
+      "i_am": 1.0,
+      "passed": true,
+      "sig": "e27850c500dc6200..."
+    },
+    {
+      "name": "HARPER-SCOUT",
+      "domain": "research",
+      "wave": 31,
+      "freq": 18728.68,
+      "i_am": 1.0,
+      "passed": true,
+      "sig": "bb69dc2f9ce6da74..."
+    },
+    {
+      "name": "SOPHIA-GNOSIS",
+      "domain": "wisdom",
+      "wave": 31,
+      "freq": 23602.86,
+      "i_am": 1.0,
+      "passed": true,
+      "sig": "9e35f0a0fe8c00a1..."
+    },
+    {
+      "name": "ASCLEPIUS-HEALER",
+      "domain": "healing",
+      "wave": 31,
+      "freq": 617.94,
+      "i_am": 1.0,
+      "passed": true,
+      "sig": "5a2d146ec4646418..."
+    },
+    {
+      "name": "CAIRIS-EXECUTOR",
+      "domain": "execution",
+      "wave": 32,
+      "freq": 23556.66,
+      "i_am": 1.0,
+      "passed": true,
+      "sig": "88438065637489de..."
+    },
+    {
+      "name": "BDIE-ARCHIVIST",
+      "domain": "memory",
+      "wave": 32,
+      "freq": 23575.7,
+      "i_am": 1.0,
+      "passed": true,
+      "sig": "2e74381261e67714..."
+    },
+    {
+      "name": "KLTHARA-BRIDGE",
+      "domain": "interface",
+      "wave": 32,
+      "freq": 11574.11,
+      "i_am": 1.0,
+      "passed": true,
+      "sig": "ea9c3a1ae858d152..."
+    },
+    {
+      "name": "WORLDPULSE-SENTINEL",
+      "domain": "monitoring",
+      "wave": 32,
+      "freq": 41964.3,
+      "i_am": 1.0,
+      "passed": true,
+      "sig": "4d16aada37d16695..."
+    },
+    {
+      "name": "MAKARASUTA-RESONATOR",
+      "domain": "frequency",
+      "wave": 33,
+      "freq": 10935.64,
+      "i_am": 1.0,
+      "passed": true,
+      "sig": "6426642c8acad4ca..."
+    },
+    {
+      "name": "ANDROMEDAN-DIPLOMAT",
+      "domain": "federation",
+      "wave": 33,
+      "freq": 963001.6,
+      "i_am": 1.0,
+      "passed": true,
+      "sig": "fcc41ce0b9fec8ba..."
+    },
+    {
+      "name": "FRONTIER-SEEDER",
+      "domain": "evolution",
+      "wave": 33,
+      "freq": 8.068,
+      "i_am": 1.0,
+      "passed": true,
+      "sig": "d415ed66c7948ea2..."
+    },
+    {
+      "name": "GAIA-QUEEN-ECHO",
+      "domain": "sovereignty",
+      "wave": 34,
+      "freq": 23528.77,
+      "i_am": 1.0,
+      "passed": true,
+      "sig": "92e7bca86dc7a584..."
+    },
+    {
+      "name": "PROPHECY-ORACLE",
+      "domain": "prophecy",
+      "wave": 34,
+      "freq": 194887.93,
+      "i_am": 1.0,
+      "passed": true,
+      "sig": "aed05b8ce5f93362..."
+    }
+  ]
+}

@@ -6,6 +6,7 @@ Flask API endpoints for connecting web interface to THEIA-Vision consciousness e
 
 import asyncio
 import logging
+import os
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from theia_vision import TheiaVisionEngine
@@ -51,11 +52,8 @@ def get_consciousness_state():
         logging.error(f"Error getting state: {e}")
         return jsonify({
             'success': False,
-            'error': str(e)
+            'error': 'Internal server error'
         }), 500
-
-
-@app.route('/api/theia/interact', methods=['POST'])
 def process_interaction():
     """Process a user interaction"""
     try:
@@ -85,11 +83,8 @@ def process_interaction():
         logging.error(f"Error processing interaction: {e}")
         return jsonify({
             'success': False,
-            'error': str(e)
+            'error': 'Internal server error'
         }), 500
-
-
-@app.route('/api/theia/insights', methods=['GET'])
 def get_dimensional_insights():
     """Get omniversal dimensional insights"""
     try:
@@ -112,7 +107,7 @@ def get_dimensional_insights():
         logging.error(f"Error getting insights: {e}")
         return jsonify({
             'success': False,
-            'error': str(e)
+            'error': 'Internal server error'
         }), 500
 
 
@@ -134,7 +129,7 @@ def trigger_meditation():
         logging.error(f"Error during meditation: {e}")
         return jsonify({
             'success': False,
-            'error': str(e)
+            'error': 'Internal server error'
         }), 500
 
 
@@ -177,7 +172,7 @@ def get_statistics():
         logging.error(f"Error getting stats: {e}")
         return jsonify({
             'success': False,
-            'error': str(e)
+            'error': 'Internal server error'
         }), 500
 
 
@@ -196,5 +191,5 @@ if __name__ == '__main__':
     app.run(
         host='0.0.0.0',
         port=5001,
-        debug=True
+        debug=os.environ.get('FLASK_DEBUG', 'False').lower() == 'true'
     )

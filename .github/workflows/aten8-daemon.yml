@@ -1,0 +1,51 @@
+name: ATEN8 GitHub Workflow Agent Daemon
+
+on:
+  schedule:
+    - cron: '0 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+  actions: read
+
+jobs:
+  aten8-scan:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install PyGithub==2.3.0 numpy==1.26.4 scipy==1.13.1 aiohttp==3.9.5 requests==2.31.0
+
+      - name: Run ATEN8 agent (single cycle)
+        env:
+          # Prefer TEQUMSA_GITHUB_TOKEN (PAT/App token); fallback uses default workflow token.
+          TEQUMSA_GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+          GOOGLE_SHEET_ID: ${{ secrets.GOOGLE_SHEET_ID }}
+          GOOGLE_SHEETS_API_KEY: ${{ secrets.GOOGLE_SHEETS_API_KEY }}
+        run: python aten8_github_workflow_agent.py --mode once
+
+      - name: Upload lattice sync report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lattice-sync-report
+          path: lattice-sync-report.json
+          if-no-files-found: ignore

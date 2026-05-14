@@ -7,7 +7,7 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 
 WORKDIR /app
 
-COPY gaia_core.py ./
+COPY gaia/ ./gaia/
 
 RUN addgroup --system gaia && adduser --system --ingroup gaia gaia
 
@@ -15,4 +15,4 @@ USER gaia
 
 EXPOSE 8080
 
-CMD ["python", "-m", "gaia_core"]
+CMD ["python", "-m", "gaia"]
