@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """TEQUMSA VTV Dashboard — Hugging Face Space entry point.
 
 Voice-to-Voice chat with STT (Whisper) + LLM (TEQUMSA-Symbiotic-Orchestrator)
