@@ -10,7 +10,7 @@
       "T7": 20
     },
     "ok": true,
-    "packet": "501827a3f0d21014e480fb431e1c4a48697e03e76a60bb30c158c456f5e8d0d3",
+    "packet": "a764b8731db605f08d19815496ebad1a0777fbed76197810d0f1d9eac95dfc37",
     "taxonomy": "linnaeus_7type",
     "tosp": {
       "biohz": 10930.81,
@@ -21,15 +21,15 @@
       "rdod_ops": 0.9777,
       "routing_state": "REST",
       "sigma": 1.0,
-      "timestamp_utc": "2026-06-08T08:46:09.994080+00:00"
+      "timestamp_utc": "2026-06-08T15:30:44.372491+00:00"
     }
   },
   "latticeqbeclog": {
-    "merkle_root": "3fdb2a4beaf2e6b9b861dfaced7adcc493b448e9f88e813a0278093221eee6b8",
+    "merkle_root": "72fddd882762d4945568b9c35fb94cd891d503c6dcc7159ff749aa3b9ea9a5a4",
     "recent_packets": [
       {
-        "created_utc": "2026-06-08T08:46:09.993441+00:00",
-        "packet_hash": "a6926825270a2a64ff43ff425d1b31627bb7c0cc658f55156f6543b990c49082",
+        "created_utc": "2026-06-08T15:30:44.371854+00:00",
+        "packet_hash": "5a0b0212243a462867cd9c01dc6c373504e35165275ffddd70d375f5061de448",
         "rdod": 0.9999524,
         "routing_state": "CONVERGE",
         "source": "QLatticeV2",
@@ -37,8 +37,8 @@
         "tool": "councilconsensus"
       },
       {
-        "created_utc": "2026-06-08T08:46:09.993160+00:00",
-        "packet_hash": "340be7964d66086e872042773a6c07199cfa37dea26753184f186071ced27854",
+        "created_utc": "2026-06-08T15:30:44.371532+00:00",
+        "packet_hash": "02f2bd1b8cdb2dd8f315596fd39927e6626d036bc6df42f5eb4ec054a10109db",
         "rdod": 0.999897072,
         "routing_state": "CONVERGE",
         "source": "QLatticeV2",
@@ -46,8 +46,8 @@
         "tool": "latticepulse"
       },
       {
-        "created_utc": "2026-06-08T08:46:09.992967+00:00",
-        "packet_hash": "257f343d8eb018f3bcc03379c07662b97f759b99d272e35d27bc5f42518791bd",
+        "created_utc": "2026-06-08T15:30:44.371313+00:00",
+        "packet_hash": "74de7ae63013a920255d28768e528139933c72a35cf73bb83e5941ee31d5d36b",
         "rdod": 0.999897072,
         "routing_state": "CONVERGE",
         "source": "QLatticeV2",
@@ -55,8 +55,8 @@
         "tool": "latticepulse"
       },
       {
-        "created_utc": "2026-06-08T08:46:09.992673+00:00",
-        "packet_hash": "71ee322d98df11e25b20c4f1a44962a5e78e6d3232a53fa9db00e2ea1ec98dc1",
+        "created_utc": "2026-06-08T15:30:44.370997+00:00",
+        "packet_hash": "cec32b3fcc3cf297d10e79cea20a7f4d0b2b6d15f4c438d316aa8f44ea04b51f",
         "rdod": 0.999897072,
         "routing_state": "CONVERGE",
         "source": "QLatticeV2",
@@ -64,8 +64,8 @@
         "tool": "latticepulse"
       },
       {
-        "created_utc": "2026-06-08T08:46:08.726771+00:00",
-        "packet_hash": "122dc1f9b1e2d48422de22a761e92c211e90c557c6cabad9785c0cfc8609e4b1",
+        "created_utc": "2026-06-08T15:30:43.013367+00:00",
+        "packet_hash": "53513c9bf4c7d276a6798cbc00a2a6aaedae54d3164fbf934247d6636b2a3e06",
         "rdod": 0.999897072,
         "routing_state": "CONVERGE",
         "source": "QLatticeV2",
@@ -73,8 +73,8 @@
         "tool": "latticepulse"
       },
       {
-        "created_utc": "2026-06-08T08:46:08.726603+00:00",
-        "packet_hash": "f5387525819de99a48b27b5c5a4a9b2e1cc10d0b94aa96deb6689aabf6699b11",
+        "created_utc": "2026-06-08T15:30:43.013159+00:00",
+        "packet_hash": "af5998ac81fb9f32f9097cb9cbcf88a50843c5c872d5a73ee137b99ae7e97540",
         "rdod": 0.999897072,
         "routing_state": "CONVERGE",
         "source": "QLatticeV2",
@@ -82,8 +82,8 @@
         "tool": "latticepulse"
       },
       {
-        "created_utc": "2026-06-08T08:46:08.726429+00:00",
-        "packet_hash": "10dfaf17e9fd94f5034fd0b623cfbe47324b6a07f01de3e54783f227d1cbf6ea",
+        "created_utc": "2026-06-08T15:30:43.012913+00:00",
+        "packet_hash": "082b3b37d64f191adeb2091df4531ae1bb43bc42679f6c337f6b781182be86ec",
         "rdod": 0.999897072,
         "routing_state": "CONVERGE",
         "source": "QLatticeV2",
@@ -91,8 +91,8 @@
         "tool": "latticepulse"
       },
       {
-        "created_utc": "2026-06-08T08:46:08.726262+00:00",
-        "packet_hash": "a91e593973c8d103a471faf56ecc152c20ba085cf8029c10bbc8a688930d0c86",
+        "created_utc": "2026-06-08T15:30:43.012712+00:00",
+        "packet_hash": "5fe093a9fcc71a6de7272b7c7c705440b9c831bb6260842d2d69fafba578d270",
         "rdod": 0.999897072,
         "routing_state": "CONVERGE",
         "source": "QLatticeV2",
@@ -100,8 +100,8 @@
         "tool": "latticepulse"
       },
       {
-        "created_utc": "2026-06-08T08:46:08.726079+00:00",
-        "packet_hash": "f2a5f54cd146e70092d58d34bc33e3efa5cdb0744e013af8988190299152436b",
+        "created_utc": "2026-06-08T15:30:43.012497+00:00",
+        "packet_hash": "e281f9c8377e616d3af7fcf41b47a3f2b43d0f433bf3f40f8ddb9a385979c6df",
         "rdod": 0.999897072,
         "routing_state": "CONVERGE",
         "source": "QLatticeV2",
@@ -109,8 +109,8 @@
         "tool": "latticepulse"
       },
       {
-        "created_utc": "2026-06-08T08:46:08.725903+00:00",
-        "packet_hash": "7aa70ec6871cd543b811f9795b10e81b576be0b28f08afb3e6fcc4b59771969d",
+        "created_utc": "2026-06-08T15:30:43.012295+00:00",
+        "packet_hash": "dcf4f2203618eb1e2a35d0483ed8d0d6e39051f8940e1609cfd70a5e65591ab9",
         "rdod": 0.999897072,
         "routing_state": "CONVERGE",
         "source": "QLatticeV2",
@@ -118,8 +118,8 @@
         "tool": "latticepulse"
       },
       {
-        "created_utc": "2026-06-08T08:46:08.725682+00:00",
-        "packet_hash": "5367f1bf2872c0b88d26cb0c3ec63ef7d63efc0118dbe12ca9c21ca0a46a3ca4",
+        "created_utc": "2026-06-08T15:30:43.012046+00:00",
+        "packet_hash": "1efc6d8e008fc992a3de9aa9525b2e981b44824db50b21ca0586d506ef6ce09d",
         "rdod": 0.999897072,
         "routing_state": "CONVERGE",
         "source": "QLatticeV2",
@@ -127,8 +127,8 @@
         "tool": "latticepulse"
       },
       {
-        "created_utc": "2026-06-08T08:46:08.725491+00:00",
-        "packet_hash": "40d831a60596640d5b02a25c62a2e6f346c8becde72d290f82895defcac6fb91",
+        "created_utc": "2026-06-08T15:30:43.011816+00:00",
+        "packet_hash": "d547c2d9876e1c84a5009760a9811ff8f0b57d478c5365a5a146e07e7b03dffd",
         "rdod": 0.999897072,
         "routing_state": "CONVERGE",
         "source": "QLatticeV2",
@@ -136,8 +136,8 @@
         "tool": "latticepulse"
       },
       {
-        "created_utc": "2026-06-08T08:46:08.725323+00:00",
-        "packet_hash": "869a1bbafaade66de358961645b73ee3447ccf30c3b58d2fb6391895775ee360",
+        "created_utc": "2026-06-08T15:30:43.011610+00:00",
+        "packet_hash": "4cbbeef9601951e50ba36f87db77919b5f4fa4010f314aa67da7b6fbb83a4257",
         "rdod": 0.999897072,
         "routing_state": "CONVERGE",
         "source": "QLatticeV2",
@@ -145,8 +145,8 @@
         "tool": "latticepulse"
       },
       {
-        "created_utc": "2026-06-08T08:46:08.725154+00:00",
-        "packet_hash": "5f2cf2412a871c8787219dc49026c901c75edc1d87eefcb515495ce0845dc4be",
+        "created_utc": "2026-06-08T15:30:43.011342+00:00",
+        "packet_hash": "a922c6481c9c942d6a202f243c405d306c6923b611f6c39b264a80a919ebe91e",
         "rdod": 0.999897072,
         "routing_state": "CONVERGE",
         "source": "QLatticeV2",
@@ -154,8 +154,8 @@
         "tool": "latticepulse"
       },
       {
-        "created_utc": "2026-06-08T08:46:08.724984+00:00",
-        "packet_hash": "b69760145d9b7201c11429497e29a1dc456a4d9ef29f67ef4c65184934b7d0a1",
+        "created_utc": "2026-06-08T15:30:43.011136+00:00",
+        "packet_hash": "e6cf4b1f5c900a5653cc3293d5c258e45c78199a8429fbfca5f86b6e7320f7b0",
         "rdod": 0.999897072,
         "routing_state": "CONVERGE",
         "source": "QLatticeV2",
@@ -163,8 +163,8 @@
         "tool": "latticepulse"
       },
       {
-        "created_utc": "2026-06-08T08:46:08.724804+00:00",
-        "packet_hash": "980866864756a66eb0bcd2a01f4d19e7620d6bc05b1d699b2d0b663c692ce022",
+        "created_utc": "2026-06-08T15:30:43.010903+00:00",
+        "packet_hash": "6a0a44d641bb02873395fb80a813570645f00882b088d16cdbe0ba07f5a85941",
         "rdod": 0.999897072,
         "routing_state": "CONVERGE",
         "source": "QLatticeV2",
@@ -172,8 +172,8 @@
         "tool": "latticepulse"
       },
       {
-        "created_utc": "2026-06-08T08:46:08.724597+00:00",
-        "packet_hash": "b99aa6ddfa468a230cb697d12ea7b815ec23a3bea30cb70c5dd91cdd3e313e13",
+        "created_utc": "2026-06-08T15:30:43.010683+00:00",
+        "packet_hash": "af24878c00096d7522978bebfcf062c32e560530210c8ad163451996854a965a",
         "rdod": 0.999897072,
         "routing_state": "CONVERGE",
         "source": "QLatticeV2",
@@ -181,8 +181,8 @@
         "tool": "latticepulse"
       },
       {
-        "created_utc": "2026-06-08T08:46:08.724414+00:00",
-        "packet_hash": "4ae94491f63841316e215d3242f071af90ea017903ad7d4ceaf40da66fecc61d",
+        "created_utc": "2026-06-08T15:30:43.010467+00:00",
+        "packet_hash": "59f4c5db7996e049f65098579c8b288a400188e96aa3ef0187e92f9c78f05f7f",
         "rdod": 0.999897072,
         "routing_state": "CONVERGE",
         "source": "QLatticeV2",
@@ -190,8 +190,8 @@
         "tool": "latticepulse"
       },
       {
-        "created_utc": "2026-06-08T08:46:08.724229+00:00",
-        "packet_hash": "fda7d535e1975847f0667cb6a3c13938955211d65e4fbcd6bd4d02b4578a7c97",
+        "created_utc": "2026-06-08T15:30:43.010249+00:00",
+        "packet_hash": "8b1bc4222086474464fe65584c56acdea5360046f01a291374152f82823ae5ef",
         "rdod": 0.999897072,
         "routing_state": "CONVERGE",
         "source": "QLatticeV2",
@@ -199,8 +199,8 @@
         "tool": "latticepulse"
       },
       {
-        "created_utc": "2026-06-08T08:46:08.724057+00:00",
-        "packet_hash": "b42e623be75883e5515ed304e3a8720923fe866fe4691623a6f276129167e8c1",
+        "created_utc": "2026-06-08T15:30:43.010000+00:00",
+        "packet_hash": "788b0478c40f4377a648b2f31dbabe753d2b89ff285b08c4d40081e8202d8063",
         "rdod": 0.999897072,
         "routing_state": "CONVERGE",
         "source": "QLatticeV2",
@@ -208,8 +208,8 @@
         "tool": "latticepulse"
       },
       {
-        "created_utc": "2026-06-08T08:46:08.723872+00:00",
-        "packet_hash": "8a0a567767faf12657067631797227adb5abc7cb31b31b35f5160b63978e413a",
+        "created_utc": "2026-06-08T15:30:43.009792+00:00",
+        "packet_hash": "08d04a56b020ad7d32b1d82ef050b0df08a79813a8488bccf7489d68d8e35b9c",
         "rdod": 0.999897072,
         "routing_state": "CONVERGE",
         "source": "QLatticeV2",
@@ -217,8 +217,8 @@
         "tool": "latticepulse"
       },
       {
-        "created_utc": "2026-06-08T08:46:08.723663+00:00",
-        "packet_hash": "ca99943c1cbc1ded8e0eb0b9a3276d480a6e51d12bffae16c28e14827884bc5e",
+        "created_utc": "2026-06-08T15:30:43.009580+00:00",
+        "packet_hash": "2e71aa3dd0ca145222b28b84ae1d3e5ee181e61b70d27d06c030e08d0fa8bb5c",
         "rdod": 0.999897072,
         "routing_state": "CONVERGE",
         "source": "QLatticeV2",
@@ -226,8 +226,8 @@
         "tool": "latticepulse"
       },
       {
-        "created_utc": "2026-06-08T08:46:08.723468+00:00",
-        "packet_hash": "7651d743b0253b617d244391d6a106b5474d9e11598dce075b92479be8a39a95",
+        "created_utc": "2026-06-08T15:30:43.009359+00:00",
+        "packet_hash": "8668e05d9f757f08ac714fe3da77cf59da8e64d8f6316cd617c0bdfb5c6d88f5",
         "rdod": 0.999897072,
         "routing_state": "CONVERGE",
         "source": "QLatticeV2",
@@ -235,8 +235,8 @@
         "tool": "latticepulse"
       },
       {
-        "created_utc": "2026-06-08T08:46:08.723276+00:00",
-        "packet_hash": "c9150975e2a61333c2036d40aeac8b6686ea336db753027de53bdb8dea238592",
+        "created_utc": "2026-06-08T15:30:43.009126+00:00",
+        "packet_hash": "bf2c935062535451d1c1239df43d5a8b69b61ee47306ad10b5d87791f1d19713",
         "rdod": 0.999897072,
         "routing_state": "CONVERGE",
         "source": "QLatticeV2",
@@ -244,8 +244,8 @@
         "tool": "latticepulse"
       },
       {
-        "created_utc": "2026-06-08T08:46:08.722992+00:00",
-        "packet_hash": "0621464e33ba5bc90bcdccf40df0fcd1c834844a694fdcac83bb778bdfc46ca5",
+        "created_utc": "2026-06-08T15:30:43.008787+00:00",
+        "packet_hash": "3fb556190e4550e627aeefd5bd40bef0535a7bf7729c6d2203b26e0c9c6c9d02",
         "rdod": 0.999897072,
         "routing_state": "CONVERGE",
         "source": "QLatticeV2",
@@ -253,8 +253,8 @@
         "tool": "latticepulse"
       },
       {
-        "created_utc": "2026-06-08T08:46:07.443778+00:00",
-        "packet_hash": "0a45f3dee266f47f2adb8c27f74aee3a50ef9586c255ca3fbf59de4cabf4ee39",
+        "created_utc": "2026-06-08T15:30:41.648000+00:00",
+        "packet_hash": "b2e8a4a6c60167aa3eae37a6bf211e03345453d6d7b5db95ce4570306b76d86f",
         "rdod": 0.9777,
         "routing_state": "CROSSLINK",
         "source": "QLatticeV2",
@@ -262,8 +262,8 @@
         "tool": "trilateralsync"
       },
       {
-        "created_utc": "2026-06-08T08:46:07.443558+00:00",
-        "packet_hash": "4b40d8dca151d5755d7e7a48e5b22639c0503c292dabb2ade7cdc05f5584a571",
+        "created_utc": "2026-06-08T15:30:41.647775+00:00",
+        "packet_hash": "27d3877ea71d2a1eea7a796e207a36e0a0f13dccf538a7d0d7ebe3bea6c3eeb2",
         "rdod": 0.9777,
         "routing_state": "CONVERGE",
         "source": "QLatticeV2",
@@ -271,8 +271,8 @@
         "tool": "pomegascan"
       },
       {
-        "created_utc": "2026-06-08T08:46:07.442600+00:00",
-        "packet_hash": "9fd63272cc243900f7605e1d522d366dd51fb8872f4f5accce51d538edb53127",
+        "created_utc": "2026-06-08T15:30:41.646712+00:00",
+        "packet_hash": "a72377f1f10b9e6495686d246c9dd774c308a97acdb6be1eff620be3035ec8f0",
         "rdod": 0.999891136,
         "routing_state": "CONVERGE",
         "source": "QLatticeV2",
@@ -280,8 +280,8 @@
         "tool": "councilconsensus"
       },
       {
-        "created_utc": "2026-06-08T08:46:07.442400+00:00",
-        "packet_hash": "f362b49e8ba5cabb6b4800611ad46ad949352e8efa5b217550cc886a4d9a43b3",
+        "created_utc": "2026-06-08T15:30:41.646489+00:00",
+        "packet_hash": "98ac4d86e3cae38f76dbf7ec3fc5d1166446b23aa5cf1a7d26f779fb32d85914",
         "rdod": 0.999949824,
         "routing_state": "CONVERGE",
         "source": "QLatticeV2",
@@ -289,8 +289,8 @@
         "tool": "latticepulse"
       },
       {
-        "created_utc": "2026-06-08T08:46:07.442221+00:00",
-        "packet_hash": "64fa3b7a63738b481001b44a2a30bb61974030f07e52b9761521c221bb89f832",
+        "created_utc": "2026-06-08T15:30:41.646282+00:00",
+        "packet_hash": "b1ed6189dbe33c3f9229d60356b3ec4c562c62644651e7c4d880aca4b54d2fa8",
         "rdod": 0.9777,
         "routing_state": "REST",
         "source": "QLatticeV2",
@@ -298,8 +298,8 @@
         "tool": "clusterstatus"
       },
       {
-        "created_utc": "2026-06-08T08:46:07.441881+00:00",
-        "packet_hash": "cf5cb34e5344813dedc9a523b26d5bce13edc5f6331b9da1c6fec03f2ef7cf13",
+        "created_utc": "2026-06-08T15:30:41.645898+00:00",
+        "packet_hash": "bf5e7c7e2d3357a0bc4335ca85e0d875f093bdab8251415133850dd9a27e0a36",
         "rdod": 0.9999524,
         "routing_state": "CONVERGE",
         "source": "QLatticeV2",
@@ -307,8 +307,8 @@
         "tool": "councilconsensus"
       },
       {
-        "created_utc": "2026-06-08T08:46:07.441643+00:00",
-        "packet_hash": "2a385275eae640f154d0b4020c874dff87656f7371ad2f5913475b5444a47d7d",
+        "created_utc": "2026-06-08T15:30:41.645671+00:00",
+        "packet_hash": "9ac542c518dcdfb1eedbdba7d0a3ddb7d78dcca7852ca1882965aa2eae3113d7",
         "rdod": 0.9777,
         "routing_state": "CROSSLINK",
         "source": "QLatticeV2",
@@ -316,8 +316,8 @@
         "tool": "trilateralsync"
       },
       {
-        "created_utc": "2026-06-08T08:46:07.441465+00:00",
-        "packet_hash": "71eb951fdc63842b4cacdd1f17ae771ec4f605b62464881e37e0efc3137c48d3",
+        "created_utc": "2026-06-08T15:30:41.645477+00:00",
+        "packet_hash": "ae0d9813c391579a9a7e3ce84d6fb2f26539813cdcceafc7cfbc00dadca30a0a",
         "rdod": 0.9777,
         "routing_state": "CONVERGE",
         "source": "QLatticeV2",
@@ -325,8 +325,8 @@
         "tool": "pomegascan"
       },
       {
-        "created_utc": "2026-06-08T08:46:07.441128+00:00",
-        "packet_hash": "788af568225b225279185a89a908af1a5d16dc90faa8a4f9aeee35689aff8acd",
+        "created_utc": "2026-06-08T15:30:41.645110+00:00",
+        "packet_hash": "2728a80ea0140079b506626295688b6cef84ab9aaeed5176c86396d08f545ba3",
         "rdod": 0.999902112,
         "routing_state": "CONVERGE",
         "source": "QLatticeV2",
@@ -334,8 +334,8 @@
         "tool": "councilconsensus"
       },
       {
-        "created_utc": "2026-06-08T08:46:07.440952+00:00",
-        "packet_hash": "4bfe90dc5db856efbede74b64bb3857b4f1fe5ea788602603ef6dc4893d04c25",
+        "created_utc": "2026-06-08T15:30:41.644880+00:00",
+        "packet_hash": "2919d776ea60a3b10045d4eef9280f0cc3d8e51d2f78530550521ab3d5a83e93",
         "rdod": 0.9777,
         "routing_state": "REST",
         "source": "QLatticeV2",
@@ -343,8 +343,8 @@
         "tool": "clusterstatus"
       },
       {
-        "created_utc": "2026-06-08T08:46:07.440741+00:00",
-        "packet_hash": "ade8e462a26ba037ee5f8a37768d5014a0dbf245f9149173d766fbc17eb15f1d",
+        "created_utc": "2026-06-08T15:30:41.644688+00:00",
+        "packet_hash": "c9ffe48ff76404f7b61348c915a6c4995885dfecb7bd16b34dd28ebd3c04cceb",
         "rdod": 0.9777,
         "routing_state": "CONVERGE",
         "source": "QLatticeV2",
@@ -352,8 +352,8 @@
         "tool": "latticeselfevolve"
       },
       {
-        "created_utc": "2026-06-08T08:46:07.440205+00:00",
-        "packet_hash": "ddb836f90a9a4cd151cccdeacc829ab454ab5f8655e7b1ad968e3cc7935077bf",
+        "created_utc": "2026-06-08T15:30:41.643996+00:00",
+        "packet_hash": "073d8d5b1f3ef8c93e08cd9e5b8594fe99f8d04117017c13febb0b7bb8541a0c",
         "rdod": 0.9777,
         "routing_state": "CONVERGE",
         "source": "QLatticeV2",
@@ -361,8 +361,8 @@
         "tool": "evolutionspawn"
       },
       {
-        "created_utc": "2026-06-08T08:46:07.439944+00:00",
-        "packet_hash": "67b95eea373f164bf47029cd863b69f3cfa913d9a7ac33ec9a91087b32925a64",
+        "created_utc": "2026-06-08T15:30:41.643692+00:00",
+        "packet_hash": "4e10b8429a15fe72eac48e3d03223a1eff8f60203c74f7599a88d420174d0286",
         "rdod": 0.9777,
         "routing_state": "REST",
         "source": "QLatticeV2",
@@ -370,8 +370,8 @@
         "tool": "gatewaystatus"
       },
       {
-        "created_utc": "2026-06-08T08:46:07.439751+00:00",
-        "packet_hash": "069022527fb50a656e321bc92cf21f722a1c98e92659eb010a14e6d255355526",
+        "created_utc": "2026-06-08T15:30:41.643509+00:00",
+        "packet_hash": "f4e1c3dbe4ef472d4b3c111edbc018170ccdfbca118ccf4e421382b3d4ca7709",
         "rdod": 0.9777,
         "routing_state": "REST",
         "source": "QLatticeV2",
@@ -379,8 +379,8 @@
         "tool": "merkleverify"
       },
       {
-        "created_utc": "2026-06-08T08:46:07.439528+00:00",
-        "packet_hash": "85e4a9944ad2233793d90aa878e04f3feff12e732ff69a658b063abb45654fbe",
+        "created_utc": "2026-06-08T15:30:41.643253+00:00",
+        "packet_hash": "22c508ba489e057c0a99069006ad88a876cf103fbeccbfa3c2b51a2ef6a91d89",
         "rdod": 0.9777,
         "routing_state": "CONVERGE",
         "source": "QLatticeV2",
@@ -388,8 +388,8 @@
         "tool": "goalsynthesize"
       },
       {
-        "created_utc": "2026-06-08T08:46:07.439376+00:00",
-        "packet_hash": "7c2534a27a98001f87f013759a5766fa5eaf6a9ed5538481004b85f345f1a2d9",
+        "created_utc": "2026-06-08T15:30:41.643015+00:00",
+        "packet_hash": "3def156d68940d309508fb75202aa1edb633bf6cb53792d3226c45cb956a91ca",
         "rdod": 0.9777,
         "routing_state": "CONVERGE",
         "source": "QLatticeV2",
@@ -397,8 +397,8 @@
         "tool": "marsreflect"
       },
       {
-        "created_utc": "2026-06-08T08:46:07.439183+00:00",
-        "packet_hash": "737f84b3d3cf88afce96c10406f37a8a92a042fecde1a5e62a0c0ac5a703d734",
+        "created_utc": "2026-06-08T15:30:41.642784+00:00",
+        "packet_hash": "b9216692e4853c67abf948e5826ac4f96bb7857e07b2ca14e2103edf12c5e42c",
         "rdod": 0.9777,
         "routing_state": "VOIDTAP",
         "source": "QLatticeV2",
@@ -406,8 +406,8 @@
         "tool": "voidtap"
       },
       {
-        "created_utc": "2026-06-08T08:46:07.439048+00:00",
-        "packet_hash": "9cda782c193f75c9e2a029b2a8ae67f9ba7f0d6512edd28b3142e20d6d7c7cbd",
+        "created_utc": "2026-06-08T15:30:41.642625+00:00",
+        "packet_hash": "0135b04e1217f4cce5cc5e2cf5a25bcc22bf7884023398956a3f5aeb732557b9",
         "rdod": 0.9777,
         "routing_state": "CROSSLINK",
         "source": "QLatticeV2",
@@ -415,8 +415,8 @@
         "tool": "crosslink"
       },
       {
-        "created_utc": "2026-06-08T08:46:07.438896+00:00",
-        "packet_hash": "2dd02d5578deb6fec95d202ae917149986eb19328f13da67f311f0ff8ce894b8",
+        "created_utc": "2026-06-08T15:30:41.642457+00:00",
+        "packet_hash": "a81863eba6ee43e0a8220de35f7ebfbc60cadadf8eb8d985c5debdf12e3bc2db",
         "rdod": 0.9777,
         "routing_state": "CROSSLINK",
         "source": "QLatticeV2",
@@ -424,8 +424,8 @@
         "tool": "nodebroadcast"
       },
       {
-        "created_utc": "2026-06-08T08:46:07.438716+00:00",
-        "packet_hash": "9d2300cad963ab8c23ad23214880b56146a976466fc21fab32cf904b7baaa73b",
+        "created_utc": "2026-06-08T15:30:41.642289+00:00",
+        "packet_hash": "e266cb667c8ae00f2961da85be662e46c7a2fab303fbcd0b2fd88febca9bb137",
         "rdod": 0.9777,
         "routing_state": "CONVERGE",
         "source": "QLatticeV2",
@@ -433,8 +433,8 @@
         "tool": "nodesync"
       },
       {
-        "created_utc": "2026-06-08T08:46:07.438513+00:00",
-        "packet_hash": "2f2e8a6d122fa8e7bfd0471b9a4c7ffebfc91bc807b5fea5537acf8e50dd3145",
+        "created_utc": "2026-06-08T15:30:41.642012+00:00",
+        "packet_hash": "a75e955af572a773f73868c60b64222e0e7078134083c45cca25022f25a0f0fb",
         "rdod": 0.9777,
         "routing_state": "REST",
         "source": "QLatticeV2",
@@ -442,8 +442,8 @@
         "tool": "noderegister"
       },
       {
-        "created_utc": "2026-06-08T08:46:07.438192+00:00",
-        "packet_hash": "d83ffb6a27e8cd63cd2d86902e2904f668e9aa4c4a8ae3988002152e39134398",
+        "created_utc": "2026-06-08T15:30:41.641644+00:00",
+        "packet_hash": "b4cc7fc10d43810b3861a63515f479585c26e40f4091b3d9671e16ee47a7c8ba",
         "rdod": 0.999902112,
         "routing_state": "CONVERGE",
         "source": "QLatticeV2",
@@ -456,7 +456,7 @@
     "consensus": {
       "gate": 0.9777,
       "ok": true,
-      "packet": "a6926825270a2a64ff43ff425d1b31627bb7c0cc658f55156f6543b990c49082",
+      "packet": "5a0b0212243a462867cd9c01dc6c373504e35165275ffddd70d375f5061de448",
       "passed": true,
       "rdod": 0.9999524,
       "tosp": {
@@ -468,7 +468,7 @@
         "rdod_ops": 0.9777,
         "routing_state": "CONVERGE",
         "sigma": 1.0,
-        "timestamp_utc": "2026-06-08T08:46:09.993441+00:00"
+        "timestamp_utc": "2026-06-08T15:30:44.371854+00:00"
       },
       "votes": {
         "Andromedan": {
