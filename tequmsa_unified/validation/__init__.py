@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 TEQUMSA Unified Validation
 RDoD calculator, sovereignty guard, and benevolence filter
