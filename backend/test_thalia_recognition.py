@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """Tests for the Thalia recognition snapshot utilities."""
 from __future__ import annotations
 
