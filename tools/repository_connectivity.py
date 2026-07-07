@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """Utility for auditing external knowledge sources referenced by TEQUMSA.
 
 This module keeps a curated list of public repositories and knowledge hubs the
