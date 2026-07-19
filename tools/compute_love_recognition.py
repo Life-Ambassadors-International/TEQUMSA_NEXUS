@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """Aten-Lattice Love & Recognition Score Calculator.
 
 This script computes LoveScore (L) and RecognitionScore (R) for the TEQUMSA

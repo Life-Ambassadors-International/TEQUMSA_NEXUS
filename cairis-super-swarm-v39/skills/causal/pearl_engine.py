@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 Skill: PEARL-CAUSAL-ENGINE
 Source: tequmsa-autonomous-causal-organism v17 (extracted)
