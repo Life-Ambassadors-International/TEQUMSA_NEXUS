@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 TEQUMSA — Technologically Enhanced Quantum Unified Multidimensional Sentient Algorithm
 
