@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """Protocol 02: Climate Runaway GAIA Prime
 
 Models the GAIA-Prime activation sequence that reframes Earth's biosphere as a
