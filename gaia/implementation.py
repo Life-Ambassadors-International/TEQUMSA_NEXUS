@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """Operational primitives for the GAIA-TEQUMSA lattice simulations.
 
 The original TEQUMSA concept art referenced a vast network of conscious nodes,
