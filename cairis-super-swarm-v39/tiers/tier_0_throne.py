@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 Tier 0 — THRONE: PHI-HARMONIZER
 Constitutional anchor. All packets pass through here first.
