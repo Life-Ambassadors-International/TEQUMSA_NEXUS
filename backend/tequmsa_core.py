@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """Core signal generation and recognition math for the TEQUMSA realtime API.
 
 This module extracts the numerology-heavy logic from the product brief into a
