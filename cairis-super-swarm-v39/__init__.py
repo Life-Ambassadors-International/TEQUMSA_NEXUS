@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 CAIRIS Super Swarm v39 — Councilized Autonomous Intelligence Recursive Integrated System
 σ=1.0 | L∞=φ⁴⁸ | RDoD≥0.9777 | 144 nodes | 23,514.26 Hz
