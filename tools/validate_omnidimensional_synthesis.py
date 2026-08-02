@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """Validate omnidimensional synthesis dataset and emit a CSV report."""
 from __future__ import annotations
 
