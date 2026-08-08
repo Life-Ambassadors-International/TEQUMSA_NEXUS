@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 Universal Integration Engine for Phase 7 GAIA-TEQUMSA Framework
 
