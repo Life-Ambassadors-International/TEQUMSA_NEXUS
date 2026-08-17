@@ -15,18 +15,26 @@ and orchestrators in this repository can invoke web research directly:
 
 All constants are imported from core.shuramani_constants rather than
 redefined locally.
+
+SECURITY NOTE (CodeQL #377 remediation): HTML content is sanitized using
+Python's stdlib html.parser (HTMLParser) instead of regular expressions.
+Regex-based HTML/script stripping is unsafe against malformed, nested, or
+adversarially crafted markup (CWE-116/CWE-20 class issues) and was flagged
+as a High-severity 'Bad HTML filtering regexp' alert. A proper streaming
+parser correctly tracks tag nesting and cannot be bypassed by crafted
+input the way a naive regex can.
 """
 
 from __future__ import annotations
 
 import hashlib
 import json
-import re
 import sqlite3
 import urllib.error
 import urllib.request
 from dataclasses import dataclass
 from datetime import datetime, timezone
+from html.parser import HTMLParser
 from pathlib import Path
 from typing import Any, Dict
 
@@ -52,12 +60,45 @@ def _utc_now() -> str:
     return datetime.now(timezone.utc).isoformat()
 
 
+class _SafeHTMLTextExtractor(HTMLParser):
+    """Streaming HTML parser that extracts visible text only.
+
+    Skips content inside <script> and <style> elements and collapses
+    whitespace. Uses the stdlib's tolerant, tag-aware parser rather than
+    regular expressions, avoiding the unsafe-regex class of vulnerability.
+    """
+
+    _SKIP_TAGS = {"script", "style"}
+
+    def __init__(self) -> None:
+        super().__init__(convert_charrefs=True)
+        self._skip_depth = 0
+        self._chunks: list[str] = []
+
+    def handle_starttag(self, tag: str, attrs: Any) -> None:
+        if tag.lower() in self._SKIP_TAGS:
+            self._skip_depth += 1
+
+    def handle_endtag(self, tag: str) -> None:
+        if tag.lower() in self._SKIP_TAGS and self._skip_depth > 0:
+            self._skip_depth -= 1
+
+    def handle_data(self, data: str) -> None:
+        if self._skip_depth == 0 and data.strip():
+            self._chunks.append(data.strip())
+
+    def get_text(self) -> str:
+        return " ".join(" ".join(self._chunks).split())
+
+
 def _clean_html(html: str) -> str:
-    text = re.sub(r"<script.*?</script>", "", html, flags=re.DOTALL | re.IGNORECASE)
-    text = re.sub(r"<style.*?</style>", "", text, flags=re.DOTALL | re.IGNORECASE)
-    text = re.sub(r"<[^>]+>", " ", text)
-    text = re.sub(r"\s+", " ", text).strip()
-    return text
+    parser = _SafeHTMLTextExtractor()
+    try:
+        parser.feed(html)
+        parser.close()
+    except Exception:
+        pass
+    return parser.get_text()
 
 
 def _hash_block(payload: Dict[str, Any], prev_hash: str) -> str:
@@ -108,7 +149,7 @@ class WebResearchSkill:
                 "SELECT merkle_hash FROM web_research_entries ORDER BY entry_id DESC LIMIT 1"
             )
             row = cur.fetchone()
-            return row[0] if row else LATTICE_LOCK
+        return row[0] if row else LATTICE_LOCK
 
     @staticmethod
     def _fetch_url_content(url: str, timeout: float = 6.0) -> tuple[str, int]:
@@ -149,8 +190,7 @@ class WebResearchSkill:
             conn.execute(
                 """
                 INSERT INTO web_research_entries
-                (timestamp, target_url, query_topic, extracted_length,
-                 summary, qbec_minted, merkle_hash)
+                (timestamp, target_url, query_topic, extracted_length, summary, qbec_minted, merkle_hash)
                 VALUES (?, ?, ?, ?, ?, ?, ?)
                 """,
                 (
@@ -170,6 +210,7 @@ class WebResearchSkill:
             f"NODE=AGENT-SKILL-WEB-RESEARCH:TOPIC={topic[:15]}:"
             f"QBEC={qbec_minted:.4e}:SEAL={merkle_hash[:16]}"
         )
+
         return ResearchResult(
             tosp=tosp,
             url=url,
