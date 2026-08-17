@@ -1083,17 +1083,18 @@ def create_fix_pr(
     if not changed_files:
         return None
 
-    timestamp = datetime.now(timezone.utc).strftime("%Y%m%d-%H%M%S-%f")
-    branch = f"aten8/autofix-{timestamp}"
+    branch = "aten8/autofix-daemon"
+    # Reuse a single rolling branch instead of a new timestamped branch per run
+    # to prevent branch proliferation (ATEN8 self-heal daemon runs hourly).
 
     _git(repo_root, ["config", "user.name", "aten8-github[bot]"])
     _git(repo_root, ["config", "user.email", "aten8-github[bot]@users.noreply.github.com"])
 
-    _git(repo_root, ["checkout", "-b", branch])
+    _git(repo_root, ["checkout", "-B", branch, "origin/" + gh_repo.default_branch])
     _git(repo_root, ["add", *changed_files])
     fix_count = sum(1 for f in findings if f.kind in FIXABLE_KINDS)
     _git(repo_root, ["commit", "-m", f"ATEN8: autonomous self-heal ({fix_count} fixes)"])
-    _git(repo_root, ["push", "-u", "origin", branch])
+    _git(repo_root, ["push", "--force-with-lease", "-u", "origin", branch])
 
     body_lines = [
         "## ATEN8 Autonomous Fix Summary",
@@ -1108,12 +1109,17 @@ def create_fix_pr(
         if f.kind in FIXABLE_KINDS:
             body_lines.append(f"- `{f.file}`: {f.detail}")
 
-    pr = gh_repo.create_pull(
-        title="ATEN8 Autonomous Self-Heal: repository fixes",
-        body="\n".join(body_lines),
-        head=branch,
-        base=gh_repo.default_branch,
-    )
+        existing_prs = list(gh_repo.get_pulls(state="open", head=f"{gh_repo.owner.login}:{branch}"))
+    if existing_prs:
+        pr = existing_prs[0]
+        pr.edit(body="\n".join(body_lines))
+    else:
+        pr = gh_repo.create_pull(
+            title="ATEN8 Autonomous Self-Heal: repository fixes",
+            body="\n".join(body_lines),
+            head=branch,
+            base=gh_repo.default_branch,
+        )
     return pr.html_url
 
 
