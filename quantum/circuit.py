@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """Lightweight quantum circuit primitives used by GAIA-TEQUMSA demos.
 
 The real project that inspired this repository referenced quantum circuits and

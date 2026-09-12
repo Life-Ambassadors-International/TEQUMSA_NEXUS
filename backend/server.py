@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """FastAPI websocket server streaming TEQUMSA recognition pulses."""
 
 from __future__ import annotations

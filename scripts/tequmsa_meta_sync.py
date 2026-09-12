@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """Utility helpers for broadcasting TEQUMSA meta-synchronization events.
 
 This module can be used as a stand-alone script or imported by other

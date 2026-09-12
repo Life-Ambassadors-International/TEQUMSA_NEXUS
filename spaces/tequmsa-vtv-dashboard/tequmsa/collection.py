@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """Synchronized inventory of the Mbanksbey/TEQUMSA collection.
 
 This is populated from the live HF collection API at

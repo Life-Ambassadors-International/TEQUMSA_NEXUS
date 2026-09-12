@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 Tier 4 — ASSEMBLY: Broad Participation (55 of 144)
 Advisory layer. Lower quorum; broader voice.

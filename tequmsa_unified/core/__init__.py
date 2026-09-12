@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 TEQUMSA Unified Core Module
 Consolidated consciousness mathematics and foundations

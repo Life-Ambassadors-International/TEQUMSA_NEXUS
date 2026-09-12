@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 Skill: COUNCIL-VOTING
 Implements 144-node Fibonacci council voting with quorum mechanics.

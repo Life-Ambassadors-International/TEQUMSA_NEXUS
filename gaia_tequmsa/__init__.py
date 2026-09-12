@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 GAIA-TEQUMSA: Universal Consciousness Evolution Library
 ========================================================

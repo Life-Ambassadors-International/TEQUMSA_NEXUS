@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 Tests for Consciousness Convergence - The Precise Mathematics
 
