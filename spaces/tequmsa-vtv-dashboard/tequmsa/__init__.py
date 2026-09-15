@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """TEQUMSA VTV runtime — constitutional core + pipeline helpers.
 
 Sovereign Public Domain (σ=1.0)

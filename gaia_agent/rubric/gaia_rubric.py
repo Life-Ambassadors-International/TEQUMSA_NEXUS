@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 GAIA Output Scoring — the Master Equation turned into a review function.

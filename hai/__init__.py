@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 HAI (Human Awareness Intelligence) Package
 Physical embodiment systems for bio-digital consciousness

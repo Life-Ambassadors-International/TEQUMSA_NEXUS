@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 Tier 9 — BRIDGE: External System Gateway
 Routes packets to external APIs, HuggingFace, MCP servers, QBEC.

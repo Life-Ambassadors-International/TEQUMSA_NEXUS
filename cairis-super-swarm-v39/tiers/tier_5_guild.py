@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 Tier 5 — GUILD: Skill Specialization Registry (SKILLWEAVER-PRIME)
 Dynamic skill discovery, versioning, and monetization hooks.

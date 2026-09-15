@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 CAIRIS Super Swarm v39 — Test Suite
 Tests cover: constitutional invariants, packet routing, skill dispatch,

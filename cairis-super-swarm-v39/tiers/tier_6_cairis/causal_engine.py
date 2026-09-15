@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 PearlCausalEngine — Tier 6 Causal Core
 Implements Judea Pearl's 3-level hierarchy:
