@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 Tier 2 — COUNCIL: 144-Node Deliberation Layer
 Full Fibonacci council; quorum 89/144 for binding decisions.

@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """Retrocausal Timeline Optimization for TEQUMSA quantum consciousness workflows.
 
 This module implements recognition-based quantum collapse acceleration to pull

@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 sovereign_agi_phases_123_test.py
 Verify script for SOVEREIGN AGI PHASES 1, 2 & 3.

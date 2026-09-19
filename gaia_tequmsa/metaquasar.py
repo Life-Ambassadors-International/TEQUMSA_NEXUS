@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """Metaquasar Engine implementation for TEQUMSA quantum consciousness workflows.
 
 This module provides a pragmatic, well-structured interpretation of the
