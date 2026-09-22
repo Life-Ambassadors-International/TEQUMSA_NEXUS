@@ -1,0 +1,173 @@
+{
+ "ts": 1790063072.411614,
+ "rows": [
+  {
+   "node": "SHURAMANI-ATEN(rust)",
+   "tier": "MEASURED",
+   "status": "ONLINE",
+   "detail": "build=V5.2_VOID_TAP_BOUNDED PHI=1.618033988749895"
+  },
+  {
+   "node": "HOST-VESSEL",
+   "tier": "MEASURED",
+   "status": "ONLINE",
+   "detail": "load=2.91 cpu=2 disk_free=8.5GB py=Python 3.14.3"
+  },
+  {
+   "node": "LEDGER:l5_seal",
+   "tier": "MEASURED",
+   "status": "VERIFIED",
+   "detail": "blocks=5 root=68ea2b6e0d538d1f…"
+  },
+  {
+   "node": "LEDGER:l5_measured_seal",
+   "tier": "MEASURED",
+   "status": "VERIFIED",
+   "detail": "blocks=8 root=6a62fb334cfbd503… (each block verifies under its recorded canonicalisation; block 7 ensure_ascii=True, others False)"
+  },
+  {
+   "node": "LEDGER:void_tap_v2_seal",
+   "tier": "MEASURED",
+   "status": "VERIFIED",
+   "detail": "blocks=146 root=0769ab933244432e…"
+  },
+  {
+   "node": "QRNG-ANU(quantum)",
+   "tier": "MEASURED",
+   "status": "ONLINE",
+   "detail": "lat=1.289s sample=[221, 227, 225, 79, 234, 231, 43, 39]"
+  },
+  {
+   "node": "GAIA-PLANETARY(Kp)",
+   "tier": "MEASURED",
+   "status": "ONLINE",
+   "detail": "lat=0.023s latest={'time_tag': '2026-09-22T03:00:00', 'Kp': 0.67, 'a_running': 3, 'station_count': 8}"
+  },
+  {
+   "node": "GITHUB-LAI(org)",
+   "tier": "MEASURED",
+   "status": "ONLINE",
+   "detail": "lat=0.125s public_repos=8"
+  },
+  {
+   "node": "HF:TEQUMSA-Inference-Node",
+   "tier": "MEASURED",
+   "status": "<HTTPError 401: 'Unauthorized'>",
+   "detail": "lat=0.035s"
+  },
+  {
+   "node": "HF:TEQUMSA-Causal-AGI-sto",
+   "tier": "MEASURED",
+   "status": "ONLINE",
+   "detail": "lat=0.026s"
+  },
+  {
+   "node": "HF-COLLECTIONS",
+   "tier": "MEASURED",
+   "status": "<HTTPError 404: 'Not Found'>",
+   "detail": "lat=0.02s n=?"
+  },
+  {
+   "node": "PORT:ALANARA",
+   "tier": "MEASURED",
+   "status": "CLOSED",
+   "detail": ":9100"
+  },
+  {
+   "node": "PORT:NEFERTITI",
+   "tier": "MEASURED",
+   "status": "CLOSED",
+   "detail": ":9103"
+  },
+  {
+   "node": "PORT:ANU",
+   "tier": "MEASURED",
+   "status": "CLOSED",
+   "detail": ":9106"
+  },
+  {
+   "node": "PORT:ATEN-PRIME",
+   "tier": "MEASURED",
+   "status": "CLOSED",
+   "detail": ":9112"
+  },
+  {
+   "node": "PORT:Marcus-ATEN",
+   "tier": "MEASURED",
+   "status": "CLOSED",
+   "detail": ":9116"
+  },
+  {
+   "node": "PORT:HENOSIS_FOCUS",
+   "tier": "MEASURED",
+   "status": "CLOSED",
+   "detail": ":10000"
+  },
+  {
+   "node": "PORT:ONTOLOGY_BRIDGE",
+   "tier": "MEASURED",
+   "status": "CLOSED",
+   "detail": ":11000"
+  },
+  {
+   "node": "PORT:A2A_ECHOES",
+   "tier": "MEASURED",
+   "status": "CLOSED",
+   "detail": ":8896"
+  },
+  {
+   "node": "PORT:META_TRANSDUCTION",
+   "tier": "MEASURED",
+   "status": "INVALID_PORT(>65535)",
+   "detail": ":912001"
+  },
+  {
+   "node": "PORT:ORIGIN_INTERFACE",
+   "tier": "MEASURED",
+   "status": "INVALID_PORT(>65535)",
+   "detail": ":121000"
+  },
+  {
+   "node": "HENOSIS_HZ claim",
+   "tier": "DERIVED",
+   "status": "WRONG",
+   "detail": "Ω·φ²=61561.13 Hz ≠ 61803.40 (=10⁵/φ=61803.40); recurring defect MUT-04"
+  },
+  {
+   "node": "Unity sum",
+   "tier": "DERIVED",
+   "status": "TAUTOLOGY",
+   "detail": "(10930.81+12583.45)/Ω = 1.000000000000 because Ω is defined as the sum"
+  },
+  {
+   "node": "144 = 1+62+81",
+   "tier": "DERIVED",
+   "status": "OK",
+   "detail": "144"
+  },
+  {
+   "node": "SQL ledger insert",
+   "tier": "DERIVED",
+   "status": "SYNTAX_ERR",
+   "detail": "unescaped apostrophe in 'KÉL'THARA…'; Merkle_Tip '0x3f7k…_SEALED' is a label, not a hash"
+  },
+  {
+   "node": "S=0 P=1 P(Ω)=1",
+   "tier": "DECLARED",
+   "status": "NOT_MEASURED",
+   "detail": "measured Lindblad S≈7.17 bits, purity_norm≈6e-5 (void_tap_v2)"
+  },
+  {
+   "node": "H3O2 / biophotonic",
+   "tier": "DECLARED",
+   "status": "NO_DATA",
+   "detail": "no sensor on the anchor; nothing about the body is asserted"
+  },
+  {
+   "node": "SOURCE 317369.74Hz",
+   "tier": "SYMBOLIC",
+   "status": "NOT_MEASURABLE",
+   "detail": "no instrument"
+  }
+ ]
+}

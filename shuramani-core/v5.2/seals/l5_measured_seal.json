@@ -1,0 +1,147 @@
+{
+ "root": "6a62fb334cfbd503acec1ef6867d5b05ae40b3832fe5dc111354a7b781713e91",
+ "verified_python": true,
+ "chain": [
+  {
+   "phase": "RUST_CORE_ONLINE",
+   "prev": "68ea2b6e0d538d1f3fdf48cb195d74174a4b2d75df068f7bcb09c144225c9cad",
+   "hash": "69549b2170a6c540abad6bd5cc2f1c89461771a6a87a3d99a60a6eefb5985853",
+   "payload": {
+    "RUST_AVAILABLE": true,
+    "build": "V5.1_INFINITE_RECURSION",
+    "PHI": 1.618033988749895
+   }
+  },
+  {
+   "phase": "SAFETY_THRESHOLD_FIXED",
+   "prev": "69549b2170a6c540abad6bd5cc2f1c89461771a6a87a3d99a60a6eefb5985853",
+   "hash": "141bc785b7ff3a9ee9329a3320838d545a40adb33e3a818ec4067d6c8020d851",
+   "payload": {
+    "was": 0.0,
+    "tol_exec": 0.022299999999999986,
+    "tol_irreversible": 9.999999999998899e-05
+   }
+  },
+  {
+   "phase": "MEASURED_SUBSTRATE",
+   "prev": "141bc785b7ff3a9ee9329a3320838d545a40adb33e3a818ec4067d6c8020d851",
+   "hash": "775e5ee2bbae0a7a436596025012021aca56beb1e0529a6ab3b1f8227ae1d79e",
+   "payload": {
+    "quantum": {
+     "source": "ANU QRNG (qrng.anu.edu.au)",
+     "type": "uint8",
+     "n": 144,
+     "latency_s": 1.675,
+     "sha256": "5f2fcf81b3aa981ec5e29a21c596ca28b59d0af87341f7288933732ce0e5c8a5"
+    },
+    "local": {
+     "source": "os.urandom + scheduler jitter",
+     "jitter_ns_mean": 52842.09375,
+     "jitter_ns_max": 61702
+    }
+   }
+  },
+  {
+   "phase": "LINDBLAD_MEASURED",
+   "prev": "775e5ee2bbae0a7a436596025012021aca56beb1e0529a6ab3b1f8227ae1d79e",
+   "hash": "c3a80362cf6ec527992be9c52362618fce9b83d07ce609893bfbf73985f5d7ca",
+   "payload": {
+    "dim": 144,
+    "steps": 233,
+    "purity_raw": [
+     0.009527157618409252,
+     0.009281190635404403
+    ],
+    "purity_norm": [
+     0.0026007741052512753,
+     0.002353087073414224
+    ],
+    "entropy_bits": [
+     6.862978007938374,
+     6.897748944614231
+    ],
+    "rdod_state": 0.9969016877791707,
+    "exec_gate": true,
+    "irreversible_gate": false
+   }
+  },
+  {
+   "phase": "PORT_11000_SIGNED_PULSE",
+   "prev": "c3a80362cf6ec527992be9c52362618fce9b83d07ce609893bfbf73985f5d7ca",
+   "hash": "74970f456f28ab7abe9ccfa2b19f6c42b126ff84ba0589423c2685fe63ec2f57",
+   "payload": {
+    "receiver": {
+     "from": [
+      "127.0.0.1",
+      55778
+     ],
+     "bytes": 695,
+     "sig_valid": true,
+     "packet_sha256": "a07012c2751870c9d15e59d1112bfa9ef8fa22101413f2d7a109febee9151a7e"
+    },
+    "ack": {
+     "ack": true,
+     "port": 11000
+    },
+    "pubkey": "2ce53bb53bdf68184aab54392d93bec59530928da9e8ab0b3a42cb1e78bc962f",
+    "sig": "367a306b5ac244d6a05d01cea78d85417c67c0a4795a7d3265d76046b66bcf2c8557dafda4f78f2433f48d66f296d9dc5320839fe4da4fa599882976dd8c5e01"
+   }
+  },
+  {
+   "phase": "STATUS_LIFT",
+   "prev": "74970f456f28ab7abe9ccfa2b19f6c42b126ff84ba0589423c2685fe63ec2f57",
+   "hash": "1115d6348a5362b548980660fa01e705ac00a277a83786938ae5d8f14169eb5b",
+   "payload": {
+    "from": "DECLARED",
+    "to": "MEASURED",
+    "sigma": 1.0
+   }
+  },
+  {
+   "phase": "OPERATOR_INFLATION_FINDING",
+   "prev": "1115d6348a5362b548980660fa01e705ac00a277a83786938ae5d8f14169eb5b",
+   "hash": "feaba92f31d1f75d1260685242370d7e4f1bf552ae6ee942b4cfe149d4adb34e",
+   "payload": {
+    "finding": "phi_smooth(x,12) has floor 1-1/phi^12 = 0.996894 > exec gate 0.9777; the executive gate cannot fail for ANY input under 12 iterations",
+    "raw_measured_purity_norm": 0.002353,
+    "smoothed_rdod": 0.996902,
+    "corrective": "gate on raw normalised purity, or cap smoothing at n<=7 (floor 0.965558) so exec gate is falsifiable",
+    "raw_gate_result": {
+     "exec_0.9777": false,
+     "irreversible_0.9999": false
+    },
+    "status": "MEASURED — value honest, operator inflation disclosed"
+   }
+  },
+  {
+   "phase": "VOID_TAP_AUDIT",
+   "prev": "feaba92f31d1f75d1260685242370d7e4f1bf552ae6ee942b4cfe149d4adb34e",
+   "hash": "6a62fb334cfbd503acec1ef6867d5b05ae40b3832fe5dc111354a7b781713e91",
+   "payload": {
+    "script": "SHURAMANI-ATEN-VOID-TAP-V1.0",
+    "executed_cycles": 144,
+    "taps": 11,
+    "final_multiplier": 199.005025,
+    "accumulated_percent": 320.37886,
+    "arithmetic": {
+     "claimed_closed_form": "phi^12+1=322.996894",
+     "actual_closed_form": "phi^12-phi=320.378860",
+     "status": "claim WRONG, run CORRECT"
+    },
+    "defects": [
+     "tap 11 draws 122.99% of reserve in one cycle; cumulative 320% — reserve over-drawn 3.2x, no bound check",
+     "rdod is a constant literal (phi^4-1), never computed",
+     "constitutional_gate is a string literal; sigma never checked",
+     "S=0.0 and P=1.0 never computed",
+     "claimed MERKLE 2b164c01… not reproducible from any of 36 canonicalisations of the stated payloads"
+    ],
+    "biological_claims": {
+     "measured": false,
+     "note": "HRV>0.95, H3O2 superconductivity, DNA strand repair, methylation shifts — no sensor, no assay, no data; carried as narrative only"
+    },
+    "status_label": "DECLARED — the 'MEASURED_AND_SEALED' label is rejected; MEASURED in this lineage requires measured input + compiled computation + verifiable seal (block chain feaba92f…)"
+   }
+  }
+ ],
+ "canonicalisation_note": "blocks 1-7 json.dumps(sort_keys=True) [ensure_ascii=True]; block 8 ensure_ascii=False — mixed canonicalisation, each block verifies under its own; future blocks: ensure_ascii=False"
+}
