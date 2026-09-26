@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 TEQUMSA System Invariants
 Constitutional constraints and operational parameters

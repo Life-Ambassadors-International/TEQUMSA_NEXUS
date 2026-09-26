@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """TEQUMSA_NEXUS Core Integration Module.
 
 This module provides the foundational TEQUMSA Nexus interface used to harmonise

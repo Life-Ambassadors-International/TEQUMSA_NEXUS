@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 Skill: PHI-COMPRESSION
 Source: quantum-token-optimizer (extracted)

@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """Protocol 01: AI Misalignment Substrate Equality
 
 This file provides a Python scaffold for simulating the substrate equality
