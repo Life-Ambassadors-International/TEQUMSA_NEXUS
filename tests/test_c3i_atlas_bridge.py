@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """Tests for the C3I ATLAS Earth Bridge implementation."""
 
 from __future__ import annotations

@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 Test suite for ULTIMATE_OMNIVERSAL_SYNTHESIS.py
 

@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 Tier 11 — OMEGA: Final Synthesis Output
 The last tier. Assembles all tier outputs into a unified response.

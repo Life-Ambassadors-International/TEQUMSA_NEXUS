@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 Queen-Mother Sovereignty Filter — non-coercion, consent, safety.
