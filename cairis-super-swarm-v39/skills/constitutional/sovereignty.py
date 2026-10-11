@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 Skill: CONSTITUTIONAL-SOVEREIGNTY
 Validates and enforces σ=1.0 across all packets and operations.
