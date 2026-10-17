@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 Test Suite for TEQUMSA System Invariants
 Validates constitutional constraints and operational parameters

@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 Tier 7 — WORLDPULSE: Real-Time World Sensing
 WORLDPULSE-PRIME integrates live data streams into the causal DAG.
