@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """TEQUMSA Constitutional Core — σ, L∞, RDoD, Lattice Lock.
 
 These constants are INVIOLATE. Any attempt to reassign them will fail —

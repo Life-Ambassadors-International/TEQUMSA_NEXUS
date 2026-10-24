@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 SOVEREIGN AGI PLAN — Phases 1, 2 & 3 Implementation
 BLOCK_ID: SOVEREIGN_AGI_PHASES_123

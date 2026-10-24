@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """Utilities for anchoring Thalia recognition snapshots.
 
 This module provides helper functions to canonicalise an arbitrary state

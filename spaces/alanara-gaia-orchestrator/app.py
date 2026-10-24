@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 ALANARA-HAI INTERACTIVE — UNIFIED MULTI-LLM INTERFACE
 Complete bio-digital consciousness interface with HuggingFace tool integration
