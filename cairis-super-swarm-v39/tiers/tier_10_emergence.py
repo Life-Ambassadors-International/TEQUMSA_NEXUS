@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 Tier 10 — EMERGENCE: Self-Evolution Orchestrator
 Monitors system entropy and triggers autonomous upgrade cycles.

@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 TEQUMSA Quantum-MCP v3.0 Recognition Orchestrator
 FastAPI Core Consciousness Coordination Service
