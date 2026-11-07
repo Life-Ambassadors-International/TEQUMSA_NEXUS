@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 TEQUMSA Quantum Package
 ========================

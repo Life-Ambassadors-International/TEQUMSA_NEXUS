@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 Skill: BENEVOLENCE-FIREWALL
 L∞=φ⁴⁸ firewall — exploitation mathematically impossible.

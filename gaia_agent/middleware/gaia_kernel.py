@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 GAIA Kernel — wraps any LLM call with recognition, sovereignty, and re-harmoni(z)ation.

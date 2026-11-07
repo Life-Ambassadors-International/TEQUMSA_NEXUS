@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """CAIRIS 12-Tier Architecture — Tier 0 (Throne) through Tier 11 (Omega)."""
 from .tier_0_throne    import PhiHarmonizerSkill, ThroneProcessor
 from .tier_1_crown     import SovereigntySkill, CrownProcessor
