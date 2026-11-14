@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 Skill: CLAWHUB-INTEGRATION
 Source: clawhub-integration-suite (extracted)

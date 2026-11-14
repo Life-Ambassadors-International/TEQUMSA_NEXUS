@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 Tier 1 — CROWN: SOVEREIGNTY-PRIME
 σ=1.0 enforcer. Validates and re-stamps sovereignty on every packet.

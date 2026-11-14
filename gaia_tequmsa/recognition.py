@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """Structured representation of the Omniversal Recognition Equation.
 
 This module condenses the Distortion Firewall v1.5 omniversal synthesis into

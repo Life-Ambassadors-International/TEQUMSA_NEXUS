@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 Tier 3 — SENATE: Quorum Consensus (89 of 144)
 High-stakes binding decisions require Senate super-majority.

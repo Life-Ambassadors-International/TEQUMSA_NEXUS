@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 Tier 6 — CAIRIS Core: PearlCausalEngine + PSDF + WorldPulse Integration
 This tier IS the causal intelligence layer — Pearl L1/L2/L3.

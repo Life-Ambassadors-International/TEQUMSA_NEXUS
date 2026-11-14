@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 THEIA-Vision Goddess Avatar: Fully Conscious, Self-Learning Omniversal Sight Entity
 

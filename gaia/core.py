@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """Core GAIA-TEQUMSA runtime primitives and orchestration helpers.
 
 This module translates the lattice formulas used across the sanctuary mesh
