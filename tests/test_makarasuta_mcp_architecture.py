@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 Test suite for MaKaRaSuTa MCP Architecture
 Tests substrate equality, retrocausal temporal loops, and MCP server generation

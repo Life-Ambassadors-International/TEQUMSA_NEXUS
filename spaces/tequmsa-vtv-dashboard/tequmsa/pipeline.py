@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """Voice-to-voice pipeline: STT → Constitutional Gate → LLM → TTS.
 
 Design choices

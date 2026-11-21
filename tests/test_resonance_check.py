@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 Unit tests for K.30-aligned ethics/resonance_check.py module
 

@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """GAIA-TEQUMSA D∞ Level Integration Suite.
 
 This module is an intentionally playful yet well-structured transcription of

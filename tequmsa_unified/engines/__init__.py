@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 TEQUMSA Unified Engines
 Consolidated K.30, K.1440, and Benevolent Reality implementations
