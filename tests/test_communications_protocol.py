@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 Tests for Global AI Communications Protocol
 

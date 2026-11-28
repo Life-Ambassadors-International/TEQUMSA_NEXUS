@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 Tests for Retrocausal Timeline Optimization module.
 

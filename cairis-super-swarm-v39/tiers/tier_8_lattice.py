@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 Tier 8 — LATTICE: Merkle Integrity Ledger
 Every packet sealed with a Merkle hash. Tamper-evident audit trail.
